@@ -29,7 +29,7 @@ class DatabaseManager:
         db_password = os.getenv("DB_PASSWORD")
         db_uri = db_template.substitute(USERID=db_user, PASSWORD=db_password, DBNAME=db_database_name)
         app.config['MONGO_URI'] = db_uri
-        # print(db_uri)
+        print(db_uri)
         try:
             self.dbINDYCAF = PyMongo(app)
         except Exception as e:

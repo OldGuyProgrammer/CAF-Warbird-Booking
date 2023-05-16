@@ -31,8 +31,10 @@ from volunteer import Volunteer
 from customer_manager import Customer
 # from square import SquareServices as Square
 
-APP_DIR = os.path.abspath(os.path.dirname(__file__))
+print("Indiana Commemorative Air Force")
+print("Warbirds Rides Booking System started.")
 
+print(f"main module name: {__name__}")
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("FLASK_SECRET_KEY")
 app.config['REMEMBER_COOKIE_DURATION'] = os.getenv('COOKIE_DURATION')
@@ -626,3 +628,4 @@ if __name__ == "main":
     # fm.send_message("Warbirds Started", "jimolivi@icloud.com", "Warbirds program Started")
     # app.config.update['DEBUG'] = True
     app.run()
+    print("Warbirds Rides Booking System ended.")

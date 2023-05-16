@@ -100,7 +100,7 @@ class Flights:
             # Put the airplane name in the field to be displayed.
             flight[gl.DB_N_NUMBER] = flight[gl.DB_N_NUMBER] + ': ' + airplane_name
 
-        print(flight_list)
+        # print(flight_list)
         flight_list_json = dumps(flight_list)
         return flight_list_json
 
