@@ -123,7 +123,6 @@ wsproto==1.2.0
 WTForms==3.0.1
 zope.event==4.5.0
 zope.interface==5.5.2
-
 pip~=23.1.2
 argparse~=1.4.0
 wheel~=0.40.0
