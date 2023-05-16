@@ -77,7 +77,6 @@ mongoengine==0.24.2
 motor==3.0.0
 multitasking==0.0.11
 nest-asyncio==1.5.5
-numpy==1.24.2
 oauthlib==3.2.2
 openpyxl==3.1.2
 outcome==1.2.0
