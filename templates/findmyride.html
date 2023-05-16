@@ -1,0 +1,136 @@
+<!--INDY CAF Warbird Booking-->
+<!-- findmyride -->
+<!-- Get information about a purchased flight -->
+
+<!--Jim Olivi 2022-->
+
+{% include "header.html" %}
+<body xmlns="http://www.w3.org/1999/html">
+<script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+
+<form method="post" action="{{ url_for('findmyride') }}">
+    {{ form.csrf_token }}
+
+    <div class="container-fluid">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <div class="col-sm-6">
+            <div class="card border border-white">
+                <div class="card-body col-lg-6">
+                    <h2 class="card-title">Find My Ride</h2>
+                    <div id="spinner" style="display:none">
+                        <span class="spinner-border"></span>
+                        <p id="gettingInfo">Getting Flight info.</p>
+                    </div>
+                    <div class="row">
+                        <div>Enter your phone number or email address to find your rides.</div>
+                    </div>
+                    <div id="contact_info">
+                        {{ form.pass_phone }} {{ form.pass_email }}
+                    </div>
+                    <!-- Script to fetch and display the purchases -->
+                    <script>
+                        $("#contact_info").change(function () {
+                            $('#flightList li').remove();
+                            const pass_phone = $("#pass_phone").val()
+                            const pass_email = $("#pass_email").val()
+                            if (pass_phone == "" && pass_email == "") {
+                                return
+                            }
+                            let user_url = "/findmyride?"
+                            if (pass_phone != "") {
+                                if (pass_phone.length < 10 || pass_phone.length > 12) {
+                                    alert("Please enter a valid phone number formatted like: 1234567890.")
+                                    return
+                                }
+                                user_url = user_url + "phone=" + pass_phone
+                            }
+                            if (pass_email != "") {
+                                user_url = user_url + "&email=" + pass_email
+                            }
+                            $("#spinner").show()
+                            fetch(user_url)
+                                .then((response) => {
+                                    const res = response.status
+                                    if (res == 201) {
+                                        return response.json()
+                                    } else {
+                                        alert('Contact Information not on file.')
+                                        $("#spinner").hide()
+                                    }
+                                })
+                                .then((flights) => {
+                                    flights.flights.forEach((flight) => {
+                                        const flight_id = flight['flight_id']
+                                        const transaction_id = flight['transaction_id']
+                                        const airport_name = flight["airport_name"]
+                                        const text = airport_name + ", " + flight["flight_time"]
+                                        $(`<li class="nav-item">
+                                                <a class="nav-link btn" href="/passengercontact?flightkey=${flight_id}&transactionkey=${transaction_id}" style="width: 50rem;text-align: left">${text}
+                                                </a>
+                                            </li>`).appendTo("#flightList")
+                                    })
+                                    $("#spinner").hide()
+                                    $('#flight_list').show()
+                                }).catch((error) => {
+                                console.log(error)
+                            })
+                        })
+                    </script>
+                </div>
+                <span hidden>{{ form.flight_id }}</span>
+                <div class="row align-items-start">
+                    <div>Tap on the flight to see your passenger list.</div>
+                    <ul id="flightList" class="nav"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+<script>
+    // Do the final checking before allowing the screen to submit
+    $("form").submit(function (event) {
+
+        if ($('#pass_email').first().val() == '' && $('#pass_phone').first().val() == '') {
+            console.log('email or phone required')
+            alert('Please enter an email address or phone number.\nNeeded to contact you for flight status.')
+            event.preventDefault();
+        }
+    });
+
+    $("#seat_list").change(function () {
+        let total_prime_price = 0
+        const prime_price = Number($("#prime_price").text())
+        let seat_list = $(".prime-seats")
+        for (const seat of seat_list) {
+            if (seat.value != "") {
+                total_prime_price += prime_price
+            }
+        }
+
+        let total_pass_price = 0
+        const passenger_price = Number($("#passenger_price").text())
+        seat_list = $(".passenger-seats")
+        for (const seat of seat_list) {
+            if (seat.value != "") {
+                total_pass_price += passenger_price
+            }
+        }
+
+        const total_price = total_prime_price + total_pass_price
+        let text = `$${total_prime_price}`
+        $("#total_prime_seats").val(text)
+        text = `$${total_pass_price}`
+        $("#total_passenger_seats").val(text)
+        text = `$${total_price}`
+        $("#total_price").val(text)
+    })
+</script>
+
+{% include "footer.html" %}

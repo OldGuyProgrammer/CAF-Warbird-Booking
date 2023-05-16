@@ -1,0 +1,165 @@
+<!--INDY CAF Warbird Booking-->
+<!-- Create fl -->
+<!--Jim Olivi 2022-->
+
+{% include "header.html" %}
+<body xmlns="http://www.w3.org/1999/html">
+<script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+
+<form method="POST" action="{{ url_for('createflight') }}">
+    {{ form.csrf_token }}
+
+    <div class="container-fluid p-1">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="row align-items-start">
+            <div class="col">
+                <div id="spinner-saving" style="display:none">
+                    <div class="spinner-border text-success"></div>
+                    <span id="saving-message">Saving Flight Info.</span>
+                </div>
+                <h2 class="card-title">Manage a Flight</h2>
+                <div id="spinner-get-airport" style="display:none">
+                    <div class="spinner-border text-success"></div>
+                    <span id="gettingInfo">Getting airport info.</span>
+                </div>
+                <!-- Airport code, name and city -->
+                <div class="row align-items-start">
+                    {{ form.airport_code }}
+                    {{ form.airport_name }}{{ form.airport_city }}
+                    <div id="total_flight_time">
+                        <div class="col-sm-12">
+                            {{ form.flight_time.label }}
+                            {{ form.flight_time }}
+                        </div>
+                        <div class="col-sm-12">
+                            {{ form.end_flight_time.label }}
+                            {{ form.end_flight_time }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-cols-6">
+                    <!--                     Seats and Price  -->
+                    <div class="col-lg-4 pb-2">
+                        <h5>Premium Seats</h5>
+                        {{ form.premium_price.label }} {{ form.premium_price }}
+                        <div class="col-md-auto">
+                            {{ form.number_prime_seats.label }} {{ form.number_prime_seats }}
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <h5>Passenger Seats</h5>
+                        {{ form.passenger_price.label }} {{ form.passenger_price }}
+                        <div class="col-md-auto">
+                            {{ form.number_pass_seats.label }} {{ form.number_pass_seats }}
+                        </div>
+                    </div>
+                </div>
+                <!-- Pilot's name, Co-Pilot's Name -->
+                <div class="row row-cols-6 pb-2">
+                    <label for="pilots">Pilot: </label>
+                    {{ form.pilots }}
+                    <label for="co_pilot">Co_Pilot: </label>
+                    {{ form.co_pilots }}
+                </div>
+                <div class="row row-cols-6 pb-2">
+                    <!-- Crew Chief's Name,  Loadmaster's Name-->
+                    <label for="crewchief">Crew Chief: </label>
+                    {{ form.crew_chiefs }}
+                    <label for="loadmaster">Loadmaster: </label>
+                    {{ form.loadmasters }}
+                </div>
+                <!--    Submit Button                        -->
+                <div class="col">
+                    {{ form.add_a_flight }}
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <!--    Aircraft Name and Photo                        -->
+                <div class="col col-sm-6">
+                    <label for="aircraft_name">
+                        <h3>Select an aircraft</h3>
+                    </label>
+                    <div id="spinner-get-plane-image" style="display:none">
+                        <div class="spinner-border text-success"></div>
+                        <span id="gettingInfo">Getting airplane image.</span>
+                    </div>
+                    <div class="col-sm-6">
+{#                        {{ form.aircraft_name }}#}
+                        <select name="aircraft_name">
+                            {% for airplane in airplanes: %}
+                                <option value={{ airplane[0] }} data-image={{ airplane[2] }}
+
+                                >{{ airplane[1] }}</option>
+                            {% endfor %}
+                        </select>
+                        <img id="aircraftimage" src="" class="img-fluid" alt="Aircraft Image">
+                    </div>
+                    <!--Script to format the src="" attribute for the airplane photo. -->
+                    <script>
+                        function DisplayAircraft() {
+                            $("#spinner-get-plane-image").show();
+                            const file = $("#aircraft_name option:selected").data("image")
+                            if (file != "Select" && !!file) {
+                                const path = `static/images/${file}`
+                                $("#aircraftimage").attr("src", path)
+                            }
+                            $("#spinner-get-plane-image").hide();
+                        }
+
+                        // See if we can display an aircraft photo on startup.
+                        $(window).on('load', function () {
+                            DisplayAircraft()
+                        })
+                        // Listen to the airplane selector, matches the Flask form SelectField object.
+                        // Putting the image file name in the .img object triggers a get to the server.
+                        $('#aircraft_name').change(function () {
+                            DisplayAircraft()
+                        })
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+
+{% include "footer.html" %}
+<!--Script to fetch and display airport name and city-->
+<script>
+    $("#airport_code").change(function () {
+        $("#spinner-get-airport").show();
+        const airportCode = $("#airport_code").val()
+        const user_url = "/getairport/" + airportCode
+        fetch(user_url)
+            .then((response) => response.json())
+            .then((airport_obj) => {
+                // console.log(airport_obj)
+                $("#airport_name").val(airport_obj.name)
+                $("#airport_city").val(airport_obj.city)
+            }).catch((error) => {
+            console.log(error)
+        })
+        $("#spinner-get-airport").hide();
+    })
+    {#Script to fill in ending flight time.#}
+    $("#total_flight_time").change(function() {
+        const start_flight_time = $("#flight_time").val()
+        const end_flight_time = $("#end_flight_time").val()
+        {#if (end_flight_time === "") {#}
+        {#    $("#end_flight_time").val(start_flight_time)#}
+        {#}#}
+    })
+
+    // Display the spinner indicating saving the flight
+    $('#add_a_flight').on('click', () => {
+        $("#spinner-saving").show();
+    })
+
+</script>

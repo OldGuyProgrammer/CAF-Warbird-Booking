@@ -1,0 +1,117 @@
+<!--INDY CAF Warbird Booking-->
+<!-- Book a Flight -->
+<!-- Intended as general public interface to book a flight -->
+<!-- Sensitive system information ill be protected from users of this feature -->
+<!--Jim Olivi 2022-->
+
+{% include "header.html" %}
+<body xmlns="http://www.w3.org/1999/html">
+
+<form method="post" action="{{ url_for('ridewithus') }}">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card border border-white">
+                    <div class="card-body">
+                        <!--All Flight List-->
+                        <div id="spinner" class="spinner-border text-success" style="display:none"></div>
+                        <span id="gettingInfo" style="display:none">Getting Flights.</span>
+                        <h2 class="card-header">Ride With Us</h2>
+                        <h5 class="card-title">Click on the location and date to pick your flight.</h5>
+                        <ul id="airport" class="nav list-group">
+                            {% for flight in flights: %}
+                                <li onclick="ShowDaySelected(this)" class="nav-item list-group-item"
+                                    data-flighttime="{{ flight.flight_time }}"
+                                    data-airport-code="{{ flight.airport_code }}"
+                                    data-airport-name="{{ flight.airport_name }}">
+                                    <a class="nav-link btn p-0">{{ flight.airport_city }}, {{ flight.airport_name }},
+                                        {{ flight.flight_time }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card border border-white">
+                    <div class="card-body">
+                        <!--Flight Day Selected-->
+                        <h2 id="SelectionTitle" class="card-header" style="display:none">Select A Flight</h2>
+                        <h5 id="chosen_airport" class="card-title"></h5>
+                        <ul id="flightList" class="nav"></ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card border border-white">
+                    <div class="card-body">
+                        <!--Flight Day Selected-->
+                        <h2 id="SelectionTitle" class="card-header" style="display:none">Select A Flight</h2>
+                        <h5 id="chosen_airport" class="card-title"></h5>
+                        <ul id="flightList" class="nav list-group"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+<script>
+    // Show the hidden card to show flight data.
+    // Build the URL to request all of one airport and one day's flights.
+    // Fetch list of flights from the server
+    function ShowDaySelected(airport) {
+
+        $("#spinner").show();
+        $("#gettingInfo").show();
+        $("#SelectionTitle").show()
+        $('#flightList li').remove();
+        let airport_name = airport.getAttribute('data-airport-name')
+        $('#chosen_airport').text(airport_name)
+
+        let airport_code = airport.getAttribute('data-airport-code')
+        let fulldate = airport.getAttribute('data-flighttime')
+        flightdate = fulldate.split(' ')
+        date = flightdate[0].replace(/\//g, '')
+        const url = "/getdayflights/" + date + "/" + airport_code
+        fetch(url)
+            .then((response) => response.json())
+            .then((flights) => {
+// Parse the date time string
+// This function expects the date and time to come in a string UTC format:
+// YYYY-mm-ddThh:mm:ss.ssss+utcoffset
+                flights.forEach((flight) => {
+                    const id = flight['_id']
+                    const dt_from_database = flight['flight_time']
+                    const datetime = dt_from_database.split(" ")
+                    const date = datetime[0].split("-")
+                    const UTC = datetime[1].split("+")
+                    const time = UTC[0].split(":")
+                    let hour = Number(time[0])
+                    const ampm = (hour < 12) ? "AM" : "PM";
+                    hour = hour % 13
+                    const fulldate = `${date[1]}/${date[2]}/${date[0]}, ${hour}:${time[1]}${ampm}`
+                    $(`<li data-flightID=${id} class="nav-item">
+                        <a class="nav-link btn p-0" href="/passengercontact?flightkey=${id}" style="width: 50rem;text-align: left">${flight["aircraft_n_number"]}: ${fulldate}
+                        </a>
+                    </li>`).appendTo("#flightList")
+                })
+                $("#spinner").hide();
+                $("#gettingInfo").hide();
+            }).catch((error) => {
+            console.log(error)
+        })
+    }
+</script>
+
+{% include "footer.html" %}

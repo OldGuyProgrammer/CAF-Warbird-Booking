@@ -1,0 +1,92 @@
+<!--INDY CAF Warbird Flight Booking-->
+<!--Jim Olivi 2022-->
+
+<!-- Header Section -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>INDY CAF Warbirds</title>
+
+    <!-- Google Fonts. -->
+    {#    <link rel="preconnect" href="https://fonts.googleapis.com" rel="stylesheet"/>#}
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Text:wght@400;700&display=swap"
+          rel="stylesheet"/>
+
+    <script src="https://code.jquery.com/jquery.js"></script>
+
+    <!-- CSS Stylesheets -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}"/>
+
+    <!-- Bootstrap Scripts -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.js"></script>
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon_io/favicon-16x16.png') }}">
+
+    <!-- Title -->
+
+    <nav class="navbar nav-bar-container navbar-expand-lg">
+        <a class="navbar-brand" href="{{ url_for('home') }}">
+            <img style="width: 7rem" class="img-responsive" href="{{ url_for('home') }}" src="static/images/IndianaWingLogov2.png"
+                 alt="INDY CAF Patch"/>
+        </a>
+        <h1 class="big-heading">Warbird Rides</h1>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                {% if current_user.is_authenticated %}
+                    {# --------- Flight Ops Dropdown ------------ #}
+                    <li class="dropdown">
+                        <a class="nav-link" href="{{ url_for('createflight') }}">Flight Ops</a>
+                        <div class="dropdown-content">
+                            <a href="{{ url_for('createflight') }}">Flights</a>
+                            <a href="{{ url_for('select_flight') }}">Display Flights</a>
+                        </div>
+                    </li>
+                    {# Flight Ops Dropdown #}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('add_volunteer') }}">Volunteers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('add_aircraft') }}">Aircraft</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('manifest') }}">Print Manifest</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('sign_out') }}" role="button">Sign Out</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('ridewithus') }}" role="button">Ride With Us</a>
+                    </li>
+                    {#                        <li class="nav-item">#}
+                    {#                            <a id="find-your-ride" class="nav-link" href="{{ url_for('findmyride') }}" role="button">Find#}
+                    {#                                Your Ride</a>#}
+                    {#                        </li>#}
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://www.indianawingcaf.org/about.html" role="button">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}" role="button">Member Login</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+    <div class="row">
+        <div class="col-lg-12 col-md-6">
+            <h3>About: Beta Test</h3>
+        </div>
+    </div>
+</head>
+
+

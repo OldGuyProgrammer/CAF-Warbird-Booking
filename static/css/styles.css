@@ -1,0 +1,186 @@
+h1, h2, h3, h4 {
+	font-family: 'Times New Roman';
+}
+
+p {
+	color: black;
+	text-justify: l;
+}
+
+label {
+	text-align:right;
+}
+/* Input */
+input select option {
+	padding: 1rem;
+}
+
+img {
+	padding: 1rem;
+}
+/* Headings */
+
+.big-heading {
+	font-family: 'Big Shoulders Stencil Text', cursive;
+	font-size: 3rem;
+	line-height: 1.5;
+	color: black;
+}
+
+.nav-link {
+	color: darkblue;
+	font-size: 1.5rem;
+	cursor: crosshair;
+}
+
+.button-hidden{
+	visibility: hidden;
+}
+
+.button-hold-harmless{
+	visibility: visible;
+}
+
+/*Menu Button Controls*/
+ /* Dropdown Button */
+.dropbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: blue;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd;}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
+/* end Menu Button Controls*/
+
+.section-heading {
+	font-size: 3rem;
+	line-height: 1.5;
+}
+
+/* Containers */
+
+/*.container-fluid {*/
+/*	padding: 5% 5% 5%;*/
+/*}*/
+
+.nav-bar-container {
+	display:grid;
+	grid-template-columns: .5fr 2fr 2fr;
+	background-color: lightgrey;
+}
+
+.jumbotron {
+	background-color: lightgrey;
+}
+
+/* Flash Messages */
+.message {
+	color: blue;
+}
+.error {
+	color: red;
+}
+
+/* Sections */
+
+.white-section {
+	background-color: #fff;
+	padding: 10% 10% 10%;
+}
+
+#SelectionCard {
+	display: none;
+}
+
+/* Buttons */
+
+#title .container-fluid {
+	text-align: left;
+}
+
+/* Images */
+
+.airplane-image {
+	height: auto;
+	max-width: 40%;
+	float: left;
+}
+
+.small-airplane-image {
+	width: 40%;
+}
+/* Features Section */
+
+#features {
+	padding: 7% 15%;
+	position: relative;
+	background-color: #fff;
+}
+
+.feature-title {
+	font-size: 1.5rem;
+}
+
+.feature-box {
+	padding: 4.5%;
+}
+
+.icon {
+	color: #ef8172;
+	margin-bottom: 1rem;
+}
+
+/* Pricing Section */
+
+#pricing {
+	padding: 100px;
+}
+
+.price-text {
+	font-size: 3rem;
+	line-height: 1.5;
+}
+
+.pricing-column {
+	padding: 3% 2%;
+}
+
+/* Report Styles */
+.rpt-container {
+	display:grid;
+	grid-template-columns: 1fr 5fr 5fr;
+	grid-template-rows: 1fr;
+}

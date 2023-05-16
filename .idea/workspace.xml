@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e83b4a54-f443-46dc-9d70-4abc9a175fda" name="Changes" comment="v0.0.1 Beta - Initial commit to repair">
+      <change afterPath="$PROJECT_DIR$/print_flight_report.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/images/SNB.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/flightreport.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aircraft_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/aircraft_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flights.py" beforeDir="false" afterPath="$PROJECT_DIR$/flights.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/globals.py" beforeDir="false" afterPath="$PROJECT_DIR$/globals.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/google_services.py" beforeDir="false" afterPath="$PROJECT_DIR$/google_services.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manifest.py" beforeDir="false" afterPath="$PROJECT_DIR$/manifest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/createflight.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/createflight.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/manifest.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/manifest.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/ridewithus.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/ridewithus.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/selectflight.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/selectflight.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/token.json" beforeDir="false" afterPath="$PROJECT_DIR$/token.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/volunteer.py" beforeDir="false" afterPath="$PROJECT_DIR$/volunteer.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+        <option value="Python Script" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="FlaskConsoleOptions" custom-start-script="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))" module-name="INDY-CAF-Warbird-Booking" is-module-sdk="true">
+    <envs>
+      <env key="FLASK_APP" value="app" />
+    </envs>
+    <option name="myCustomStartScript" value="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))" />
+    <option name="myUseModuleSdk" value="true" />
+    <option name="myModuleName" value="INDY-CAF-Warbird-Booking" />
+    <option name="myEnvs">
+      <map>
+        <entry key="FLASK_APP" value="app" />
+      </map>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="c3bb91ee-2780-4a4c-b6a7-190874b26498" />
+        <option name="url" value="https://github.com/OldGuyProgrammer/INDY-CAF-Warbird-Booking.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/database.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/flaskmail.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/flights.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/globals.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/main.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/requirements.txt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/security.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/templates/addvolunteer.html" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/templates/header.html" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/templates/index.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/templates/ridewithus.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/volunteer.py" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2NQI8GJK2rXIdNOHcvhnR63t4qW" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "javascript.karma.karma_node_package_dir": "",
+    "js.buildTools.grunt.grunt-cli.package": "",
+    "js.buildTools.gulp.gulp_package_dir": "",
+    "last_opened_file_path": "/Users/jimolivi/Coding_Projects/CAF/INDY-CAF-Warbird-Booking",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "",
+    "nodejs.mocha.mocha_node_package_dir": "",
+    "nodejs.protractor.protractor_package": "",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="INDY-CAF-Warbird-Booking" is-module-sdk="true">
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="INDY-CAF-Warbird-Booking" />
+      </console-settings>
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/static/images" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/templates" />
+      <recent name="$PROJECT_DIR$/.." />
+    </key>
+  </component>
+  <component name="RunManager" selected="Flask server.INDYCAF (main.py)">
+    <configuration default="true" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" path="">
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PyRemoteDebugConfigurationType" factoryName="Python Remote Debug">
+      <option name="PORT" value="0" />
+      <option name="HOST" value="localhost" />
+      <PathMappingSettings>
+        <option name="pathMappings">
+          <list />
+        </option>
+      </PathMappingSettings>
+      <option name="REDIRECT_OUTPUT" value="true" />
+      <option name="SUSPEND_AFTER_CONNECT" value="true" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Python.AppEngineServer" factoryName="App Engine server">
+      <module name="INDY-CAF-Warbird-Booking" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
+      <option name="SDK_NAME" value="Python 3.11 (INDY-CAF-Warbird-Booking)" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="host" value="127.0.0.1" />
+      <option name="browserUrl" value="" />
+      <option name="additionalOptions" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
+      <module name="INDY-CAF-Warbird-Booking" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
+      <option name="SDK_NAME" value="Python 3.11 (INDY-CAF-Warbird-Booking)" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Python.FastAPI">
+      <module name="INDY-CAF-Warbird-Booking" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
+      <option name="SDK_NAME" value="Python 3.11 (INDY-CAF-Warbird-Booking)" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Python.FlaskServer">
+      <module name="INDY-CAF-Warbird-Booking" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
+      <option name="SDK_NAME" value="Python 3.11 (INDY-CAF-Warbird-Booking)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="ReactNative" factoryName="React Native">
+      <node-interpreter value="project" />
+      <react-native value="" />
+      <platform value="ANDROID" />
+      <envs />
+      <only-packager />
+      <browser value="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" />
+      <method v="2">
+        <option name="ReactNativePackager" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="js.build_tools.grunt">
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="INDYCAF" type="tests" factoryName="Autodetect">
+      <module name="INDY-CAF-Warbird-Booking" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="AIRPORT_CODE_APIKEY" value="R4x2uJMt4oB6TmvDHhPbiqzAMKA3lRFi" />
+        <env name="AIRPORT_CODE_URL" value="https://api.tequila.kiwi.com/locations/id?id=$AIRPORTCODE&amp;limit=1&amp;locale=en-US&amp;active_only=true" />
+        <env name="COOKIE_DURATION" value="hours=24" />
+        <env name="DB_CONNECT_PATH" value="mongodb+srv://$USERID:$PASSWORD@cluster0.wfdvqcp.mongodb.net/$DBNAME?retryWrites=true&amp;w=majority" />
+        <env name="DB_DATABASE_NAME" value="INDYCAF" />
+        <env name="DB_PASSWORD" value="uZmMhAjbfg05Ope3" />
+        <env name="DB_USER" value="JimOlivi" />
+        <env name="DOCS_FILE_ID" value="&quot;1q-SYO9d0x7ug1EhPDPQdv8ldL8o3sKkAzYKEMr3dkAw&quot;" />
+        <env name="FLASK_SECRET_KEY" value="gnf-yvt5cyp8pce1CBU" />
+        <env name="PORT" value="3000" />
+        <env name="SALT_ROUNDS" value="12" />
+        <env name="SCOPES_DOCS" value="https://www.googleapis.com/auth/documents" />
+        <env name="SCOPES_DRIVE" value="https://www.googleapis.com/auth/drive" />
+        <env name="UPLOAD_FOLDER" value="static/uploads" />
+        <env name="SQUARE_ACCESS_TOKEN" value="TC4Z3ZEBKRXRH" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/local/bin/python3.11" />
+      <option name="SDK_NAME" value="Python 3.11" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Flask server.INDYCAF (main.py)" />
+      <item itemvalue="Python tests.INDYCAF" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task id="LOCAL-00001" summary="v0.3.4-beta: Bug fixes. Commit after complete system re-install.">
+      <created>1678634271888</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1678634271888</updated>
+    </task>
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e83b4a54-f443-46dc-9d70-4abc9a175fda" name="Changes" comment="v0.3.4-beta: Bug fixes. Commit after complete system re-install." />
+      <created>1679589719625</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1679589719625</updated>
+      <workItem from="1679589721380" duration="7055000" />
+      <workItem from="1679663938533" duration="15309000" />
+      <workItem from="1679748110883" duration="3596000" />
+      <workItem from="1679758791858" duration="2400000" />
+      <workItem from="1679768643139" duration="795000" />
+      <workItem from="1679831707991" duration="1942000" />
+      <workItem from="1679839292512" duration="5073000" />
+      <workItem from="1679861138497" duration="2097000" />
+      <workItem from="1679917718358" duration="1945000" />
+      <workItem from="1679929222099" duration="10565000" />
+      <workItem from="1679941196882" duration="149000" />
+      <workItem from="1680027745138" duration="5946000" />
+      <workItem from="1680609843809" duration="42000" />
+      <workItem from="1680609996336" duration="1903000" />
+      <workItem from="1680720934309" duration="2511000" />
+      <workItem from="1680782550529" duration="2076000" />
+      <workItem from="1680797641844" duration="1704000" />
+      <workItem from="1680806300606" duration="3333000" />
+      <workItem from="1680811095614" duration="535000" />
+      <workItem from="1680882601470" duration="712000" />
+      <workItem from="1680883396025" duration="21000" />
+      <workItem from="1680883672762" duration="50000" />
+      <workItem from="1680884524900" duration="148000" />
+      <workItem from="1680885381471" duration="91000" />
+      <workItem from="1680885960276" duration="229000" />
+      <workItem from="1680891614394" duration="4706000" />
+      <workItem from="1680966967620" duration="4717000" />
+      <workItem from="1681039147564" duration="4435000" />
+      <workItem from="1681046021123" duration="8668000" />
+      <workItem from="1681126416513" duration="3181000" />
+      <workItem from="1681132085500" duration="2337000" />
+      <workItem from="1681143416384" duration="2760000" />
+      <workItem from="1681150906302" duration="4662000" />
+      <workItem from="1681159892214" duration="2612000" />
+      <workItem from="1681214732641" duration="1059000" />
+      <workItem from="1681221227167" duration="2216000" />
+      <workItem from="1681235913797" duration="2227000" />
+      <workItem from="1681239371429" duration="148000" />
+      <workItem from="1681297847195" duration="18000" />
+      <workItem from="1681323998040" duration="387000" />
+      <workItem from="1681656794537" duration="557000" />
+      <workItem from="1681851753319" duration="598000" />
+      <workItem from="1681906539935" duration="2926000" />
+      <workItem from="1681910279815" duration="678000" />
+      <workItem from="1681930213973" duration="1090000" />
+      <workItem from="1681932708431" duration="54000" />
+      <workItem from="1681932793702" duration="1153000" />
+      <workItem from="1681933958822" duration="1609000" />
+      <workItem from="1682022631541" duration="341000" />
+      <workItem from="1682863087954" duration="1143000" />
+      <workItem from="1682951422534" duration="2974000" />
+      <workItem from="1682954631167" duration="7351000" />
+      <workItem from="1682973736986" duration="564000" />
+      <workItem from="1683039777194" duration="897000" />
+      <workItem from="1683050699168" duration="1569000" />
+      <workItem from="1683116043227" duration="9572000" />
+      <workItem from="1683210752008" duration="1656000" />
+      <workItem from="1683221232903" duration="6276000" />
+      <workItem from="1683459074937" duration="841000" />
+      <workItem from="1683487414972" duration="2276000" />
+      <workItem from="1683546254971" duration="5487000" />
+      <workItem from="1683572059044" duration="3778000" />
+      <workItem from="1683658275636" duration="6319000" />
+      <workItem from="1683720050356" duration="5339000" />
+      <workItem from="1683734673756" duration="6520000" />
+      <workItem from="1683804844797" duration="8212000" />
+      <workItem from="1683814618503" duration="420000" />
+      <workItem from="1683821642404" duration="7123000" />
+      <workItem from="1683905935530" duration="6114000" />
+      <workItem from="1683921692269" duration="577000" />
+      <workItem from="1683922281729" duration="652000" />
+      <workItem from="1683992902576" duration="1238000" />
+      <workItem from="1684075343031" duration="7554000" />
+      <workItem from="1684101047695" duration="268000" />
+      <workItem from="1684157595134" duration="6979000" />
+      <workItem from="1684176579896" duration="1484000" />
+      <workItem from="1684179759475" duration="5634000" />
+      <workItem from="1684236803970" duration="5276000" />
+      <workItem from="1684249004195" duration="660000" />
+    </task>
+    <task id="LOCAL-00002" summary="v0.3.5-beta: Bug fixes. Restore after system failure.">
+      <created>1679759361431</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1679759361431</updated>
+    </task>
+    <task id="LOCAL-00003" summary="v0.3.6-beta: Find My Ride Displays data.">
+      <created>1679862820957</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1679862820957</updated>
+    </task>
+    <task id="LOCAL-00004" summary="v0.3.7-beta: Fixed Manifest: generate and print.">
+      <created>1679941082355</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1679941082355</updated>
+    </task>
+    <task id="LOCAL-00005" summary="v0.3.8-beta: Changed Flight Records from relational to schema based.">
+      <created>1680972873654</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1680972873654</updated>
+    </task>
+    <task id="LOCAL-00006" summary="v0.4.0-beta: Changed Flight Records from relational to schema based. Prepare for credit card processing">
+      <created>1681239454623</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1681239454623</updated>
+    </task>
+    <task id="LOCAL-00007" summary="v0.4.1-beta: Used grid styling in navigation bar. Made the screen layout neater.">
+      <created>1681910961802</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1681910961802</updated>
+    </task>
+    <task id="LOCAL-00008" summary="v0.5-beta: Bugs fixed. Release for first field test. Can create and book flights. Payment processing not yet implemented.">
+      <created>1683125071958</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1683125071958</updated>
+    </task>
+    <task id="LOCAL-00009" summary="v0.5.1-beta: Add Google token.json file">
+      <created>1683212295361</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1683212295361</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="5a5a8e51-7457-4cf9-8928-0900df552a54">
+          <value>
+            <State />
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+        <entry key="d93ef2cf-0cca-4573-afab-ae08f7125f43">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$" />
+    </ignored-roots>
+    <MESSAGE value="v0.3.4-beta: Bug fixes. Commit after complete system re-install." />
+    <MESSAGE value="v0.3.5-beta: Bug fixes. Restore after system failure." />
+    <MESSAGE value="v0.3.6-beta: Find My Ride Displays data." />
+    <MESSAGE value="v0.3.7-beta: Fixed Manifest: generate and print." />
+    <MESSAGE value="v0.3.8-beta: Changed Flight Records from relational to schema based." />
+    <MESSAGE value="v0.4.0-beta: Changed Flight Records from relational to schema based. Prepare for credit card processing" />
+    <MESSAGE value="v0.4.1-beta: Used grid styling in navigation bar. Made the screen layout neater." />
+    <MESSAGE value="v0.5-beta: Bugs fixed. Release for first field test. Can create and book flights. Payment processing not yet implemented." />
+    <MESSAGE value="v0.5.1-beta: Add Google token.json file" />
+    <MESSAGE value="v0.5.2 - beta - Addition of Flights Report." />
+    <option name="LAST_COMMIT_MESSAGE" value="v0.5.2 - beta - Addition of Flights Report." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/square.py</url>
+          <line>13</line>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$main.coverage" NAME="main Coverage Results" MODIFIED="1674163096902" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$google_services.coverage" NAME="google_services Coverage Results" MODIFIED="1672233942650" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$.coverage" NAME=" Coverage Results" MODIFIED="1682955215507" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$customer_manager.coverage" NAME="customer_manager Coverage Results" MODIFIED="1668520458342" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$database.coverage" NAME="database Coverage Results" MODIFIED="1679664904619" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$Flask__main_py_.coverage" NAME="Flask (main.py) Coverage Results" MODIFIED="1682954640116" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$filePlayground.coverage" NAME="filePlayground Coverage Results" MODIFIED="1675514844442" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$INDY_CAF_Warbird_Booking.coverage" NAME="INDY-CAF-Warbird-Booking Coverage Results" MODIFIED="1678633096593" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$getairportinfo.coverage" NAME="getairportinfo Coverage Results" MODIFIED="1666803457542" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$security.coverage" NAME="security Coverage Results" MODIFIED="1665922156024" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$INDYCAF__main_py_.coverage" NAME="INDYCAF (main.py) Coverage Results" MODIFIED="1684242991826" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$samplejson.coverage" NAME="samplejson Coverage Results" MODIFIED="1668102503685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$square.coverage" NAME="square Coverage Results" MODIFIED="1680883153137" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$Flask__venv_.coverage" NAME="INDYCAF (main.py) Coverage Results" MODIFIED="1682967772427" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$Flask.coverage" NAME="Flask Coverage Results" MODIFIED="1681935191426" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$forms.coverage" NAME="forms Coverage Results" MODIFIED="1679665958741" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>

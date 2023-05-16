@@ -1,0 +1,29 @@
+<!--INDY CAF Warbird Booking-->
+<!--Jim Olivi 2022-->
+
+{% include "header.html" %}
+<body>
+    <h3>Welcome to the Indiana CAF. Get ready for a great ride on a WW2 warbird.</h3>
+    <h4>To browse the available rides, tap on "Ride With Us". If you already booked a ride and want to see the details, tap "Find Your Ride."</h4>
+    <h4>If you are a CAF volunteer, tap "Member Login"."</h4>
+    {% if form.is_authenticated %}
+    <h2> Welcome {{ form.FirstName }} {{ form.LastName }}, to the Indiana Wing Warbirds Rides system.</h2>
+    <h2> You are logged in with Volunteer privileges.</h2>
+    {% endif %}
+    <!-- <Photo Section> -->
+    <div class="row">
+        <div class="col">
+            <img
+                    class="text-center airplane-image"
+                    src="static/images/4384352_orig.jpg"
+                    alt="Checkertail AT-6"
+            />
+            <p>Be advised: </p>
+            <p>No flights will be booked. Credit cards will not be accepted.
+                Flights can be set up. Users can be added to the system.
+                Please report all bugs and errors to the Indiana Wing of the Commemorative Air Force.</p>
+        </div>
+    </div>
+</body>
+{% include "footer.html" %}
+

@@ -1,0 +1,26 @@
+// Sample Manifest JSON
+// Data in this format will be accepted and parsed in the manifest screen
+
+{
+  "manifest": {
+    "crew": {
+      "pilot": "Pilot Name",
+      "co_pilot": "Co_Pilot Name",
+      "crewchief": "Crew Chief Name",
+      "loadmaster": "Load Master Name"
+    },
+    "passengers": {
+      "prime": [
+        "Passenger Name",
+        "Passenger Name"
+      ],
+      "coach": [
+        "Passenger Name",
+        "Passenger Name",
+        "Passenger Name",
+        "Passenger Name",
+        "Passenger Name"
+      ]
+    }
+  }
+}

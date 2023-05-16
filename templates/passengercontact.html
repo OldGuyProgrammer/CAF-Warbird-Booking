@@ -1,0 +1,192 @@
+<!--INDY CAF Warbird Booking-->
+<!-- Passenger Contact -->
+<!-- Get passenger/customer contact info. -->
+<!-- Collect Passenger Names -->
+<!-- Take payment for the flight -->
+<!-- Sensitive system information ill be protected from users of this feature -->
+<!--Jim Olivi 2022-->
+
+{% include "header.html" %}
+<body xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+
+<form method="post" action="{{ url_for('passenger_contact') }}">
+    {{ form.csrf_token }}
+
+    <div class="container-fluid">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="row">
+            <div class="col-lg-6 col-sm-4">
+                <h2 class="card-title">Ride With Us</h2>
+                <p1>Fill in your name, email address and phone.</p1>
+                <br>
+                <p1>Fill in passenger names. If you only want to reserve a seat, enter your own name.</p1>
+                <br>
+                <p1>Please enter a phone number or email address because we need to contact you to send you
+                    flight status and scheduling information.
+                </p1>
+                <br>
+                <p1>You can also fill in your mailing address, if you want.</p1>
+                <br>
+                {{ form.first_name }}
+                {{ form.last_name }}
+                <br>
+                {{ form.pass_email }}
+                {{ form.pass_phone }}
+                <span class="btn-group-toggle" data-toggle="buttons">
+                    {{ form.OKtoText }}
+                    {{ form.OKtoText.label }}
+                </span>
+                <br>{{ form.pass_addr }}<br>
+                {{ form.pass_city }}
+                {{ form.state_province }}
+                {{ form.pass_postal }}
+                <div>Click the button below. You will be directed to our payments processor, then you will
+                    be returned to this panel.
+                </div>
+                <!--    Pay For Flight Button                        -->
+                <div class="col">
+{#                    <a class="nav-link btn p-0" href="{{ url_for('creditcard') }}">Pay For Flight</a>#}
+                    {{ form.pay_for_flight }}
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card border border-primary">
+                    <span hidden>{{ form.flight_id }}</span>
+                    <h4 class="card-title">{{ form.card_title.label }}</h4>
+                    <p>Please click on each Sign Form in turn to electronically sign.</p>
+                    <div id="seat_list" class="row">
+                        <!--   Display Premium Seats.-->
+                        <div class="col-lg-6 col-sm-6">
+                            <h5 style="display: inline-block">Premium Seats: $</h5>
+                            <h5 id="prime_price" style="display: inline-block">{{ form.prime_seat_price }}</h5>
+                            <div>Available</div>
+                            <div id="premium_seats">
+                                {% for prime in primes %}
+                                    <input class='prime-name' name='prime_name' placeholder="Enter Passenger Name"
+                                           type="text"
+                                           value="{{ prime }}">
+                                    <a class="prime-hold-harmless hold-harmless button-hidden" role="button"
+                                           href="https://www.waiverfile.com/b/CommemorativeAirForce/Waiver.aspx?formid=e24f40ce-7ad0-4780-80c9-13e15b5005fc">Sign Form</a>
+                                {% endfor %}
+                            </div>
+                            <div>
+                                {{ form.total_prime_seats.label }}: {{ form.total_prime_seats }}
+                            </div>
+                        </div>
+                        <!--                        Display Passenger Seats-->
+                        <div class="col-lg-6 col-sm-6">
+                            <h5 style="display: inline-block">Passenger Seats: $</h5>
+                            <h5 id="passenger_price" style="display: inline-block">{{ form.pass_seat_price }}</h5>
+                            <div>Available</div>
+                            {% for passenger in passengers %}
+                                <input class='passenger-name' name='passenger_name' placeholder="Enter Passenger Name"
+                                       type="text"
+                                       value="{{ passenger }}">
+                                <a class="passenger-hold-harmless hold-harmless button-hidden" role="button"
+                                   href="https://www.waiverfile.com/b/CommemorativeAirForce/Waiver.aspx?formid=e24f40ce-7ad0-4780-80c9-13e15b5005fc"
+                                >Sign Form</a>
+                            {% endfor %}
+                            <div>
+                                {{ form.total_passenger_seats.label }}: {{ form.total_passenger_seats }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        {{ form.paid_amount }}
+                        {{ form.total_price.label }}: {{ form.total_price }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+<script>
+    // Do the final checking before allowing the screen to submit
+    $("form").submit(function (event) {
+
+        if ($('#pass_email').first().val() == '' && $('#pass_phone').first().val() == '') {
+            console.log('email or phone required')
+            alert('Please enter an email address or phone number.\nNeeded to contact you for flight status.')
+            event.preventDefault();
+        }
+    });
+
+    function CalcSeats() {
+        let total_prime_price = 0
+        const prime_price = Number($("#prime_price").text())
+        $(".prime-name").each(function (seat){
+            if (seat.value != "") {
+                total_prime_price += prime_price
+            }
+        })
+
+        let total_pass_price = 0
+        const passenger_price = Number($("#passenger_price").text())
+        $(".passenger-name").each(function (seat){
+            if (seat.value != "") {
+                total_pass_price += passenger_price
+            }
+        })
+
+        const total_price = total_prime_price + total_pass_price
+        let text = `$${total_prime_price}`
+        $("#total_prime_seats").val(text)
+        text = `$${total_pass_price}`
+        $("#total_passenger_seats").val(text)
+        text = `$${total_price}`
+        $("#total_price").val(text)
+        if ($("#total_price").val() == $("#paid_amount").val()) {
+            $("#pay_for_flight").prop("disabled", true);
+        } else {
+            $("#pay_for_flight").prop("disabled", false);
+        }
+    }
+
+    function ShowButtons() {
+        let holds_harmless = $(".prime-hold-harmless")
+        $(".prime-name").each(function (idx){
+            if ($(this).val() != "") {
+                holds_harmless[idx].classList.remove("button-hidden")
+            } else {
+                holds_harmless[idx].classList.add("button-hidden")
+            }
+        })
+        holds_harmless = $(".passenger-hold-harmless")
+        $(".passenger-name").each(function (idx){
+            if ($(this).val() != "") {
+                holds_harmless[idx].classList.remove("button-hidden")
+            } else {
+                holds_harmless[idx].classList.add("button-hidden")
+            }
+        })
+    }
+
+    $("#seat_list").change(() => {
+        CalcSeats();
+    })
+
+    $(window).on('load', function () {
+        CalcSeats();
+        ShowButtons();
+    })
+
+    $(".prime-name").change((event)=> {
+        event.preventDefault();
+        ShowButtons();
+    })
+
+    $(".passenger-name").change((event)=> {
+        event.preventDefault();
+        ShowButtons();
+    })
+</script>
+
+{% include "footer.html" %}

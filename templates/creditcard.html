@@ -1,0 +1,60 @@
+<!--INDY CAF Warbird Booking-->
+<!-- Credit CArd Processing -->
+<!-- Get passenger/customer contact info. -->
+<!-- Collect Passenger Names -->
+<!-- Take payment for the flight -->
+<!-- Sensitive system information ill be protected from users of this feature -->
+<!--Jim Olivi 2022-->
+
+{% include "header.html" %}
+<body xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/creditcard.css') }}"/>
+    <script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
+    <div id="payment-form">
+      <div id="payment-status-container"></div>
+      <div id="card-container"></div>
+      <button id="card-button" type="button">Pay</button>
+    </div>
+    <script type="module">
+      const payments = Square.payments('sandbox-sq0idb-RT3u-HhCpNdbMiGg5aXuVg', 'TC4Z3ZEBKRXRH');
+      const card = await payments.card();
+      await card.attach('#card-container');
+
+      const cardButton = document.getElementById('card-button');
+      cardButton.addEventListener('click', async () => {
+        const statusContainer = document.getElementById('payment-status-container');
+
+        try {
+          const result = await card.tokenize();
+          if (result.status === 'OK') {
+            console.log(`Payment token is ${result.token}`);
+            statusContainer.innerHTML = "Payment Successful";
+            const response = await fetch ("/payment", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    text: "Credit Token",
+                    token: result.token
+                })
+            })
+                .then((res) => console.log(res))
+                .catch((error) => console.log(error))
+          } else {
+            let errorMessage = `Tokenization failed with status: ${result.status}`;
+            if (result.errors) {
+              errorMessage += ` and errors: ${JSON.stringify(
+                result.errors
+              )}`;
+            }
+
+            throw new Error(errorMessage);
+          }
+        } catch (e) {
+          console.error(e);
+          statusContainer.innerHTML = "Payment Failed";
+        }
+      });
+    </script>
+</body>

@@ -1,0 +1,57 @@
+<!--INDY CAF Warbird Booking-->
+<!--Jim Olivi 2022-->
+
+{% include "header.html" %}
+<!-- Login -->
+<body xmlns="http://www.w3.org/1999/html">
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col cols-3">
+            <div class="card border border-white">
+                <div class="card-body">
+                    <div class="col d-flex justify-content-center">
+                        <form method="post" action="{{ url_for('login') }}">
+                            {{ form.csrf_token }}
+                            <!--  next_url is hidden and contains the redirection after a forced login-->
+                            {{ form.next_url }}
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                    {% for category, message in messages %}
+                                        <div class="{{ category }}">{{ message }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+                            <h2 class="card-title">CAF Volunteer Login</h2>
+                            <div class="form-group p-2">
+                                <div>{{ form.userid(size=5) }}</div>
+                                <div>{{ form.password }}</div>
+                                <div id="new_password" style="display: none">{{ form.new_password }}</div>
+                            </div>
+                            <div id="spinner" class="spinner-border text-success" style="display:none"></div>
+                            <span id="logging_in" style="display:none">Logging In.</span>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-sm">
+                                    Login
+                                </button>
+                                <script>
+                                    // Do the final checking before allowing the screen to submit
+                                    $("form").submit(function (event) {
+                                        $("#spinner").show()
+                                        $("#logging_in").show()
+                                        if ($('#userid').first().val() == '') {
+                                            alert('Please enter your userid.')
+                                            event.preventDefault();
+                                        }
+                                    });
+                                </script>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+{% include "footer.html" %}

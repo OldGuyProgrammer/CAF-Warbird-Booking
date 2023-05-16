@@ -1,0 +1,69 @@
+<!--INDY CAF Warbird Booking-->
+<!-- findmyride -->
+<!-- Get information about a purchased flight -->
+
+<!--Jim Olivi 2022-->
+
+{% include "header.html" %}
+<body xmlns="http://www.w3.org/1999/html">
+<script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+
+<form method="post" action="{{ url_for('findmyride') }}">
+    <div class="container-fluid">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card border border-white">
+                    <div id="spinner" class="spinner-border text-success" style="display:none"></div>
+                    <span id="gettingInfo" style="display:none">Getting Flight Reports.</span>
+                    <div class="card-body">
+                        <h2 class="card-title">Select The Flights To Be Reported</h2>
+                        <div class="col">
+                            <a type="button" class="btn btn-primary"  onclick="ShowFlightSelected()">Get Flight Report</a>
+                        </div>
+                        <div class="row align-items-start">
+                            <ul id="flightList" class="nav">
+                                {% for flight in flights: %}
+                                    <li class="nav-item">
+                                        <a class="nav-link btn p-0 flights">
+                                            <input type="checkbox" data-flightid="{{ flight._id }}">
+                                            {{ flight.airport_name }}, {{ flight.flight_time }}, {{ flight.aircraft_name }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    function ShowFlightSelected() {
+        $("#spinner").show();
+        $("#gettingInfo").show();
+        var url = "/printFlightReport?flightid="
+        var parm_count = 0
+        $(".flights").each((idx) => {
+            const el = $(".flights")[idx].children
+            if (el[0].checked) {
+                if (parm_count > 0) {
+                    url += ","
+                }
+                const flightid = $(el).data("flightid")
+                url += flightid
+                parm_count++
+            }
+        });
+        window.location.href = url
+    }
+</script>
+</body>
+{% include "footer.html" %}

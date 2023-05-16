@@ -1,0 +1,203 @@
+<!--INDY CAF Warbird Booking-->
+
+<!--Manifest Main Panel-->
+
+<!--Jim Olivi 2022-->
+
+{% include "header.html" %}
+<body xmlns="http://www.w3.org/1999/html">
+<div class="container-fluid">
+    <div class="row">
+        {{ form.csrf_token }}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <div class="col-sm-4">
+            <div class="card border border-white">
+                <div class="card-body">
+                    <div class="col justify-content-left">
+                        <h4 class="card-title">Flight Manifest</h4>
+                        <div class="form-group">
+                            {{ form.airport_codes.label }} {{ form.airport_codes }}
+                            <h3>Select a Flight</h3>
+                            <div id="spinner" class="spinner-border text-success" style="display:none"></div>
+                            <span id="gettingInfo" style="display:none">Getting Manifest.</span>
+                        </div>
+                        <ul id="flightList" class="nav"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="card border border-primary">
+                <div class="card-body">
+                    <h4 id="flight_id" class="card-title" data-flight-id="">Flight Manifest</h4>
+                    <div class="row align-items-start">
+                        <div class="col-sm-12 p-0">
+                            {{ form.aircraft_type.label }}
+                            {{ form.aircraft_type }}{{ form.n_number }}
+                            {{ form.departure_point.label }}
+                            {{ form.departure_point }}
+                            {{ form.arrival.label }} {{ form.arrival }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 p-0">
+                            <div>{{ form.pilot_in_command.label }} {{ form.pilot_in_command }}
+                                {{ form.co_pilot.label }} {{ form.co_pilot }}
+                                {{ form.crew_chief.label }} {{ form.crew_chief }}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <ul id="passenger_list" class="list-group"></ul>
+                        </div>
+                    <div class="row">
+                        <button id="print_manifest" type="button" class="btn btn-primary" disabled>Print Manifest></button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    // Build the URL to request all of one airport and one day's flights.
+    // Fetch list of flights from the server
+    $("#airport_code").click(function () {
+        $('#flightList li').remove();
+
+        const value = $(':selected').val()
+        const elements = value.split('-')
+        const airport_code = elements[0]
+        const flight_parts = elements[1].split('/')
+
+        // Reformat the date from mm/dd/yyyy to
+        let date = flight_parts[0]
+        date += flight_parts[1]
+        date += flight_parts[2]
+
+        $("#spinner").show();
+        $("#gettingInfo").show();
+        const url = "/getdayflights/" + date + "/" + airport_code
+        fetch(url)
+            .then((response) => response.json())
+            .then((flights) => {
+                flights.forEach(displayThem)
+                $("#pilot_in_command").val("")
+                $("#co_pilot").val("")
+                $("#crew_chief").val("")
+                $("#departure_point").val("")
+                $("#arrival").val("")
+
+                function displayThem(flight) {
+                    const dt_from_database = flight['flight_time']
+                    const datetime = dt_from_database.split(" ")
+                    const date = datetime[0].split("-")
+                    const UTC = datetime[1].split("+")
+                    const time = UTC[0].split(":")
+                    let hour = Number(time[0])
+                    const ampm = (hour < 12) ? "AM" : "PM";
+                    hour = hour % 13
+                    const fulldate = `${date[2]}/${date[1]}/${date[0]}, ${hour}:${time[1]}${ampm}`
+                    const id = flight['_id']
+                    $(`<li onclick="GetManifestData(this)" class="btn btn-link nav-item" value=${id} style="width: 50rem;text-align: left">${flight["aircraft_n_number"]}: ${fulldate}
+                    </li>`).appendTo("#flightList")
+                }
+
+                $("#spinner").hide();
+                $("#gettingInfo").hide();
+            }).catch((error) => {
+            console.log(error)
+        })
+    })
+
+    // Receive the data and fill in manifest data
+    function GetManifestData(selected) {
+
+        $("#spinner").show();
+        $("#gettingInfo").show();
+        $('#passenger_list li').remove();
+        const flight_id = selected.getAttribute('value')
+        $("#flight_id").data("flight-id", flight_id)
+        const url = "/manifest?flight_id=" + flight_id
+        fetch(url)
+            .then((response) => response.json())
+            .then((manifest) => {
+                const manifest_obj = manifest["manifest"]
+
+                $("#aircraft_type").val(manifest_obj["aircraft_type"])
+                $("#n_number").val(manifest_obj["aircraft_n_number"])
+                $("#departure_point").val(manifest_obj["airport_code"])
+                $("#arrival").val(manifest_obj["airport_code"])
+                const crew = manifest_obj.crew
+                $("#pilot_in_command").val(crew["pilot"])
+                $("#co_pilot").val(crew["co_pilot"])
+                $("#crew_chief").val(crew["crewchief"])
+
+                $(`<li class="list-group-item" style="width: 50rem;text-align: left">${crew["pilot"]}: PIC</li>`).appendTo("#passenger_list")
+                if (crew["co_pilot"] != "") {
+                    $(`<li class="list-group-item" style="width: 50rem;text-align: left">${crew["co_pilot"]}: SIC</li>`).appendTo("#passenger_list")
+                }
+                if (crew["loadmaster"] != "") {
+                    $(`<li class="list-group-item" style="width: 50rem;text-align: left">${crew["loadmaster"]}: Loadmaster</li>`).appendTo("#passenger_list")
+                }
+                const seats = manifest_obj["passengers"]["passengers"]
+                seats.forEach(display_seats)
+
+                function display_seats(seat) {
+                    if (seat[0] == 1){
+                        $(`<li class="list-group-item" style="width: 50rem;text-align: left">${seat[1]}: Prime Seat</li>`).appendTo("#passenger_list")
+                    } else {
+                        $(`<li class="list-group-item" style="width: 50rem;text-align: left">${seat[1]}</li>`).appendTo("#passenger_list")
+                    }
+                }
+
+                $("#spinner").hide();
+                $("#gettingInfo").hide();
+                $("#print_manifest").prop("disabled", false)
+            }).catch((error) => {
+            console.log(error)
+        })
+    }
+
+    $("#print_manifest").click(function () {
+        $("#spinner").show();
+        $("#gettingInfo").show();
+        const flight_id = $("#flight_id").data("flight-id")
+        const url = "/printManifest?flight_id=" + flight_id
+        fetch(url)
+            .then((res) => {
+                if (res.status == 201) {
+                    return res.blob()
+                } else {
+                    console.log(`Format Manifest Form error. REST: ${res.status}`)
+                    throw res;
+                }
+            })
+            .then((manifest) => {
+                const a = document.createElement("a");
+                document.body.appendChild(a);
+                a.style = "display: none";
+
+                const url = window.URL.createObjectURL(manifest);
+                a.href = url;
+                const manifest_file_name = "Manifest_" + flight_id + ".pdf"
+                a.download = manifest_file_name;
+                a.click();
+                window.URL.revokeObjectURL(url);
+                $("#spinner").hide();
+                $("#gettingInfo").hide();
+            }).catch((error) => {
+                console.log(`Manifest Generation Error: ${error.statusText}`)
+                console.log("Contact Support")
+                alert(`Manifest Generation Error.\nContact Support`)
+        })
+    })
+</script>
+
+{% include "footer.html" %}
