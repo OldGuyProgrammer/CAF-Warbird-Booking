@@ -614,9 +614,8 @@ def getoneflight(primarykey):
 
     return flight, 201
 
-
 print(f"Starting INDYCAF WARBIRDS: {__name__}")
-if __name__ == "__main__":
+if __name__ == "main":
     port = os.getenv("PORT")
     if port is None:
         print("PORT environment variable missing.\nSetting port to 3000")
