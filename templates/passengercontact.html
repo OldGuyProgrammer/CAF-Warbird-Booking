@@ -4,7 +4,7 @@
 <!-- Collect Passenger Names -->
 <!-- Take payment for the flight -->
 <!-- Sensitive system information ill be protected from users of this feature -->
-<!--Jim Olivi 2022-->
+<!--Jim Olivi 2023-->
 
 {% include "header.html" %}
 <body xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
@@ -122,7 +122,7 @@
     function CalcSeats() {
         let total_prime_price = 0
         const prime_price = Number($("#prime_price").text())
-        $(".prime-name").each(function (seat){
+        $(".prime-name").each((idx, seat) => {
             if (seat.value != "") {
                 total_prime_price += prime_price
             }
@@ -130,7 +130,7 @@
 
         let total_pass_price = 0
         const passenger_price = Number($("#passenger_price").text())
-        $(".passenger-name").each(function (seat){
+        $(".passenger-name").each((idx, seat) => {
             if (seat.value != "") {
                 total_pass_price += passenger_price
             }
