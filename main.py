@@ -522,7 +522,22 @@ def passenger_contact():
             pass_form.prime_seat_price = flight[gl.DB_PRIME_PRICE]
             pass_form.pass_seat_price = flight[gl.DB_PASSENGER_PRICE]
             pass_form.flight_id.data = flight_key
-            pass_form.card_title.label = flight[gl.DB_AIRPORT_NAME] + ", " + flight[gl.DB_FLIGHT_TIME] + " " + plane[gl.DB_AIRCRAFT_NAME]
+            print(flight[gl.DB_FLIGHT_TIME])
+            flightTime = flight[gl.DB_FLIGHT_TIME].split(" ")
+            month = flightTime[0].split("-")[1]
+            day = flightTime[0].split("-")[2]
+            year = flightTime[0].split("-")[0]
+            hour = int(flightTime[1].split(":")[0])
+            minute = flightTime[1].split(":")[1]
+            hour = hour % 12
+            if hour == 0:
+                hour = 12
+            if hour > 12:
+                ampm = "PM"
+            else:
+                ampm = "AM"
+            strFlightTime = f'{month}/{day}/{year} {str(hour)}:{minute}{ampm}'
+            pass_form.card_title.label = flight[gl.DB_AIRPORT_NAME] + ", " + strFlightTime + " " + plane[gl.DB_AIRCRAFT_NAME]
         else:
             pass_form.pass_available_seats = 0
             pass_form.prime_available_seats = 0
