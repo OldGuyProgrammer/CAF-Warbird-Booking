@@ -18,21 +18,21 @@ class Aircraft:
 
         return self.db.AddAircraft(aircraft_form)
 
-    async def get_air_planes(self):
+async def getAirPlanes(db):
 
-        airplanes = self.db.getairplanes()
-        airplane_array = []
-        for air_plane in airplanes:
-            airplane_value = f'{air_plane[0]}'
-            airplane_image = f"{air_plane[1]}"
-            airplane_name = f'{air_plane[0]} {air_plane[2]}'
-            airplane_array.append((airplane_value, airplane_name, airplane_image))
+    airplanes = db.getairplanes()
+    airplane_array = []
+    for air_plane in airplanes:
+        airplane_value = f'{air_plane[0]}'
+        airplane_image = f"{air_plane[1]}"
+        airplane_name = f'{air_plane[0]} {air_plane[2]}'
+        airplane_array.append((airplane_value, airplane_name, airplane_image))
 
-        return airplane_array
+    return airplane_array
 
-    def get_one_airplane(self, n_number):
-        plane = self.db.get_one_airplane(n_number)
-        if plane is None:
-            return None;
+def getOneAirplane(db, n_number):
+    plane = db.get_one_airplane(n_number)
+    if plane is None:
+        return None;
 
-        return plane
+    return plane

@@ -10,6 +10,7 @@
 from flask import flash
 from enum import Enum
 import json
+import asyncio
 import os
 
 # Database variable names
@@ -145,7 +146,6 @@ class globals:
     MM_PRIME = "Prime"
 
 #Messages
-    MSG_GET_IATA_FAILED = "Get Airport Code variables failed:"
     MSG_AIRPORT_API_KEY_PROBLEM = "Airport service API Key problem."
     MSG_AIRPLANE_ADDED = 'Airplane Added.'
     MSG_AIRPLANE_ON_FILE = 'Airplane N-number found on file.'
@@ -158,6 +158,7 @@ class globals:
     MSG_FLIGHT_REPORT_REQUESTED = "Flight report requested for"
     MSG_FLIGHT_ID_REQUIRED = "Flight ID required."
     MSG_GET_TRANSACTION_FAILED = "Get transaction failed: "
+    MSG_GET_IATA_FAILED = "Get Airport Code variables failed:"
     MSG_LOGIN_FAILED = "Login Failed, Contact system administrator."
     MSG_CONTACT_ADMIN = "If problem persists, contact administrator"
     MSG_NO_FLIGHTS = "There are no flights with available seats in the dates requested"
@@ -167,8 +168,7 @@ class globals:
     MSG_FLIGHT_ID_REQ = "Flight ID is required"
     MSG_CONTACT = 'Needed to contact you.'
     MSG_NEW_PASSWORD_SAME_AS_OLD = "Password change must be a different password"
-    MSG_NO_PASSENGER_SEATS = "No passenger seats available."
-    MSG_NO_PRIME_SEATS = "No prime seats available."
+    MSG_NO_SEATS_LEFT = "No seats available on this flight. Please contact the Indiana Wing CAF."
     MSG_NOT_ASSIGNED = "Position not assigned."
     MSG_RESERVATION_MISSING = "Reservation information missing."
     MSG_PASSWORD_CHANGE_SUCCESS = "Your password was changed."
@@ -225,9 +225,12 @@ def format_time(date_time):
         ampm = "AM"
     else:
         hour = int(hour) % 12
+        if hour == 0:
+            hour = 12
         ampm = "PM"
     formatted_dt = f"{month}/{day}/{year}, {hour}:{minute} {ampm}"
     return formatted_dt
+
 
 def scrub_phone(phone) :
     scrubbed_phone = ''
@@ -236,6 +239,8 @@ def scrub_phone(phone) :
             scrubbed_phone += i
 
     return scrubbed_phone
+
+
 class StateList:
 
     def __init__(self, app):

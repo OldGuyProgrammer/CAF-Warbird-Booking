@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e83b4a54-f443-46dc-9d70-4abc9a175fda" name="Changes" comment="v0.0.2 Beta - Format flight report.&#10;Fix calculation of cost on passenger Contact page">
+    <list default="true" id="e83b4a54-f443-46dc-9d70-4abc9a175fda" name="Changes" comment="v0.0.3 Beta - Bug Fixes: various date and time issues.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aircraft_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/aircraft_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flights.py" beforeDir="false" afterPath="$PROJECT_DIR$/flights.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/globals.py" beforeDir="false" afterPath="$PROJECT_DIR$/globals.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/ridewithus.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/ridewithus.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/createflight.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/createflight.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/volunteer.py" beforeDir="false" afterPath="$PROJECT_DIR$/volunteer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -363,7 +368,15 @@
       <workItem from="1684320562565" duration="507000" />
       <workItem from="1684322910279" duration="1072000" />
       <workItem from="1684333233122" duration="529000" />
-      <workItem from="1684436394475" duration="3447000" />
+      <workItem from="1684436394475" duration="3531000" />
+      <workItem from="1684697698982" duration="661000" />
+      <workItem from="1684756311832" duration="1943000" />
+      <workItem from="1684782017908" duration="76000" />
+      <workItem from="1684856890274" duration="7769000" />
+      <workItem from="1684927457371" duration="1537000" />
+      <workItem from="1684941123147" duration="1099000" />
+      <workItem from="1684955251872" duration="2433000" />
+      <workItem from="1685015586259" duration="11360000" />
     </task>
     <task id="LOCAL-00002" summary="v0.3.5-beta: Bug fixes. Restore after system failure.">
       <created>1679759361431</created>
@@ -519,7 +532,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684333827508</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="v0.0.3 Beta - Bug Fixes: various date and time issues.">
+      <created>1684441387775</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1684441387775</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -573,7 +593,8 @@
     <MESSAGE value="v0.5.2 - beta - Addition of Flights Report." />
     <MESSAGE value="v0.0.1 Beta - Initial commit to repair folder name change" />
     <MESSAGE value="v0.0.2 Beta - Format flight report.&#10;Fix calculation of cost on passenger Contact page" />
-    <option name="LAST_COMMIT_MESSAGE" value="v0.0.2 Beta - Format flight report.&#10;Fix calculation of cost on passenger Contact page" />
+    <MESSAGE value="v0.0.3 Beta - Bug Fixes: various date and time issues." />
+    <option name="LAST_COMMIT_MESSAGE" value="v0.0.3 Beta - Bug Fixes: various date and time issues." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -584,14 +605,19 @@
           <option name="timeStamp" value="30" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>103</line>
-          <option name="timeStamp" value="32" />
+          <url>file://$PROJECT_DIR$/flights.py</url>
+          <line>235</line>
+          <option name="timeStamp" value="45" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>42</line>
-          <option name="timeStamp" value="34" />
+          <line>494</line>
+          <option name="timeStamp" value="49" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>448</line>
+          <option name="timeStamp" value="51" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -614,7 +640,7 @@
     <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$INDY_CAF_Warbird_Booking.coverage" NAME="INDY-CAF-Warbird-Booking Coverage Results" MODIFIED="1678633096593" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$getairportinfo.coverage" NAME="getairportinfo Coverage Results" MODIFIED="1666803457542" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$security.coverage" NAME="security Coverage Results" MODIFIED="1665922156024" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$INDYCAF__main_py_.coverage" NAME="INDYCAF (main.py) Coverage Results" MODIFIED="1684441314932" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$INDYCAF__main_py_.coverage" NAME="INDYCAF (main.py) Coverage Results" MODIFIED="1685037959607" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$samplejson.coverage" NAME="samplejson Coverage Results" MODIFIED="1668102503685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$square.coverage" NAME="square Coverage Results" MODIFIED="1680883153137" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/INDY_CAF_Warbird_Booking$Flask__venv_.coverage" NAME="INDYCAF (main.py) Coverage Results" MODIFIED="1682967772427" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

@@ -16,7 +16,7 @@ from flask_login import LoginManager, login_required, login_user, logout_user, U
 from globals import globals as gl, signals as sigs
 from flaskmail import FlaskMail
 from security import Security
-
+import asyncio
 
 # The volunteer object is a specific CAF volunteer.
 # Potential customers and riders do not need to log in at this time.
@@ -192,7 +192,6 @@ class Volunteer(UserMixin):
         else:
             return False
 
-
     # Return the primary key of the user trying to use the system
     # In most cases, this will be the user's colonel number.
     # In all cases, the primary key of the user is the one passed from Flask
@@ -204,16 +203,33 @@ class Volunteer(UserMixin):
 # def get(self):
 #     return self.volunteer[gl.DB_RECORD_KEY]
 
-    async def get_crew(db, crew_select):
-        crew_array_db = db.getcrew(crew_select)
-        # Create to display for Flask dropdown
-        # crew_model = [('Select', 'Select')]
-        crew_model = []
-        for crew in crew_array_db:
-            id = crew['_id']
-            first_name = crew[gl.DB_FIRST_NAME]
-            last_name = crew[gl.DB_LAST_NAME]
-            crew_obj = (id, f'{first_name} {last_name}')
-            crew_model.append(crew_obj)
+async def get_crew(db, crew_select):
+    crew_array_db = db.getcrew(crew_select)
+    crew_model = []
+    for crew in crew_array_db:
+        id = crew['_id']
+        first_name = crew[gl.DB_FIRST_NAME]
+        last_name = crew[gl.DB_LAST_NAME]
+        crew_obj = (id, f'{first_name} {last_name}')
+        crew_model.append(crew_obj)
 
-        return crew_model
+    return crew_model
+
+    # Retrieve requested lists from the database
+async def getLists(db) -> None:
+
+    task_pilots = asyncio.create_task(get_crew(db, gl.DB_PILOT))
+    task_crew_chiefs = asyncio.create_task(get_crew(db, gl.DB_CREWCHIEF))
+    task_loadmasters = asyncio.create_task(get_crew(db, gl.DB_LOAD_MASTER))
+
+    # ac = ap(db)
+    # task_airplanes = asyncio.create_task(ac.get_air_planes())
+
+    pilots = await task_pilots
+    crew_chiefs = await task_crew_chiefs
+    loadmasters = await task_loadmasters
+    # airplanes = await task_airplanes
+
+    return [pilots, crew_chiefs, loadmasters]
+
+

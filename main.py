@@ -13,9 +13,8 @@ from werkzeug.utils import secure_filename
 import os
 import configparser
 from datetime import date, datetime, timedelta
-import asyncio
 import json
-
+import asyncio
 from flask_bootstrap import Bootstrap
 
 from forms import LoginForm, AddVolunteer, CreateFlightForm, PassengerContact, AddAircraft, Manifest, FindMyRide, Home, FlightReport
@@ -26,9 +25,9 @@ from flights import Flights
 from security import Security
 from globals import signals as s, globals as gl, NoFlights, DisplayFlask, StateList, scrub_phone
 from airports import airports
-from aircraft_model import Aircraft as ap
-from volunteer import Volunteer
+from volunteer import Volunteer, getLists
 from customer_manager import Customer
+from aircraft_model import getAirPlanes
 # from square import SquareServices as Square
 
 print("Indiana Commemorative Air Force")
@@ -129,26 +128,6 @@ def sign_out():
     return redirect(url_for('home'))
 
 
-# Get one volunteer record
-@app.route("/getvolunteer", methods=["GET"])
-@login_required
-def getvolunteer():
-    user_id = request.args.get(gl.DB_RECORD_KEY, None)
-    vol = Volunteer(db, user_id)
-    vol_data = vol.person_data
-    # Send only the data needed
-    scrubbed_vol = {
-        gl.DB_RECORD_KEY: vol_data[gl.DB_RECORD_KEY],
-        gl.DB_FIRST_NAME: vol_data[gl.DB_FIRST_NAME],
-        gl.DB_LAST_NAME: vol_data[gl.DB_LAST_NAME],
-        gl.DB_ADMIN: vol_data[gl.DB_ADMIN],
-        gl.DB_PILOT: vol_data[gl.DB_PILOT],
-        gl.DB_CREWCHIEF: vol_data[gl.DB_CREWCHIEF],
-        gl.DB_LOAD_MASTER: vol_data[gl.DB_LOAD_MASTER]
-    }
-    return scrubbed_vol
-
-
 # Add a volunteer (CAF Member) to the database.
 # Also used to change password.
 @app.route("/addvolunteer", methods=['POST', 'GET'])
@@ -238,24 +217,23 @@ def add_aircraft():
 
     return render_template('addaircraft.html', form=add_aircraft_form), 200
 
-
-# Retrieve requested lists from the database
-async def get_lists() -> None:
-    # start = time.perf_counter()
-
-    task_pilots = asyncio.create_task(Volunteer.get_crew(db, gl.DB_PILOT))
-    task_crew_chiefs = asyncio.create_task(Volunteer.get_crew(db, gl.DB_CREWCHIEF))
-    task_loadmasters = asyncio.create_task(Volunteer.get_crew(db, gl.DB_LOAD_MASTER))
-
-    ac = ap(db)
-    task_airplanes = asyncio.create_task(ac.get_air_planes())
-
-    pilots = await task_pilots
-    crew_chiefs = await task_crew_chiefs
-    loadmasters = await task_loadmasters
-    airplanes = await task_airplanes
-
-    return [pilots, crew_chiefs, loadmasters, airplanes]
+# Get one volunteer record
+@app.route("/getvolunteer", methods=["GET"])
+@login_required
+def getvolunteer():
+    user_id = request.args.get(gl.DB_RECORD_KEY, None)
+    vol = Volunteer(db, user_id)
+    vol_data = vol.person_data
+    scrubbed_vol = {
+        gl.DB_RECORD_KEY: vol_data[gl.DB_RECORD_KEY],
+        gl.DB_FIRST_NAME: vol_data[gl.DB_FIRST_NAME],
+        gl.DB_LAST_NAME: vol_data[gl.DB_LAST_NAME],
+        gl.DB_ADMIN: vol_data[gl.DB_ADMIN],
+        gl.DB_PILOT: vol_data[gl.DB_PILOT],
+        gl.DB_CREWCHIEF: vol_data[gl.DB_CREWCHIEF],
+        gl.DB_LOAD_MASTER: vol_data[gl.DB_LOAD_MASTER]
+    }
+    return scrubbed_vol
 
 # Create a new flight at an airport/airshow
 @app.route("/createflight", methods=['POST', 'GET'])
@@ -276,10 +254,9 @@ def createflight():
     elif request.method == "GET":
         DisplayFlask(cff)
 
-        # Go get the entries for the drop down lists here.
-        # Then decide on the first entry.
+        lists = asyncio.run(getLists(db))
+        airplanes = asyncio.run(getAirPlanes(db))
 
-        lists = asyncio.run(get_lists())
         pilot_list = lists[0].copy()
         lists.insert(0, pilot_list)
         args = request.args.to_dict()  # Get the params
@@ -317,7 +294,7 @@ def createflight():
             lists[1].insert(0, ("Select", "Select"))
             lists[2].insert(0, ("Select", "Select"))
             lists[3].insert(0, ("Select", "Select"))
-            lists[4].insert(0, ("Select", "Select"))
+            airplanes.insert(0, ("Select", "Select"))
 
         cff.pilots.choices = lists[0]
         cff.co_pilots.choices = lists[1]
@@ -328,7 +305,7 @@ def createflight():
     else:
         DisplayFlask(cff)
 
-    return render_template('createflight.html', form=cff, airplanes=lists[4]), 201
+    return render_template('createflight.html', form=cff, airplanes=airplanes), 201
 
 # Show all flights for selection to edit
 @app.route("/selectflight", methods=["GET"])
@@ -488,7 +465,7 @@ def passenger_contact():
 
     if request.method == 'POST':
         if pass_form.validate():
-            res = fl.Passenger(pass_form)
+            res = fl.passenger(pass_form)
             if res == s.database_op_success:
                 return redirect(url_for('ridewithus'))
             else:
@@ -515,64 +492,9 @@ def passenger_contact():
             flash(gl.MSG_FLIGHT_ID_REQ, 'error')
             return render_template('seriouserror.html'), 406
 
-# The key is a string. Pymongo converts it to a ObjectId for me.
-        am = ap(db)
-        plane = am.get_one_airplane(flight[gl.DB_N_NUMBER])
-        if plane is not None:
-            pass_form.prime_seat_price = flight[gl.DB_PRIME_PRICE]
-            pass_form.pass_seat_price = flight[gl.DB_PASSENGER_PRICE]
-            pass_form.flight_id.data = flight_key
-            print(flight[gl.DB_FLIGHT_TIME])
-            flightTime = flight[gl.DB_FLIGHT_TIME].split(" ")
-            month = flightTime[0].split("-")[1]
-            day = flightTime[0].split("-")[2]
-            year = flightTime[0].split("-")[0]
-            hour = int(flightTime[1].split(":")[0])
-            minute = flightTime[1].split(":")[1]
-            hour = hour % 12
-            if hour == 0:
-                hour = 12
-            if hour > 12:
-                ampm = "PM"
-            else:
-                ampm = "AM"
-            strFlightTime = f'{month}/{day}/{year} {str(hour)}:{minute}{ampm}'
-            pass_form.card_title.label = flight[gl.DB_AIRPORT_NAME] + ", " + strFlightTime + " " + plane[gl.DB_AIRCRAFT_NAME]
-        else:
-            pass_form.pass_available_seats = 0
-            pass_form.prime_available_seats = 0
-            flash(f'{flight[gl.DB_N_NUMBER]}, {gl.MSG_AIRPLANE_NOT_ON_DATABASE}', 'error')
-            pass_form.card_title.label = gl.MSG_AIRPLANE_NOT_ON_DATABASE
+        passengers = fl.getFlightInfo(flight, pass_form, flight_key)
 
-        num_prime_seats = 0
-        num_passenger_seats = 0
-        primes = ()
-        passengers = ()
-        if gl.DB_TRANSACTIONS in flight:
-            for transaction in flight[gl.DB_TRANSACTIONS]:
-
-                if gl.DB_PRIME_SEATS in transaction:
-                    num_prime_seats = num_prime_seats + len(transaction[gl.DB_PRIME_SEATS])  #Grab number of prime seats
-                if gl.DB_PASSENGER_SEATS in transaction:
-                    num_passenger_seats = num_passenger_seats + len(transaction[gl.DB_PASSENGER_SEATS])     #Grab number of passenger seats
-
-            #Now create the empty seats.
-            num_prime_seats = flight[gl.DB_NUM_PRIME_SEATS] - num_prime_seats
-            for i in range(num_prime_seats):
-                primes = primes + ("",)
-
-            num_passenger_seats = flight[gl.DB_NUM_PASS_SEATS] - num_passenger_seats
-            for i in range(num_passenger_seats):
-                passengers = passengers + ("",)
-        else:
-            # No transactions means no seats yet sold.
-            for i in range(flight[gl.DB_NUM_PRIME_SEATS]):
-                primes = primes + ("",)
-
-            for i in range(flight[gl.DB_NUM_PASS_SEATS]):
-                passengers = passengers + ("",)
-
-    return render_template('passengercontact.html', form=pass_form, passengers=passengers, primes=primes), 200
+    return render_template('passengercontact.html', form=pass_form, passengers=passengers[0], primes=passengers[1]), 200
 
 
 # Get all flights for one day
