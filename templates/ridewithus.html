@@ -91,6 +91,11 @@
 // This function expects the date and time to come in a string UTC format:
 // YYYY-mm-ddThh:mm:ss.ssss+utcoffset
                 flights.forEach((flight) => {
+                    console.log(flight)
+                    let seatsLeft = 0
+                    for (const transaction in flight) {
+                        console.log(transaction);
+                    }
                     const id = flight['_id']
                     const dt_from_database = flight['flight_time']
                     const datetime = dt_from_database.split(" ")
@@ -104,7 +109,7 @@
                     const fulldate = `${date[1]}/${date[2]}/${date[0]}, ${hour}:${time[1]}${ampm}`
                     $(`<li data-flightID=${id} class="nav-item">
                         <a class="nav-link btn p-0" href="/passengercontact?flightkey=${id}" style="width: 50rem;text-align: left">${flight["aircraft_n_number"]}: ${fulldate}
-                        </a>
+                        , Number of empty seats: </a>
                     </li>`).appendTo("#flightList")
                 })
                 $("#spinner").hide();

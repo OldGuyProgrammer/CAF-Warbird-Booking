@@ -105,10 +105,10 @@
                     <script>
                         function DisplayAircraft() {
                             $("#spinner-get-plane-image").show();
-                            console.log($("#aircraft_name option:selected"))
-                            console.log($("#aircraft_name option:selected").data("image"))
+                            {#console.log($("#aircraft_name option:selected"))#}
+                            {#console.log($("#aircraft_name option:selected").data("image"))#}
                             const file = $("#aircraft_name option:selected").data("image")
-                            console.log(file)
+                            {#console.log(file)#}
                             if (file != "Select" && !!file) {
                                 console.log("Get airplane.")
                                 const path = `static/images/${file}`

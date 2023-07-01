@@ -32,10 +32,10 @@
                     flight status and scheduling information.
                 </p1>
                 <br>
-                <p1>You can also fill in your mailing address, if you want.</p1>
-                <br>
                 {{ form.first_name }}
                 {{ form.last_name }}
+                {{ form.CAFMember }}
+                {{ form.CAFMember.label }}
                 <br>
                 {{ form.pass_email }}
                 {{ form.pass_phone }}
@@ -47,6 +47,9 @@
                 {{ form.pass_city }}
                 {{ form.state_province }}
                 {{ form.pass_postal }}
+                <br>
+                {{ form.joinMailingList }}
+                {{ form.joinMailingList.label }}
                 <div>Click the button below. You will be directed to our payments processor, then you will
                     be returned to this panel.
                 </div>
@@ -60,20 +63,18 @@
                 <div class="card border border-primary">
                     <span hidden>{{ form.flight_id }}</span>
                     <h4 class="card-title">{{ form.card_title.label }}</h4>
-                    <p>Please click on each Sign Form in turn to electronically sign.</p>
                     <div id="seat_list" class="row">
                         <!--   Display Premium Seats.-->
                         <div class="col-lg-6 col-sm-6">
                             <h5 style="display: inline-block">Premium Seats: $</h5>
                             <h5 id="prime_price" style="display: inline-block">{{ form.prime_seat_price }}</h5>
-                            <div>Available</div>
+                            <div>Enter passenger name and birth date.</div>
                             <div id="premium_seats">
                                 {% for prime in primes %}
                                     <input class='prime-name' name='prime_name' placeholder="Enter Passenger Name"
                                            type="text"
                                            value="{{ prime }}">
-                                    <a class="prime-hold-harmless hold-harmless button-hidden" role="button"
-                                           href="https://www.waiverfile.com/b/CommemorativeAirForce/Waiver.aspx?formid=e24f40ce-7ad0-4780-80c9-13e15b5005fc">Sign Form</a>
+                                    {{ form.primeBirthDate }}
                                 {% endfor %}
                             </div>
                             <div>
@@ -84,14 +85,12 @@
                         <div class="col-lg-6 col-sm-6">
                             <h5 style="display: inline-block">Passenger Seats: $</h5>
                             <h5 id="passenger_price" style="display: inline-block">{{ form.pass_seat_price }}</h5>
-                            <div>Available</div>
+                            <div>Enter passenger name and birth date.</div>
                             {% for passenger in passengers %}
                                 <input class='passenger-name' name='passenger_name' placeholder="Enter Passenger Name"
                                        type="text"
                                        value="{{ passenger }}">
-                                <a class="passenger-hold-harmless hold-harmless button-hidden" role="button"
-                                   href="https://www.waiverfile.com/b/CommemorativeAirForce/Waiver.aspx?formid=e24f40ce-7ad0-4780-80c9-13e15b5005fc"
-                                >Sign Form</a>
+                                {{ form.passengerBirthDate }}
                             {% endfor %}
                             <div>
                                 {{ form.total_passenger_seats.label }}: {{ form.total_passenger_seats }}
@@ -150,24 +149,6 @@
         }
     }
 
-    function ShowButtons() {
-        let holds_harmless = $(".prime-hold-harmless")
-        $(".prime-name").each(function (idx){
-            if ($(this).val() != "") {
-                holds_harmless[idx].classList.remove("button-hidden")
-            } else {
-                holds_harmless[idx].classList.add("button-hidden")
-            }
-        })
-        holds_harmless = $(".passenger-hold-harmless")
-        $(".passenger-name").each(function (idx){
-            if ($(this).val() != "") {
-                holds_harmless[idx].classList.remove("button-hidden")
-            } else {
-                holds_harmless[idx].classList.add("button-hidden")
-            }
-        })
-    }
 
     $("#seat_list").change(() => {
         CalcSeats();
@@ -175,17 +156,14 @@
 
     $(window).on('load', function () {
         CalcSeats();
-        ShowButtons();
     })
 
     $(".prime-name").change((event)=> {
         event.preventDefault();
-        ShowButtons();
     })
 
     $(".passenger-name").change((event)=> {
         event.preventDefault();
-        ShowButtons();
     })
 </script>
 

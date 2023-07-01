@@ -32,6 +32,7 @@ class globals:
     DB_AIRCRAFT_OPERATIONAL = "operational"
     DB_AIRCRAFT_TYPE = "aircraft_type"
     DB_AUTHENTICATED = 'authenticated'
+    DB_CAF_MEMBER = "CAFMember"
     DB_CITY = "city"
     DB_CO_PILOT = "co_pilot"
     DB_CO_PILOT_DETAILS = "coPilotDetails"
@@ -45,12 +46,12 @@ class globals:
     DB_FIRST_NAME = 'FirstName'
     DB_FLIGHT_ID = 'flight_id'  # Maps Fight ID to MongoDB _id
     DB_FLIGHT_TIME = "flight_time"
+    DB_JOIN_MAILING_LIST = "joinMailingList"
     DB_LAST_NAME = 'LastName'
     DB_LOAD_MASTER = "loadmaster"
     DB_LOAD_MASTER_DETAILS = "loadMasterDetails"
     DB_MANIFEST = 'manifest'
     DB_N_NUMBER = "aircraft_n_number"
-    DB_NEW_PASSWORD = 'new_password'
     DB_NUM_ENGINES = 'number_engines'
     DB_NUM_PRIME_SEATS = 'num_prime_seats'
     DB_NUM_PASS_SEATS = 'num_passenger_seats'
@@ -59,7 +60,7 @@ class globals:
     DB_PASSWORD = 'password'
     DB_PASS_NAME = 'passenger_name'
     DB_PASSENGERS = 'passengers'
-    DB_PASSENGER_SEATS = 'passenger_seats'
+    DB_PASSENGER_BIRTHDATE = "passengerBirthDate"
     DB_PASSENGER_PRICE = "passenger_price"
     DB_PASSENGER_ID = "passenger_id"         # Maps passenger ID to MongoDB _id
     DB_PILOT = "pilot"
@@ -67,12 +68,14 @@ class globals:
     DB_PILOT_ID = "pilot_id"
     DB_PRIME_PASS_NAME = 'prime_pass_name'
     DB_PRIME_PRICE = "prime_price"
-    DB_PRIME_SEATS = "prime_seats"
+    DB_PRIME_SEAT = "Prime"
     DB_TRANSACTIONS = 'transactions'
     DB_POSTAL_CODE = "postalCode"
     DB_RECORD_KEY = "record_id"
     DB_STATE = "state"
+    DB_SEATS_SOLD = 'seatsSold'
     DB_TOTAL_PRICE = 'total_price'
+    DB_VIP_SEAT = "VIP"
 
 # Screen Prompts
     PR_ADDRESS = 'Address'
@@ -86,6 +89,8 @@ class globals:
     PR_AIRCRAFT_PHOTO = 'Choose a photo of your aircraft (PNG, JPG, JPEG)'
     PR_AIRPORT_NAME = 'Airport Name'
     PR_AIRPORT_CITY = 'Airport City'
+    PR_BIRTH_DAY = "Birth Date"
+    PR_CAF_MEMBER = "CAF Member"
     PR_CITY = 'City'
     PR_COLONEL_NUMBER = "Col #"
     PR_CREWCHIEF = "Crew Chief"
@@ -93,6 +98,7 @@ class globals:
     PR_FIRST_NAME = 'First Name'
     PR_FLIGHT_TIME = 'Starting Flight Time: '
     PR_IATA_CODE = 'IATA'
+    PR_JOIN_MAILING_LIST = "Join our mailing list?"
     PR_LAST_NAME = 'Last Name'
     PR_LOADMASTER = "Load Master"
     PR_EMAIL = 'Email Address'
@@ -110,12 +116,13 @@ class globals:
     PR_PAY_FOR_FLIGHT = 'Pay For Flight'
     PR_PRINT_MANIFEST = "Print Manifest"
 
-# Screen and Report Labels
+# Screen, System-wide and Report Labels
     LBL_AIRCRAFT = "Aircraft"
     LBL_AIRPORT = "Airport"
     LBL_TOTAL = "Total"
     LBL_NEW_PASSWORD = 'New Password'
     LBL_PASSWORD = 'New Password'
+    LBL_SEATS_LEFT = "seatsLeft"
 
 # Manifest Labels
     MN_AIRCRAFT_TYPE = 'AIRCRAFT TYPE'
@@ -154,7 +161,11 @@ class globals:
     MSG_AIRPLANE_NOT_ON_DATABASE = 'not found on database.'
     MSG_ADD_NEW_FAILED = "Add New Volunteer Failed: "
     MSG_BOOKED = 'booked on flight'
+    MSG_COMPLETE_ADDRESS = 'Please complete your address.'
     MSG_DATABASE_ERROR = "Database error. Processing stopped. See messages..."
+    MSG_ENTER_ADDRESS = 'Please enter your address.'
+    MSG_ENTER_NAME = 'Please enter your name.'
+    MSG_ENTER_POSTAL_CODE = 'Please enter your Zip/Postal code..'
     MSG_FLIGHT_REPORT_REQUESTED = "Flight report requested for"
     MSG_FLIGHT_ID_REQUIRED = "Flight ID required."
     MSG_GET_TRANSACTION_FAILED = "Get transaction failed: "
@@ -164,7 +175,6 @@ class globals:
     MSG_NO_FLIGHTS = "There are no flights with available seats in the dates requested"
     MSG_GETFLIGHTS_FAILURE = 'GetFlights: find() failed'
     MSG_GOOGLE_MAIL_MERGE_FAILURE = "Google Mail Merge Failure"
-    MSG_ENTER_NAME = 'Please enter your name'
     MSG_FLIGHT_ID_REQ = "Flight ID is required"
     MSG_CONTACT = 'Needed to contact you.'
     MSG_NEW_PASSWORD_SAME_AS_OLD = "Password change must be a different password"

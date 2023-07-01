@@ -147,7 +147,7 @@ def add_volunteer():
             gl.DB_CREWCHIEF: add_volunteer_form.crew_chief.data,
             gl.DB_LOAD_MASTER : add_volunteer_form.loadmaster.data,
             gl.DB_PASSWORD: add_volunteer_form.password.data,
-            gl.DB_NEW_PASSWORD: add_volunteer_form.new_password.data
+            # gl.DB_NEW_PASSWORD: add_volunteer_form.new_password.data
         }
         res = vol.update_volunteer(app, new_volunteer)
 
@@ -331,14 +331,6 @@ def print_flight_report():
     flight_ids = request.args.get("flightid", None)
     if flight_ids is not None:
         flights = fr.get_flights(flight_ids)
-        # for flight in flights:
-        #     print(flight)
-        #     for transaction in flight['transactions']:
-        #         print(transaction['FirstName'] + " " + transaction['LastName'])
-        #         for seat in transaction['prime_seats']:
-        #             print(seat)
-        #         for seat in transaction['passenger_seats']:
-        #             print(seat)
     else:
         print(gl.MSG_FLIGHT_ID_REQUIRED)
         flash(gl.MSG_FLIGHT_ID_REQUIRED)
@@ -464,19 +456,18 @@ def passenger_contact():
     pass_form = PassengerContact()
 
     if request.method == 'POST':
-        if pass_form.validate():
-            res = fl.passenger(pass_form)
-            if res == s.database_op_success:
-                return redirect(url_for('ridewithus'))
-            else:
-                return render_template('seriouserror.html'), 500
+        res = fl.passenger(pass_form)
+        if res == s.database_op_success:
+            return redirect(url_for('ridewithus'))
         else:
-            for error in pass_form.errors:
-                flash(f'Field: {error}: {pass_form.errors[error]}', 'error')
-
-            pass_form.pass_available_seats = 0
-            pass_form.prime_available_seats = 0
-            return render_template('passengercontact.html', form=pass_form), 201
+            return render_template('seriouserror.html'), 500
+        # else:
+        #     for error in pass_form.errors:
+        #         flash(f'Field: {error}: {pass_form.errors[error]}', 'error')
+        #
+        #     pass_form.pass_available_seats = 0
+        #     pass_form.prime_available_seats = 0
+        #     return render_template('passengercontact.html', form=pass_form), 201
 
     elif request.method == "GET":
         flight_key = request.args.get('flightkey', None)
@@ -507,14 +498,13 @@ def getdayflights(strdate, airportcode):
         today = datetime.strptime(strdate, '%m%d%Y')
         today = datetime.date(today)
         tomorrow = today + timedelta(days=1)
-        flight_list = fl.get_day_flights(airportcode=airportcode, startdate=today, enddate=tomorrow)
-
+        flightList = fl.get_day_flights(airportcode=airportcode, startdate=today, enddate=tomorrow)
     except ValueError:
         msg = f'{strdate} is invalid'
         flash(msg, 'error')
         return render_template('seriouserror.html'), 406
 
-    return flight_list, 201
+    return flightList, 201
 
 # Find all purchasedflights for a customer
 @app.route("/findmyride", methods=['GET'])

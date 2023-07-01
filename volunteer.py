@@ -136,6 +136,8 @@ class Volunteer(UserMixin):
                 flash(gl.MSG_CONTACT_ADMIN, "error")
                 return sigs.failure
 
+            if gl.LBL_NEW_PASSWORD in volunteer:
+                self.volunteer.pop(gl.LBL_NEW_PASSWORD)
             res = self.db.update_volunteer(self.volunteer[gl.DB_RECORD_KEY], volunteer)
             if res == sigs.database_op_success:
                 msg = "Volunteer Record Updated.\n"

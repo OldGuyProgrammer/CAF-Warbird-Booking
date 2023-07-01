@@ -8,9 +8,9 @@
 <h2>Indiana Wing</h2>
 <h3>Flight List Produced On:</h3>
 {% for flight in flights %}
-    <hr
+    <hr>
     <h4>Airport: {{ flight.airport_name }}</h4>
-    <h3>Flight Time: {{ flight.flight_time }} Aircraft: {{ flight.aircraftDetails[0].aircraft_name }}</h3>
+    <h3>Flight Time: {{ flight.flight_time }} Aircraft: {{ flight.aircraftDetails[0].aircraft_type }}</h3>
     {% if "pilotDetails" in flight: %}
         <p>Pilot: {{ flight.pilotDetails[0]._id }} {{ flight.pilotDetails[0].FirstName }} {{ flight.pilotDetails[0].LastName }}</p>
     {% else: %}

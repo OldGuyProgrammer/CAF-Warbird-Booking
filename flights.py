@@ -19,17 +19,13 @@ class Flights:
 # See how many seats are left on a flight.
 # Returned is an array: [Prime Seats Sold, Passenger Seats Sold]
     def __seatsLeft(self, flight):
-        primeSeatsSold = 0
-        passengerSeatsSold = 0
+        seatsSold = 0
         if gl.DB_TRANSACTIONS in flight:
             for transaction in flight[gl.DB_TRANSACTIONS]:
-                if gl.DB_PRIME_SEATS in transaction:
-                    primeSeatsSold += len(transaction[gl.DB_PRIME_SEATS])
-                if gl.DB_PASSENGER_SEATS in transaction:
-                    passengerSeatsSold += len(transaction[gl.DB_PASSENGER_SEATS])
-        primeSeatsLeft = flight[gl.DB_NUM_PRIME_SEATS] - primeSeatsSold
-        passengerSeatsLeft = flight[gl.DB_NUM_PASS_SEATS] - passengerSeatsSold
-        return primeSeatsLeft, passengerSeatsLeft
+                print(transaction)
+
+        seatsLeft = flight[gl.DB_NUM_PASS_SEATS] + flight[gl.DB_NUM_PRIME_SEATS] - seatsSold
+        return seatsLeft
 
 # Get all flights.
     def get_flights(self):
@@ -75,7 +71,7 @@ class Flights:
         dayFlights = []
         for flight in flight_list[0]:
             seats = self.__seatsLeft(flight)
-            if seats[0] > 0 or seats[1] > 0:
+            if seats > 0:
                 if lastAirport != flight[gl.DB_AIRPORT_CODE]:   # New airport, reset date.
                     lastDate = ""    # Initialize date to pick first entry
                     lastAirport = flight[gl.DB_AIRPORT_CODE]
@@ -94,14 +90,17 @@ class Flights:
 # Get all flights for one day
     def get_day_flights(self, **req):
         flight_list = self.db.get_flights(gl.DB_N_NUMBER,
-                                         gl.DB_AIRPORT_NAME,
-                                         gl.DB_AIRPORT_CITY,
-                                         gl.DB_AIRPORT_CODE,
-                                         gl.DB_FLIGHT_TIME,
-                                         gl.DB_FLIGHT_ID,
-                                                   startdate=req['startdate'],
-                                                   enddate=req['enddate'],
-                                                   airportcode=req['airportcode'])
+                                        gl.DB_AIRPORT_NAME,
+                                        gl.DB_AIRPORT_CITY,
+                                        gl.DB_AIRPORT_CODE,
+                                        gl.DB_FLIGHT_TIME,
+                                        gl.DB_FLIGHT_ID,
+                                        gl.DB_NUM_PASS_SEATS,
+                                        gl.DB_NUM_PRIME_SEATS,
+                                        gl.DB_TRANSACTIONS,
+                                        startdate=req['startdate'],
+                                        enddate=req['enddate'],
+                                        airportcode=req['airportcode'])
 
 
 # Get Aircraft Name
@@ -117,7 +116,6 @@ class Flights:
             # Put the airplane name in the field to be displayed.
             flight[gl.DB_N_NUMBER] = flight[gl.DB_N_NUMBER] + ': ' + airplane_name
 
-        # print(flight_list)
         flight_list_json = dumps(flight_list)
         return flight_list_json
 
@@ -185,7 +183,7 @@ class Flights:
             return s.database_op_failure
 
     # Create the new transaction record
-        trans_record = {gl.DB_FIRST_NAME: passenger_contact_form.first_name.data,
+        transaction_record = {gl.DB_FIRST_NAME: passenger_contact_form.first_name.data,
                         gl.DB_LAST_NAME: passenger_contact_form.last_name.data,
                         gl.DB_ADDRESS: passenger_contact_form.pass_addr.data,
                         gl.DB_CITY: passenger_contact_form.pass_city.data,
@@ -194,23 +192,41 @@ class Flights:
                         gl.DB_EMAIL: passenger_contact_form.pass_email.data,
                         gl.DB_PHONE_NUMBER: scrub_phone(passenger_contact_form.pass_phone.data),
                         gl.DB_OK_TO_TEXT: passenger_contact_form.OKtoText.data,
+                        gl.DB_JOIN_MAILING_LIST: passenger_contact_form.joinMailingList.data,
+                        gl.DB_CAF_MEMBER: passenger_contact_form.CAFMember.data,
                         gl.DB_TOTAL_PRICE: passenger_contact_form.total_price.data
                         }
 
         primeSeatsSold = 0
         passengerSeatsSold = 0
-        prime_seats = []
-        passenger_seats = []
+        allSeats = []
 
+#
+# The riders data structure is designed this way in anticipation of various wings
+# using this API. The class of seats can be dynamically set up.
+#
+        i = 0
         for passenger in passenger_contact_form.prime_name.raw_data:
             if passenger != '':
-                prime_seats.append(passenger)
+                seat = {
+                    "seat": "Prime",
+                    "name": passenger,
+                    "birthDate": passenger_contact_form.primeBirthDate.raw_data[i]
+                }
+                i += 1
+                allSeats.append(seat)
                 primeSeatsSold += 1
-                flash(f'{passenger}, {gl.MSG_BOOKED}', 'message')
 
+        i = 0
         for passenger in passenger_contact_form.passenger_name.raw_data:
             if passenger != '':
-                passenger_seats.append(passenger)
+                seat = {
+                    "seat": "VIP",
+                    "name": passenger,
+                    "birthDate": passenger_contact_form.passengerBirthDate.raw_data[i]
+                }
+                i += 1
+                allSeats.append(seat)
                 passengerSeatsSold += 1
 
         seatsLeft = self.__seatsLeft(flight)
@@ -221,8 +237,7 @@ class Flights:
                 if gl.DB_PASSENGER_SEATS in transaction:
                     passengerSeatsSold += len(transaction[gl.DB_PASSENGER_SEATS])
 
-        seats = seatsLeft[0] + seatsLeft[1]
-        if seats == 0:
+        if seatsLeft == 0:
             flash(gl.MSG_NO_SEATS_LEFT, 'message')
             return s.failure
 
@@ -233,12 +248,11 @@ class Flights:
             if passenger != '':
                 flash(f'{passenger}, {gl.MSG_BOOKED}', 'message')
 
-        if len(passenger_seats) > 0:
-            trans_record[gl.DB_PASSENGER_SEATS] = passenger_seats
-        if len(prime_seats) > 0:
-            trans_record[gl.DB_PRIME_SEATS] = prime_seats
+        if len(allSeats) > 0:
+            transaction_record[gl.DB_SEATS_SOLD] = allSeats
 
-        transaction = {gl.DB_TRANSACTIONS: trans_record}
+        transaction = {gl.DB_TRANSACTIONS: transaction_record}
+        print(transaction)
         res = self.db.updateFlightArray(flight_id, transaction)
 
         return res
@@ -272,25 +286,26 @@ class Flights:
             flash(f'{flight[gl.DB_N_NUMBER]}, {gl.MSG_AIRPLANE_NOT_ON_DATABASE}', 'error')
             pass_form.card_title.label = gl.MSG_AIRPLANE_NOT_ON_DATABASE
 
-        num_prime_seats = 0
-        num_passenger_seats = 0
+        numPrimeSeats = 0
+        numVIPSeats = 0
         primes = ()
         passengers = ()
         if gl.DB_TRANSACTIONS in flight:
             for transaction in flight[gl.DB_TRANSACTIONS]:
-                if gl.DB_PRIME_SEATS in transaction:
-                    num_prime_seats = num_prime_seats + len(transaction[gl.DB_PRIME_SEATS])  # Grab number of prime seats
-                if gl.DB_PASSENGER_SEATS in transaction:
-                    num_passenger_seats = num_passenger_seats + len(
-                        transaction[gl.DB_PASSENGER_SEATS])  # Grab number of passenger seats
+                if gl.DB_SEATS_SOLD in transaction:
+                    for seat in transaction[gl.DB_SEATS_SOLD]:
+                        if seat["seat"] == gl.DB_PRIME_SEAT:
+                            numPrimeSeats += 1
+                        elif seat["seat"] == gl.DB_VIP_SEAT:
+                            numVIPSeats += 1
 
             # Now create the empty seats.
-            num_prime_seats = flight[gl.DB_NUM_PRIME_SEATS] - num_prime_seats
-            for i in range(num_prime_seats):
+            numPrimeSeats = flight[gl.DB_NUM_PRIME_SEATS] - numPrimeSeats
+            for i in range(numPrimeSeats):
                 primes = primes + ("",)
 
-            num_passenger_seats = flight[gl.DB_NUM_PASS_SEATS] - num_passenger_seats
-            for i in range(num_passenger_seats):
+            numVIPSeats = flight[gl.DB_NUM_PASS_SEATS] - numVIPSeats
+            for i in range(numVIPSeats):
                 passengers = passengers + ("",)
         else:
             # No transactions means no seats yet sold.
