@@ -149,8 +149,8 @@ class DatabaseManager:
                 query = {'flight_time': {'$gte': startdate, "$lte": enddate}}
         elif "startdate" in kwfields:
             # List all rides after the specified date
-            startdate = datetime.strptime(str(kwfields['startdate']), '%Y-%m-%d')
-            query = {gl.DB_FLIGHT_TIME: {'$gte': startdate}}
+            start_date = datetime.strptime(kwfields['startdate'], '%Y-%m-%d')
+            query = {gl.DB_FLIGHT_TIME: {'$gte': start_date}}
         else:
             # List all flights
             query = {}

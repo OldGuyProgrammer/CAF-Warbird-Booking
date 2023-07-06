@@ -16,10 +16,19 @@ class Flights:
         self.db = data_base
 
 # Get all flights.
-    def get_flights(self):
-        flights = self.db.get_flights(gl.DB_AIRPORT_NAME,
-                                    gl.DB_FLIGHT_TIME,
-                                    gl.DB_N_NUMBER)
+    def get_flights(self, **kwfields):
+
+        if "startdate" in kwfields:
+            start_date = kwfields["startdate"]
+            flights = self.db.get_flights(gl.DB_AIRPORT_NAME,
+                                          gl.DB_FLIGHT_TIME,
+                                          gl.DB_N_NUMBER,
+                                          startdate=start_date)
+        else:
+            flights = self.db.get_flights(gl.DB_AIRPORT_NAME,
+                                          gl.DB_FLIGHT_TIME,
+                                          gl.DB_N_NUMBER)
+
         flight_list = []
         if flights is not None and flights[1] == "":
             for flight in flights[0]:

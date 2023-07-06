@@ -6,7 +6,10 @@
 
 {% include "header.html" %}
 <body xmlns="http://www.w3.org/1999/html">
+<link href="../static/css/jquery-ui.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+<script src="../static/external/jquery/jquery.js"></script>
+<script src="../static/external/jquery/jquery-ui.min.js"></script>
 
 <form method="post" action="{{ url_for('findmyride') }}">
     <div class="container-fluid">
@@ -24,6 +27,8 @@
                     <span id="gettingInfo" style="display:none">Getting Flight Reports.</span>
                     <div class="card-body">
                         <h2 class="card-title">Select The Flights To Be Reported</h2>
+                        <label for="date-start"><h3>Select the Starting Date.</h3></label>
+                        <input type="text" name="date" id="date-start">
                         <div class="col">
                             <a type="button" class="btn btn-primary"  onclick="ShowFlightSelected()">Get Flight Report</a>
                         </div>
@@ -64,6 +69,19 @@
         });
         window.location.href = url
     }
+    $(document).ready(() => {
+        $("#date-start").datepicker({
+            changeMonth: true,
+            changeYear: true
+        })
+    })
+
+    {#Request the flights based on the date required.#}
+    $("#date-start").on("change", () => {
+        const date = $("#date-start").val()
+        const url = "/selectflight?date=" + date
+        window.location.href = url
+    })
 </script>
 </body>
 {% include "footer.html" %}

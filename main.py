@@ -333,8 +333,21 @@ def createflight():
 @login_required
 def select_flight():
 
+    date_requested = request.args.get(gl.URL_DATE, None)
+    if date_requested is not None:
+        try:
+            start_date = str(datetime.strptime(date_requested, '%m/%d/%Y')).split()[0]
+            msg = gl.MSG_START_DATE + start_date
+            flash(msg, 'message')
+        except ValueError:
+            flash(gl.MSG_DATE_ERROR, 'message')
+            flash(gl.MSG_DATE_ENTERED + " " + date_requested)
+            return render_template("selectflight.html", flights=[]), 422
+    else:
+        start_date = str(date.today())
+
     fl = Flights(db)
-    flight_list = fl.get_flights()
+    flight_list = fl.get_flights(startdate=str(start_date))
     if flight_list is None:
         flash(gl.MSG_NO_FLIGHTS, 'message')
         flight_list = {}
@@ -429,7 +442,7 @@ def manifest():
 
     manifest_form = Manifest()
     fl = Flights(db)
-    flights = fl.getfutureflights(startdate=date.today())
+    flights = fl.getfutureflights(startdate=str(date.today()))
 
     air_ports = [('Select','Select')]
     for flight in flights:
@@ -469,7 +482,7 @@ def payment():
 def ridewithus():
     fl = Flights(db)
     try:
-        day_flights = fl.getfutureflights(startdate=date.today())
+        day_flights = fl.getfutureflights(startdate=str(date.today()))
     except NoFlights:
         flash(gl.MSG_NO_FLIGHTS, 'message')
         # day_flights = s.no_flights

@@ -155,6 +155,8 @@ class globals:
     MSG_ADD_NEW_FAILED = "Add New Volunteer Failed: "
     MSG_BOOKED = 'booked on flight'
     MSG_DATABASE_ERROR = "Database error. Processing stopped. See messages..."
+    MSG_DATE_ENTERED = " Date entered: "
+    MSG_DATE_ERROR = "Date format should be mm/dd/yyyy, ie: 3/16/1954"
     MSG_FLIGHT_REPORT_REQUESTED = "Flight report requested for"
     MSG_FLIGHT_ID_REQUIRED = "Flight ID required."
     MSG_GET_TRANSACTION_FAILED = "Get transaction failed: "
@@ -176,12 +178,16 @@ class globals:
     MSG_UPDATE_VOL_FAILED = "Update Volunteer Failed: "
     MSG_SAVE_PASSENGERS_FAILED = "Save passenger failed: "
     MSG_SAVE_TRANSACTION_FAILED = "Save transaction failed: "
+    MSG_START_DATE = "Start date: "
     MSG_FIND_OP_FAILED = 'find op failed'
     MSG_N_NUMBER = 'Aircraft N Numbers: capital letters and numbers only'
     MSG_MESSAGE_SENT = "Message Sent"
     MSG_FLIGHT_NOT_FOUND = "Flight not on database."
     MSG_TWO_DATES_REQUIRED = "Date range required to retrieve flights by date."
     MSG_VOLUNTEER_NOT_FOUND = "Volunteer not found."
+
+#URL parameters
+    URL_DATE = "date"
 
 class signals(Enum):
     success = 1
