@@ -92,7 +92,7 @@
                     </div>
                     <div class="col-sm-6">
 {#                        {{ form.aircraft_name }}#}
-                        <select name="aircraft_name">
+                        <select id="aircraft_name" name="aircraft_name" onchange="DisplayAircraft()">
                             {% for airplane in airplanes: %}
                                 <option value={{ airplane[0] }} data-image={{ airplane[2] }}
 
@@ -105,10 +105,16 @@
                     <script>
                         function DisplayAircraft() {
                             $("#spinner-get-plane-image").show();
+                            {#console.log($("#aircraft_name option:selected"))#}
+                            {#console.log($("#aircraft_name option:selected").data("image"))#}
                             const file = $("#aircraft_name option:selected").data("image")
+                            {#console.log(file)#}
                             if (file != "Select" && !!file) {
+                                console.log("Get airplane.")
                                 const path = `static/images/${file}`
                                 $("#aircraftimage").attr("src", path)
+                            } else {
+                                console.log("Dont Go")
                             }
                             $("#spinner-get-plane-image").hide();
                         }

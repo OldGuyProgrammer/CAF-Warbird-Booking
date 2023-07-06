@@ -8,9 +8,9 @@
 <h2>Indiana Wing</h2>
 <h3>Flight List Produced On:</h3>
 {% for flight in flights %}
-    <h4>Airport: {{ flight.airport_name }}</h4>
     <hr>
-    <h3>Flight Time: {{ flight.flight_time }} Aircraft: {{ flight.aircraftDetails[0].aircraft_name }}</h3>
+    <h4>Airport: {{ flight.airport_name }}</h4>
+    <h3>Flight Time: {{ flight.flight_time }} Aircraft: {{ flight.aircraftDetails[0].aircraft_type }}</h3>
     {% if "pilotDetails" in flight: %}
         <p>Pilot: {{ flight.pilotDetails[0]._id }} {{ flight.pilotDetails[0].FirstName }} {{ flight.pilotDetails[0].LastName }}</p>
     {% else: %}
@@ -32,38 +32,24 @@
         <p>Load Master not Assigned</p>
     {%  endif %}
     <div class="rpt-container">
-        <div class="col">
-        </div>
-        <div class="col">
-            <h4>Passengers</h4>
+        <h4>Passengers</h4>
+        <div class="rpt-detail">
             {% for transaction in flight.transactions: %}
-                <div class="col">
-                    <p>Purchaser: {{ transaction.FirstName }} {{ transaction.LastName }}, Phone: {{ transaction.pass_phone }}, To Text</p>
-                </div>
+                <p>Purchaser: {{ transaction.FirstName }} {{ transaction.LastName }}, Phone: {{ transaction.pass_phone }}, To Text</p>
                 <h5>Prime Seats</h5>
-                <div class="col">
+                <div class="rpt-seats">
                     {%  for seat in transaction.prime_seats: %}
                         <p>{{ seat }}</p>
                     {% endfor %}
                 </div>
                 <h5>Riders</h5>
-                <div class="col">
+                <div class="rpt-seats">
                     {%  for seat in transaction.passenger_seats: %}
                         <p>{{ seat }}</p>
                     {% endfor %}
                 </div>
-                </div>
             {% endfor %}
-        {#        {% for prime in primes %}#}
-        {#            <p>{{ prime }}</p>#}
-        {#        {% endfor %}#}
-        {#        <h4>Passenger Seats</h4>#}
-        <div class="col">
-            {#            {% for passenger in passengers %}#}
-            {#                <p>{{ passenger }}</p>#}
-            {#            {% endfor %}#}
         </div>
-    </div>
     </div>
 {% endfor %}
 <hr>

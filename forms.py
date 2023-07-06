@@ -9,7 +9,7 @@
 
 from globals import globals as gl
 from wtforms import StringField, HiddenField, PasswordField,\
-    BooleanField, IntegerField, DateTimeField, TelField, \
+    BooleanField, IntegerField, DateTimeField, DateField, TelField, \
     SelectField, EmailField, validators, SubmitField
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField
@@ -75,16 +75,20 @@ class PassengerContact(FlaskForm):
     card_title = StringField('Flight Title Goes Here')
     last_name = StringField(gl.PR_FIRST_NAME, [validators.InputRequired(gl.MSG_ENTER_NAME)], render_kw={'placeholder': gl.PR_LAST_NAME})
     pass_email = EmailField(gl.PR_EMAIL, render_kw={'placeholder': gl.PR_EMAIL})
+    CAFMember = BooleanField(gl.PR_CAF_MEMBER)
     pass_phone = TelField(gl.PR_PHONE, render_kw={'placeholder': gl.PR_PHONE})
-    OKtoText = BooleanField(gl.PR_OK_TEXT)
-    pass_addr = StringField(gl.PR_ADDRESS, render_kw={'placeholder': gl.PR_ADDRESS, 'class':'col-8'})
-    pass_city = StringField(gl.PR_CITY, render_kw={'placeholder': gl.PR_CITY})
-    state_province = SelectField('State/Province',  choices=[], validate_choice=False)
-    pass_postal = StringField(gl.PR_POSTAL, render_kw={'placeholder': gl.PR_POSTAL})
+    OKtoText = BooleanField(gl.PR_OK_TEXT, render_kw={'checked': True})
+    joinMailingList = BooleanField(gl.PR_JOIN_MAILING_LIST, render_kw={'checked': True})
+    pass_addr = StringField(gl.PR_ADDRESS, [validators.InputRequired(gl.MSG_ENTER_ADDRESS)], render_kw={'placeholder': gl.PR_ADDRESS, 'class':'col-8'})
+    pass_city = StringField(gl.PR_CITY, [validators.InputRequired(gl.MSG_COMPLETE_ADDRESS)], render_kw={'placeholder': gl.PR_CITY})
+    state_province = SelectField('State/Province',  [validators.InputRequired(gl.MSG_COMPLETE_ADDRESS)], choices=[], validate_choice=False)
+    pass_postal = StringField(gl.PR_POSTAL, [validators.InputRequired(gl.MSG_ENTER_POSTAL_CODE)], render_kw={'placeholder': gl.PR_POSTAL})
     prime_seat_price = StringField()
     pass_seat_price = StringField()
     prime_name = StringField(gl.PR_PASS_NAME, render_kw={'placeholder': gl.PR_PASS_NAME, 'class': "prime_name"})
     passenger_name = StringField(gl.PR_PASS_NAME, render_kw={'placeholder': gl.PR_PASS_NAME, 'class': "passenger_name"})
+    primeBirthDate = DateField(gl.PR_BIRTH_DAY, format='%m/%d/%y', render_kw={'type': 'date', 'class': "prime_birthdate"})
+    passengerBirthDate = DateField(gl.PR_BIRTH_DAY, format='%m/%d/%Y', render_kw={'type': 'date', 'class': "passenger_birthdate"})
     prime_available_seats = IntegerField()
     pass_available_seats = IntegerField()
     flight_id = StringField()

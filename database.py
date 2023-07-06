@@ -176,44 +176,6 @@ class DatabaseManager:
 
         return [flight_list, ""]
 
-    # Retrieve flights for a specified day.
-    # Convert to JSON
-#TODO Maybe delete the following function
-    # def bogus_get_flights_for_json(self, *fields, **kwfields):
-    #
-    #     db_args = {f for f in fields}
-    #
-    #     if "startdate" in kwfields and 'enddate' in kwfields:
-    #         # Find the rides between the two dates
-    #
-    #         startdate = datetime.strptime(str(kwfields['startdate']), '%Y-%m-%d')
-    #
-    #         # print(f"enddate: {kwfields['enddate']}")
-    #         enddate = datetime.strptime(str(kwfields['enddate']), '%Y-%m-%d')
-    #         if "airportcode" in kwfields:
-    #             query = {'flight_time': {'$gte': startdate, "$lt": enddate},
-    #                      'airport_code': {'$eq': kwfields["airportcode"]}}
-    #         else:
-    #             query = {'flight_time': {'$gte': startdate, "$lt": enddate}}
-    #     elif "startdate" in kwfields:
-    #         # List all rides after the specified date
-    #         startdate = datetime.strptime(str(kwfields['startdate']), '%Y-%m-%d')
-    #         query = {'flight_time': {'$gte': startdate}}
-    #     else:
-    #         query = {}
-    #
-    #     try:
-    #         flight = self.dbINDYCAF.db.flights.find(query, db_args).sort('flight_time').sort('flight_time', 1)
-    #         list_flights = list(flight)
-    #         JSONFlights = dumps(list_flights)
-    #
-    #     except Exception as e:
-    #         print('get_flights_for_json: find all failed', e)
-    #         JSONFlights = None
-    #     # This function return proper JSON. The bson.json import is needed
-    #     # to reformat the MongoDB data types
-    #     return JSONFlights
-
     # Get aircraft information from the screen and add to the database
     def AddAircraft(self, new_aircraft):
 
@@ -228,8 +190,7 @@ class DatabaseManager:
             return s.database_op_success
 
     # Get flight information from the screen.
-
-    def Save_Flight(self, **flightInfo):
+    def saveFlight(self, flightInfo):
 
         try:
             self.dbINDYCAF.db.flights.insert_one(flightInfo)
@@ -237,7 +198,7 @@ class DatabaseManager:
             msg = msg + f"Airport: {flightInfo[gl.DB_AIRPORT_NAME]}\n"
             msg = msg + f"Flight time: {flightInfo[gl.DB_FLIGHT_TIME]}"
             fm = FlaskMail(self.app)
-            fm.send_message("Flight Added", "jimolivi@icloud.com", msg)
+            # fm.send_message("Flight Added", "jimolivi@icloud.com", msg)
 
             return s.database_op_success
         except Exception as e:
@@ -306,6 +267,18 @@ class DatabaseManager:
         flight_id = ObjectId(flight_id)
         try:
             self.dbINDYCAF.db.flights.update_one({"_id": flight_id}, {'$set': updates})
+        except Exception as e:
+            print(gl.MSG_UPDATE_FLIGHT_FAILED, e)
+            return s.database_op_failure
+
+        return s.database_op_success
+
+    # Update Flight Record, add array elements.
+    def updateFlightArray(self, flight_id, updates):
+
+        flight_id = ObjectId(flight_id)
+        try:
+            self.dbINDYCAF.db.flights.update_one({"_id": flight_id}, {'$addToSet': updates})
         except Exception as e:
             print(gl.MSG_UPDATE_FLIGHT_FAILED, e)
             return s.database_op_failure

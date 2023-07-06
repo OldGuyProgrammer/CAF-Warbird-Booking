@@ -90,9 +90,6 @@ class PrintFlightReport:
 
         flights = []
         for flight_id in flight_array:
-            # msg = gl.MSG_FLIGHT_REPORT_REQUESTED + ": " + flight_id
-            # print(msg)
-
             flight = self.db.get_one_flight(flight_id)
             if flight is not None:
 # Scrub the flight record

@@ -7,7 +7,17 @@
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
+      <env name="COOKIE_DURATION" value="hours=24" />
+      <env name="DB_CONNECT_PATH" value="mongodb+srv://$USERID:$PASSWORD@cluster0.wfdvqcp.mongodb.net/$DBNAME?retryWrites=true&amp;w=majority" />
+      <env name="DB_DATABASE_NAME" value="INDYCAF" />
+      <env name="DB_PASSWORD" value="uZmMhAjbfg05Ope3" />
+      <env name="DB_USER" value="JimOlivi" />
       <env name="FLASK_APP" value="main.py" />
+      <env name="FLASK_SECRET_KEY" value="gnf-yvt5cyp8pce1CBU" />
+      <env name="PORT" value="3000" />
+      <env name="SALT_ROUNDS" value="12" />
+      <env name="AIRPORT_CODE_APIKEY" value="R4x2uJMt4oB6TmvDHhPbiqzAMKA3lRFi" />
+      <env name="AIRPORT_CODE_URL" value="https://api.tequila.kiwi.com/locations/id?id=$AIRPORTCODE&amp;limit=1&amp;locale=en-US&amp;active_only=true" />
     </envs>
     <option name="SDK_HOME" value="" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />

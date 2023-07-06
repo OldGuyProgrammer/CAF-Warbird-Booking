@@ -180,7 +180,14 @@ img {
 
 /* Report Styles */
 .rpt-container {
+	padding-left: 3%;
 	display:grid;
-	grid-template-columns: 1fr 5fr 5fr;
-	grid-template-rows: 1fr;
+	/*grid-template-columns: 1fr 1fr 5fr;*/
+}
+
+.rpt-detail {
+	padding-left: 5rem;
+}
+.rpt-seats {
+	padding-left: 3%;
 }
