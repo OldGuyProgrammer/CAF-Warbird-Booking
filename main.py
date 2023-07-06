@@ -336,7 +336,7 @@ def select_flight():
 
 # Print the Flight Report
 @app.route("/printFlightReport", methods=["GET"])
-# @login_required
+@login_required
 def print_flight_report():
     frf = FlightReport()
     fr = PrintFlightReport(db, frf)

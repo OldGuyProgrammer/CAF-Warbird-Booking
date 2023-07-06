@@ -85,6 +85,8 @@ class globals:
     PR_AIRCRAFT_PHOTO = 'Choose a photo of your aircraft (PNG, JPG, JPEG)'
     PR_AIRPORT_NAME = 'Airport Name'
     PR_AIRPORT_CITY = 'Airport City'
+    PR_BIRTH_DAY = "Birthday"
+    PR_CAF_MEMBER = "CAF Member"
     PR_CITY = 'City'
     PR_COLONEL_NUMBER = "Col #"
     PR_CREWCHIEF = "Crew Chief"
@@ -92,6 +94,7 @@ class globals:
     PR_FIRST_NAME = 'First Name'
     PR_FLIGHT_TIME = 'Starting Flight Time: '
     PR_IATA_CODE = 'IATA'
+    PR_JOIN_MAILING_LIST = "Join the mailing list."
     PR_LAST_NAME = 'Last Name'
     PR_LOADMASTER = "Load Master"
     PR_EMAIL = 'Email Address'
@@ -154,9 +157,12 @@ class globals:
     MSG_AIRPLANE_NOT_ON_DATABASE = 'not found on database.'
     MSG_ADD_NEW_FAILED = "Add New Volunteer Failed: "
     MSG_BOOKED = 'booked on flight'
+    MSG_COMPLETE_ADDRESS = "Complete Address"
     MSG_DATABASE_ERROR = "Database error. Processing stopped. See messages..."
     MSG_DATE_ENTERED = " Date entered: "
     MSG_DATE_ERROR = "Date format should be mm/dd/yyyy, ie: 3/16/1954"
+    MSG_ENTER_ADDRESS = "Enter Address"
+    MSG_ENTER_POSTAL_CODE = "Enter Postal Code"
     MSG_FLIGHT_REPORT_REQUESTED = "Flight report requested for"
     MSG_FLIGHT_ID_REQUIRED = "Flight ID required."
     MSG_GET_TRANSACTION_FAILED = "Get transaction failed: "
