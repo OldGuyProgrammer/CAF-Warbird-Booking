@@ -31,6 +31,7 @@ class globals:
     DB_AIRCRAFT_OPERATIONAL = "operational"
     DB_AIRCRAFT_TYPE = "aircraft_type"
     DB_AUTHENTICATED = 'authenticated'
+    DB_CAF_MEMBER = "CAFMember"
     DB_CITY = "city"
     DB_CO_PILOT = "co_pilot"
     DB_CO_PILOT_DETAILS = "coPilotDetails"
@@ -44,6 +45,7 @@ class globals:
     DB_FIRST_NAME = 'FirstName'
     DB_FLIGHT_ID = 'flight_id'  # Maps Fight ID to MongoDB _id
     DB_FLIGHT_TIME = "flight_time"
+    DB_JOIN_MAILING_LIST = "mailing_list"
     DB_LAST_NAME = 'LastName'
     DB_LOAD_MASTER = "loadmaster"
     DB_LOAD_MASTER_DETAILS = "loadMasterDetails"
@@ -70,6 +72,7 @@ class globals:
     DB_TRANSACTIONS = 'transactions'
     DB_POSTAL_CODE = "postalCode"
     DB_RECORD_KEY = "record_id"
+    DB_SEATS_SOLD = "seats_sold"
     DB_STATE = "state"
     DB_TOTAL_PRICE = 'total_price'
 
@@ -258,9 +261,6 @@ class StateList:
             with open(fullpath, 'r') as state_file:
                 states_and_provinces = json.load(state_file)
         except FileNotFoundError as e:
-            print("Unable to open state code file.")
-            print(e)
-        except e:
             print("Unable to open state code file.")
             print(e)
         else:
