@@ -19,13 +19,12 @@ class Flights:
 # See how many seats are left on a flight.
 # Returned is an array: [Prime Seats Sold, Passenger Seats Sold]
     def __seatsLeft(self, flight):
-        seatsSold = 0
+        seats_sold = 0
         if gl.DB_TRANSACTIONS in flight:
             for transaction in flight[gl.DB_TRANSACTIONS]:
-                print(transaction)
+                seats_sold += len(transaction[gl.DB_SEATS_SOLD])
 
-        seatsLeft = flight[gl.DB_NUM_PASS_SEATS] + flight[gl.DB_NUM_PRIME_SEATS] - seatsSold
-        return seatsLeft
+        return flight[gl.DB_NUM_PASS_SEATS] + flight[gl.DB_NUM_PRIME_SEATS] - seats_sold
 
 # Get all flights.
     def get_flights(self, **kwfields):
