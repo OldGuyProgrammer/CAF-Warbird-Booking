@@ -76,8 +76,8 @@ class PrintFlightReport:
                     for prime in transaction[gl.DB_PRIME_SEATS]:
                         self.primes.append(prime)
                 self.passengers =[]
-                if gl.DB_PASSENGER_SEATS in transaction:
-                    for passenger in transaction[gl.DB_PASSENGER_SEATS]:
+                if gl.DB_VIP_SEATS in transaction:
+                    for passenger in transaction[gl.DB_VIP_SEATS]:
                         self.passengers.append(passenger)
         else:
             print(gl.MSG_NO_FLIGHTS)

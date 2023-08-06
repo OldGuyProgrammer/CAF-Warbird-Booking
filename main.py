@@ -269,9 +269,9 @@ def createflight():
             cff.flight_time.data = flight[gl.DB_FLIGHT_TIME]
             cff.end_flight_time.data = flight[gl.DB_END_FLIGHT_TIME]
             cff.premium_price.data = flight[gl.DB_PRIME_PRICE]
-            cff.passenger_price.data = flight[gl.DB_PASSENGER_PRICE]
+            cff.passenger_price.data = flight[gl.DB_VIP_PRICE]
             cff.number_prime_seats.data = flight[gl.DB_NUM_PRIME_SEATS]
-            cff.number_pass_seats.data = flight[gl.DB_NUM_PASS_SEATS]
+            cff.number_pass_seats.data = flight[gl.DB_NUM_VIP_SEATS]
             if "pilot" in flight:
                 cff.pilots.default = flight['pilot']
             else:

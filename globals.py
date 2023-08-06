@@ -35,7 +35,6 @@ class globals:
     DB_CITY = "city"
     DB_CO_PILOT = "co_pilot"
     DB_CO_PILOT_DETAILS = "coPilotDetails"
-    DB_COACH_SEATS = "coach_seats"
     DB_CREW = "crew"
     DB_CREWCHIEF = "crew_chief"
     DB_CREWCHIEF_DETAILS = "crewChiefDetails"
@@ -54,14 +53,14 @@ class globals:
     DB_NEW_PASSWORD = 'new_password'
     DB_NUM_ENGINES = 'number_engines'
     DB_NUM_PRIME_SEATS = 'num_prime_seats'
-    DB_NUM_PASS_SEATS = 'num_passenger_seats'
+    DB_NUM_VIP_SEATS = 'num_VIP_seats'
     DB_PHONE_NUMBER = 'pass_phone'
     DB_OK_TO_TEXT = 'ok_to_text'
     DB_PASSWORD = 'password'
     DB_PASS_NAME = 'passenger_name'
     DB_PASSENGERS = 'passengers'
-    DB_PASSENGER_SEATS = 'passenger_seats'
-    DB_PASSENGER_PRICE = "passenger_price"
+    DB_VIP_SEATS = 'VIP_seats'
+    DB_VIP_PRICE = "VIP_price"
     DB_PASSENGER_ID = "passenger_id"         # Maps passenger ID to MongoDB _id
     DB_PILOT = "pilot"
     DB_PILOT_DETAILS = "pilotDetails"
@@ -72,6 +71,7 @@ class globals:
     DB_TRANSACTIONS = 'transactions'
     DB_POSTAL_CODE = "postalCode"
     DB_RECORD_KEY = "record_id"
+    DB_SEAT = "seat"
     DB_SEATS_SOLD = "seats_sold"
     DB_STATE = "state"
     DB_TOTAL_PRICE = 'total_price'

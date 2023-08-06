@@ -90,8 +90,8 @@ class Manifests:
                 if gl.DB_PRIME_SEATS in transaction:
                     for seat in transaction[gl.DB_PRIME_SEATS]:
                         passengers.append((1, seat))
-                if gl.DB_PASSENGER_SEATS in transaction:
-                    for seat in transaction[gl.DB_PASSENGER_SEATS]:
+                if gl.DB_VIP_SEATS in transaction:
+                    for seat in transaction[gl.DB_VIP_SEATS]:
                         passengers.append((2, seat))
 
         # print(passengers)

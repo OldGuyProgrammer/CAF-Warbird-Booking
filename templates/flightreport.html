@@ -32,20 +32,16 @@
         <p>Load Master not Assigned</p>
     {%  endif %}
     <div class="rpt-container">
-        <h4>Passengers</h4>
+        <h4>Transactions</h4>
         <div class="rpt-detail">
-            {% for transaction in flight.transactions: %}
-                <p>Purchaser: {{ transaction.FirstName }} {{ transaction.LastName }}, Phone: {{ transaction.pass_phone }}, To Text</p>
-                <h5>Prime Seats</h5>
+            {% for transaction in flight.transactions %}
+                <span>Purchaser: {{ transaction.FirstName }} {{ transaction.LastName }}, Phone: {{ transaction.pass_phone }}</span>
+                {% if transaction.ok_to_text %}
+                    <span>OK To Text</span>
+                {% endif %}
                 <div class="rpt-seats">
-                    {%  for seat in transaction.prime_seats: %}
-                        <p>{{ seat }}</p>
-                    {% endfor %}
-                </div>
-                <h5>Riders</h5>
-                <div class="rpt-seats">
-                    {%  for seat in transaction.passenger_seats: %}
-                        <p>{{ seat }}</p>
+                    {%  for seat in transaction.seats_sold %}
+                        <span>{{ seat.seat }} Seat, {{ seat.name }}</span><br>
                     {% endfor %}
                 </div>
             {% endfor %}
