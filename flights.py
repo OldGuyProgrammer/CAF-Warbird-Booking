@@ -19,15 +19,21 @@ class Flights:
 # See how many seats are left on a flight.
 # Returned is an array: [Prime Seats Sold, Passenger Seats Sold]
     def __seatsLeft(self, flight):
-        seats_dict = {}
+        prime_seats_left = flight[gl.DB_NUM_PRIME_SEATS]
+        VIP_seats_left = flight[gl.DB_NUM_VIP_SEATS]
         if gl.DB_TRANSACTIONS in flight:
             for transaction in flight[gl.DB_TRANSACTIONS]:
                 for seat in transaction[gl.DB_SEATS_SOLD]:
-                    if seat[gl.DB_SEAT] not in seats_dict:
-                        seats_dict[seat[gl.DB_SEAT]] = 0
-                    seats_dict[seat[gl.DB_SEAT]] = seats_dict[seat[gl.DB_SEAT]] + 1
+                    if seat[gl.DB_SEAT] == gl.DB_PRIME:
+                        prime_seats_left = prime_seats_left - 1
+                    else:
+                        VIP_seats_left = VIP_seats_left - 1
 
-        return seats_dict
+        seats_left = {}
+        seats_left.update({gl.DB_PRIME: prime_seats_left})
+        seats_left.update({gl.DB_VIP: VIP_seats_left})
+
+        return seats_left
 
 # Get all flights.
     def get_flights(self, **kwfields):
@@ -81,10 +87,12 @@ class Flights:
         lastAirport = ""
         dayFlights = []
         for flight in flight_list[0]:
-            seats_dict = self.__seatsLeft(flight)
-            if bool(seats_dict):
-                flight.update(seats_dict)
-                print(flight)
+            seats = self.__seatsLeft(flight)
+            if bool(seats):
+                seats_left = {
+                    gl.DB_SEATS_LEFT: seats
+                }
+                flight.update(seats_left)
                 if lastAirport != flight[gl.DB_AIRPORT_CODE]:   # New airport, reset date.
                     lastDate = ""    # Initialize date to pick first entry
                     lastAirport = flight[gl.DB_AIRPORT_CODE]
@@ -128,6 +136,11 @@ class Flights:
             airplane_name = airplane[gl.DB_AIRCRAFT_NAME]
             # Put the airplane name in the field to be displayed.
             flight[gl.DB_N_NUMBER] = flight[gl.DB_N_NUMBER] + ': ' + airplane_name
+            seats = self.__seatsLeft(flight)
+            seats_left = {
+                gl.DB_SEATS_LEFT: seats
+            }
+            flight.update(seats_left)
 
         flight_list_json = dumps(flight_list)
         return flight_list_json
@@ -247,8 +260,8 @@ class Flights:
             for transaction in flight[gl.DB_TRANSACTIONS]:
                 if gl.DB_PRIME_SEATS in transaction:
                     primeSeatsSold += len(transaction[gl.DB_PRIME_SEATS])
-                if gl.DB_VIP_SEATS in transaction:
-                    passengerSeatsSold += len(transaction[gl.DB_VIP_SEATS])
+                if gl.DB_VIP in transaction:
+                    passengerSeatsSold += len(transaction[gl.DB_VIP])
 
         if not bool(seats_dict):
             flash(gl.MSG_NO_SEATS_LEFT, 'message')
@@ -308,7 +321,7 @@ class Flights:
                     for seat in transaction[gl.DB_SEATS_SOLD]:
                         if seat["seat"] == gl.DB_PRIME_SEATS:
                             numPrimeSeats += 1
-                        elif seat["seat"] == gl.DB_VIP_SEATS:
+                        elif seat["seat"] == gl.DB_VIP:
                             numVIPSeats += 1
 
             # Now create the empty seats.
