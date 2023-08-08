@@ -319,7 +319,7 @@ class Flights:
             for transaction in flight[gl.DB_TRANSACTIONS]:
                 if gl.DB_SEATS_SOLD in transaction:
                     for seat in transaction[gl.DB_SEATS_SOLD]:
-                        if seat["seat"] == gl.DB_PRIME_SEATS:
+                        if seat["seat"] == gl.DB_PRIME:
                             numPrimeSeats += 1
                         elif seat["seat"] == gl.DB_VIP:
                             numVIPSeats += 1

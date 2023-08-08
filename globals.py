@@ -66,7 +66,6 @@ class globals:
     DB_PILOT_ID = "pilot_id"
     DB_PRIME_PASS_NAME = 'prime_pass_name'
     DB_PRIME_PRICE = "prime_price"
-    DB_PRIME_SEATS = "prime_seats"
     DB_TRANSACTIONS = 'transactions'
     DB_POSTAL_CODE = "postalCode"
     DB_RECORD_KEY = "record_id"

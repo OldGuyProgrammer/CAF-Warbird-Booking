@@ -474,13 +474,6 @@ def passenger_contact():
             return redirect(url_for('ridewithus'))
         else:
             return render_template('seriouserror.html'), 500
-        # else:
-        #     for error in pass_form.errors:
-        #         flash(f'Field: {error}: {pass_form.errors[error]}', 'error')
-        #
-        #     pass_form.pass_available_seats = 0
-        #     pass_form.prime_available_seats = 0
-        #     return render_template('passengercontact.html', form=pass_form), 201
 
     elif request.method == "GET":
         flight_key = request.args.get('flightkey', None)

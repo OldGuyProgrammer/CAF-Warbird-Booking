@@ -68,7 +68,7 @@
                         <div class="col-lg-6 col-sm-6">
                             <h5 style="display: inline-block">Premium Seats: $</h5>
                             <h5 id="prime_price" style="display: inline-block">{{ form.prime_seat_price }}</h5>
-                            <div>Enter passenger name and birth date.</div>
+                            <div>Enter passenger name and birthdate.</div>
                             <div id="premium_seats">
                                 {% for prime in primes %}
                                     <input class='prime-name' name='prime_name' placeholder="Enter Passenger Name"
@@ -85,7 +85,7 @@
                         <div class="col-lg-6 col-sm-6">
                             <h5 style="display: inline-block">Passenger Seats: $</h5>
                             <h5 id="passenger_price" style="display: inline-block">{{ form.pass_seat_price }}</h5>
-                            <div>Enter passenger name and birth date.</div>
+                            <div>Enter passenger name and birthdate.</div>
                             {% for passenger in passengers %}
                                 <input class='passenger-name' name='passenger_name' placeholder="Enter Passenger Name"
                                        type="text"
