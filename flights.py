@@ -180,20 +180,9 @@ class Flights:
         # airport_code = form.airport_code.data
 
         flight = {
-            gl.DB_N_NUMBER: n_number,
             gl.DB_AIRPORT_CODE: form.airport_code.data.upper(),
             gl.DB_AIRPORT_NAME: form.airport_name.data,
-            gl.DB_PRIME_PRICE: form.premium_price.data,
-            gl.DB_NUM_PRIME_SEATS: form.number_prime_seats.data,
-            gl.DB_VIP_PRICE: form.passenger_price.data,
-            gl.DB_NUM_VIP_SEATS: form.number_pass_seats.data,
-            gl.DB_FLIGHT_TIME: form.flight_time.data,
-            gl.DB_END_FLIGHT_TIME: form.end_flight_time.data,
-            gl.DB_PILOT: form.pilots.data,
-            gl.DB_CO_PILOT: form.co_pilots.data,
-            gl.DB_CREWCHIEF: form.crew_chiefs.data,
-            gl.DB_LOAD_MASTER: form.loadmasters.data,
-            gl.DB_AIRPORT_CITY: form.airport_city.data}
+            gl.DB_N_NUMBER: n_number}
 
         res = self.db.saveFlight(flight)
         return res
@@ -258,7 +247,7 @@ class Flights:
         seats_dict = self.__seatsLeft(flight)
         if gl.DB_TRANSACTIONS in flight:
             for transaction in flight[gl.DB_TRANSACTIONS]:
-                if gl.DB_PRIME_SEATS in transaction:
+                if gl.DB_PRIME in transaction:
                     primeSeatsSold += len(transaction[gl.DB_PRIME_SEATS])
                 if gl.DB_VIP in transaction:
                     passengerSeatsSold += len(transaction[gl.DB_VIP])

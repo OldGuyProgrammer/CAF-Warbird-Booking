@@ -19,7 +19,6 @@ class globals:
     # For MongoDB, each record must have a key called "_id".
     # For MongoDB, if the _id is not specified, MongoDB will create a random one.
 
-    DB_ADMIN = 'admin'
     DB_ACTIVE = 'active'
     DB_ADDRESS = 'address'
     DB_AIRCRAFT_DETAILS = "aircraftDetails"
@@ -32,22 +31,20 @@ class globals:
     DB_AIRCRAFT_TYPE = "aircraft_type"
     DB_AUTHENTICATED = 'authenticated'
     DB_CAF_MEMBER = "CAFMember"
+    DB_PILOT = "To be changed"
+    DB_CREWCHIEF = "To be changed"
+    DB_LOAD_MASTER = "To be changed"
     DB_CITY = "city"
-    DB_CO_PILOT = "co_pilot"
-    DB_CO_PILOT_DETAILS = "coPilotDetails"
     DB_CREW = "crew"
-    DB_CREWCHIEF = "crew_chief"
-    DB_CREWCHIEF_DETAILS = "crewChiefDetails"
+    DB_CREW_POSITION = "crew_position"
     DB_MM_DD_YYYY = "%m-%d-%Y"
     DB_EMAIL = 'email_address'
     DB_END_FLIGHT_TIME = "end_flight_time"
-    DB_FIRST_NAME = 'FirstName'
+    DB_FIRST_NAME = 'f  irst_name'
     DB_FLIGHT_ID = 'flight_id'  # Maps Fight ID to MongoDB _id
     DB_FLIGHT_TIME = "flight_time"
     DB_JOIN_MAILING_LIST = "mailing_list"
-    DB_LAST_NAME = 'LastName'
-    DB_LOAD_MASTER = "loadmaster"
-    DB_LOAD_MASTER_DETAILS = "loadMasterDetails"
+    DB_LAST_NAME = 'last_name'
     DB_MANIFEST = 'manifest'
     DB_N_NUMBER = "aircraft_n_number"
     DB_NEW_PASSWORD = 'new_password'
@@ -61,9 +58,6 @@ class globals:
     DB_PASSENGERS = 'passengers'
     DB_PRIME = "Prime"
     DB_PASSENGER_ID = "passenger_id"         # Maps passenger ID to MongoDB _id
-    DB_PILOT = "pilot"
-    DB_PILOT_DETAILS = "pilotDetails"
-    DB_PILOT_ID = "pilot_id"
     DB_PRIME_PASS_NAME = 'prime_pass_name'
     DB_PRIME_PRICE = "prime_price"
     DB_TRANSACTIONS = 'transactions'
@@ -79,7 +73,7 @@ class globals:
 
 # Screen Prompts
     PR_ADDRESS = 'Address'
-    PR_ADD_A_FLIGHT = 'Add a Flight'
+    PR_ADD_A_FLIGHT = 'Add A Flight'
     PR_ADD_AIRCRAFT = 'Add Aircraft'
     PR_ADMIN = "Admin"
     PR_AIRCRAFT_N_NUMBER = 'N Number'
@@ -91,16 +85,18 @@ class globals:
     PR_AIRPORT_CITY = 'Airport City'
     PR_BIRTH_DAY = "Birthday"
     PR_CAF_MEMBER = "CAF Member"
+    PR_CREW_ADD_BUTTON = "Add Crew"
+    PR_CREW_POSITION = "Crew Position"
     PR_CITY = 'City'
     PR_COLONEL_NUMBER = "Col #"
-    PR_CREWCHIEF = "Crew Chief"
+    # PR_CREWCHIEF = "Crew Chief"
     PR_END_FLIGHT_TIME = 'Ending Flight Time: '
     PR_FIRST_NAME = 'First Name'
     PR_FLIGHT_TIME = 'Starting Flight Time: '
     PR_IATA_CODE = 'IATA'
     PR_JOIN_MAILING_LIST = "Join the mailing list."
     PR_LAST_NAME = 'Last Name'
-    PR_LOADMASTER = "Load Master"
+    # PR_LOADMASTER = "Load Master"
     PR_EMAIL = 'Email Address'
     PR_HOLD_HARMLESS = "Sign Form"
     PR_NEW_PASSWORD = "New Password"
@@ -108,7 +104,7 @@ class globals:
     PR_NUMBER_SEATS = 'Number: '
     PR_OK_TEXT = 'OK To Text'
     PR_PHONE = 'Mobile Phone'
-    PR_PILOT = "Pilot"
+    # PR_PILOT = "Pilot"
     PR_POSTAL = 'Zip/Postal'
     PR_PASS_NAME = 'Enter Passenger Name'
     PR_PASSWORD = "Password"

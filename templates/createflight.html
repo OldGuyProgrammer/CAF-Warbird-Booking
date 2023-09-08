@@ -44,6 +44,14 @@
                         </div>
                     </div>
                 </div>
+                                <!-- Crew List -->
+                <div class="crew row row-cols-6 pb-2">
+                    <button type="button btn-secondary">Add Crew</button>
+                    <label for="crew">Crew: </label>
+                    {{ form.crew }}
+                    {{ form.crewPosition }}
+                </div>
+
                 <div class="row row-cols-6">
                     <!--                     Seats and Price  -->
                     <div class="col-lg-4 pb-2">
@@ -60,20 +68,6 @@
                             {{ form.number_pass_seats.label }} {{ form.number_pass_seats }}
                         </div>
                     </div>
-                </div>
-                <!-- Pilot's name, Co-Pilot's Name -->
-                <div class="row row-cols-6 pb-2">
-                    <label for="pilots">Pilot: </label>
-                    {{ form.pilots }}
-                    <label for="co_pilot">Co_Pilot: </label>
-                    {{ form.co_pilots }}
-                </div>
-                <div class="row row-cols-6 pb-2">
-                    <!-- Crew Chief's Name,  Loadmaster's Name-->
-                    <label for="crewchief">Crew Chief: </label>
-                    {{ form.crew_chiefs }}
-                    <label for="loadmaster">Loadmaster: </label>
-                    {{ form.loadmasters }}
                 </div>
                 <!--    Submit Button                        -->
                 <div class="col">

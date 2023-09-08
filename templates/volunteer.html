@@ -33,7 +33,7 @@
                         <span id="gettingInfo">Getting Volunteer info.</span>
                         <!-- First Name, Last Name -->
                         <div class="col col-lg-12 p-0">
-                            {{ form.FirstName }} {{ form.LastName }}
+                            {{ form.first_name }} {{ form.last_name }}
                         </div>
                         <span id="change_pw_label"
                               style="display:none">To make changes, enter your current password.</span>
@@ -41,11 +41,27 @@
                         {{ form.password }} {{ form.new_password }}
                         <span id="pw_req_label" style="display:none">Password Required.</span>
                     </div>
-                    <div class="btn-group-toggle" data-toggle="buttons">
-                        {{ form.admin.label }} {{ form.admin }}
-                        {{ form.pilot.label }} {{ form.pilot }}
-                        {{ form.crew_chief.label }} {{ form.crew_chief }}
-                        {{ form.loadmaster.label }} {{ form.loadmaster }}
+                    <div class="assignments container col-6">
+                        <div class="row">
+                            <h2>Crew Positions</h2>
+                            <p>Enter as many crew positions as needed for this volunteer. To add more than four, click
+                                the button below.</p>
+                        </div>
+                        <ul>
+                            <li>
+                                {{ form.crew_position }}
+                            </li>
+                            <li>
+                                {{ form.crew_position }}
+                            </li>
+                            <li>
+                                {{ form.crew_position }}
+                            </li>
+                            <li>
+                                {{ form.crew_position }}
+                            </li>
+                        </ul>
+
                     </div>
                     <!--    Submit Button                        -->
                     <div class="row">

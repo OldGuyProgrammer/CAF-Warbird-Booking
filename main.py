@@ -1,10 +1,10 @@
 #
-# Indiana Wing Commemorative Air Force
+# Commemorative Air Force
 #     Warbird Rides Management System
 #         Server side
 #         Main module
 #
-#   Jim Olivi 2022
+#   Jim Olivi 2023
 #
 
 from flask import Flask, render_template, request, redirect, url_for, flash
@@ -28,9 +28,10 @@ from airports import airports
 from volunteer import Volunteer, getLists
 from customer_manager import Customer
 from aircraft_model import getAirPlanes
+from aircraft_model import Aircraft
 # from square import SquareServices as Square
 
-print("Indiana Commemorative Air Force")
+print("Commemorative Air Force")
 print("Warbirds Rides Booking System started.")
 
 print(f"main module name: {__name__}")
@@ -67,7 +68,7 @@ config = configparser.ConfigParser()
 
 @login_manager.user_loader
 def load_user(user_id):
-    vol_obj = Volunteer(db, user_id)
+    vol_obj = Volunteer(db, user_id=user_id)
     return vol_obj
 
 
@@ -137,19 +138,9 @@ def add_volunteer():
     add_volunteer_form = AddVolunteer(request.form)
     if request.method == "POST" and add_volunteer_form.validate():
 
-        vol = Volunteer(db, add_volunteer_form.record_id.data)
-        new_volunteer = {
-            gl.DB_RECORD_KEY: add_volunteer_form.record_id.data,
-            gl.DB_FIRST_NAME: add_volunteer_form.FirstName.data,
-            gl.DB_LAST_NAME: add_volunteer_form.LastName.data,
-            gl.DB_ADMIN: add_volunteer_form.admin.data,
-            gl.DB_PILOT: add_volunteer_form.pilot.data,
-            gl.DB_CREWCHIEF: add_volunteer_form.crew_chief.data,
-            gl.DB_LOAD_MASTER : add_volunteer_form.loadmaster.data,
-            gl.DB_PASSWORD: add_volunteer_form.password.data,
-            # gl.DB_NEW_PASSWORD: add_volunteer_form.new_password.data
-        }
-        res = vol.update_volunteer(app, new_volunteer)
+        new_volunteer = Volunteer(db, add_volunteer_form)
+        # res = volunteer.update_volunteer(app, new_volunteer)
+        res = 1
 
         if res == s.duplicate_volunteer_id:
             flash(f"{request.form['first_name']}, {request.form['last_name']}", "error")
@@ -159,7 +150,7 @@ def add_volunteer():
     else:
         DisplayFlask(add_volunteer_form)
 
-    return render_template('addvolunteer.html', form=add_volunteer_form), 200
+    return render_template('volunteer.html', form=add_volunteer_form), 200
 
 
 # Get all flights for the requested airport
@@ -175,7 +166,6 @@ def add_aircraft():
 
     add_aircraft_form = AddAircraft(request.form)
     if request.method == "POST" and add_aircraft_form.validate():
-        am = ap(db)
         airplane_data = add_aircraft_form.data
         file = request.files[gl.DB_AIRCRAFT_IMAGE]
         if file.filename != "":
@@ -203,7 +193,7 @@ def add_aircraft():
             airplane_data.pop('add_aircraft')
 
         airplane_data[gl.DB_AIRCRAFT_IMAGE] = filename
-        res = am.AddAircraft(airplane_data)
+        res = Aircraft(db).AddAircraft(airplane_data)
         if res == s.database_op_success:
             flash(gl.MSG_AIRPLANE_ADDED, "message")
             flash(f"{airplane_data[gl.DB_AIRCRAFT_NAME]} {add_aircraft_form.aircraft_n_number.data} added.", 'message')
@@ -222,16 +212,16 @@ def add_aircraft():
 @login_required
 def getvolunteer():
     user_id = request.args.get(gl.DB_RECORD_KEY, None)
-    vol = Volunteer(db, user_id)
+    vol = Volunteer(db, user_id=user_id)
     vol_data = vol.person_data
     scrubbed_vol = {
         gl.DB_RECORD_KEY: vol_data[gl.DB_RECORD_KEY],
         gl.DB_FIRST_NAME: vol_data[gl.DB_FIRST_NAME],
-        gl.DB_LAST_NAME: vol_data[gl.DB_LAST_NAME],
-        gl.DB_ADMIN: vol_data[gl.DB_ADMIN],
-        gl.DB_PILOT: vol_data[gl.DB_PILOT],
-        gl.DB_CREWCHIEF: vol_data[gl.DB_CREWCHIEF],
-        gl.DB_LOAD_MASTER: vol_data[gl.DB_LOAD_MASTER]
+        gl.DB_LAST_NAME: vol_data[gl.DB_LAST_NAME]
+        # gl.DB_ADMIN: vol_data[gl.DB_ADMIN],
+        # gl.DB_PILOT: vol_data[gl.DB_PILOT],
+        # gl.DB_CREWCHIEF: vol_data[gl.DB_CREWCHIEF],
+        # gl.DB_LOAD_MASTER: vol_data[gl.DB_LOAD_MASTER]
     }
     return scrubbed_vol
 
@@ -296,10 +286,8 @@ def createflight():
             lists[3].insert(0, ("Select", "Select"))
             airplanes.insert(0, ("Select", "Select"))
 
-        cff.pilots.choices = lists[0]
-        cff.co_pilots.choices = lists[1]
-        cff.crew_chiefs.choices = lists[2]
-        cff.loadmasters.choices = lists[3]
+        cff.crew.choices = lists[0]
+
 
         cff.process()
     else:
@@ -549,7 +537,7 @@ def getoneflight(primarykey):
 
     return flight, 201
 
-print(f"Starting INDYCAF WARBIRDS: {__name__}")
+print(f"Starting CAF WARBIRDS: {__name__}")
 if __name__ == "__main__":
     port = os.getenv("PORT")
     if port is None:

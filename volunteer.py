@@ -23,56 +23,30 @@ import asyncio
 
 class Volunteer(UserMixin):
     def __init__(self, db, user_id):
+# Use the user_id (colonel number) to try and read a record.
+# If a record is read, return the colonel number. If no record is found, return None
 
         self.db = db
-
         fields = [
             gl.DB_RECORD_KEY,
             gl.DB_FIRST_NAME,
-            gl.DB_LAST_NAME,
-            gl.DB_ADMIN,
-            gl.DB_PILOT,
-            gl.DB_CREWCHIEF,
-            gl.DB_LOAD_MASTER
+            gl.DB_LAST_NAME
         ]
-        if user_id is None:
-            # Set up an empty person record: The volunteer is not on file.
-            self.volunteer = {}
-            self.volunteer[gl.DB_ACTIVE] = False
-            self.volunteer[gl.DB_RECORD_KEY] = ""
-            self.volunteer[gl.DB_FIRST_NAME] = ""
-            self.volunteer[gl.DB_LAST_NAME] = ""
-            self.volunteer[gl.DB_PASSWORD] = ""
-            self.volunteer[gl.DB_ADMIN] = False
-            self.volunteer[gl.DB_ACTIVE] = False
-            self.volunteer[gl.DB_AUTHENTICATED] = False
-            self.volunteer[gl.DB_PILOT] = False
-            self.volunteer[gl.DB_CREWCHIEF] = False
-            self.volunteer[gl.DB_LOAD_MASTER] = False
-        else:
-            # Is this person on file?
-            # KEY_ID is the UserID and should be the colonel number
+
+# Set up an empty person record
+        self.volunteer = {}
+        self.volunteer[gl.DB_ACTIVE] = False
+        self.volunteer[gl.DB_RECORD_KEY] = user_id
+        self.volunteer[gl.DB_FIRST_NAME] = ""
+        self.volunteer[gl.DB_LAST_NAME] = ""
+        self.volunteer[gl.DB_PASSWORD] = ""
+        self.volunteer[gl.DB_ACTIVE] = False
+        self.volunteer[gl.DB_AUTHENTICATED] = False
+        if user_id is not None:
             person = self.db.get_person(user_id, fields)
             if person is not None:
-                # Do we have update data?
                 self.volunteer = person
-                self.volunteer[gl.DB_RECORD_KEY] = person[gl.DB_RECORD_KEY]
-                self.volunteer[gl.DB_ACTIVE] = True
-                self.volunteer[gl.DB_AUTHENTICATED] = True
-            else:
-                # Set up an empty person record: The volunteer is not on file.
-                self.volunteer = {}
-                self.volunteer[gl.DB_ACTIVE] = False
-                self.volunteer[gl.DB_RECORD_KEY] = ""
-                self.volunteer[gl.DB_FIRST_NAME] = ""
-                self.volunteer[gl.DB_LAST_NAME] = ""
-                self.volunteer[gl.DB_PASSWORD] = ""
-                self.volunteer[gl.DB_ADMIN] = False
-                self.volunteer[gl.DB_ACTIVE] = False
-                self.volunteer[gl.DB_AUTHENTICATED] = False
-                self.volunteer[gl.DB_PILOT] = False
-                self.volunteer[gl.DB_CREWCHIEF] = False
-                self.volunteer[gl.DB_LOAD_MASTER] = False
+
 
     @property
     def person_data(self):
