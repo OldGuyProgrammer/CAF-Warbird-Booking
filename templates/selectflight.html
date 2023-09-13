@@ -54,8 +54,8 @@
     function ShowFlightSelected() {
         $("#spinner").show();
         $("#gettingInfo").show();
-        var url = "/printFlightReport?flightid="
-        var parm_count = 0
+        let url = "/printFlightReport?flightid="
+        let parm_count = 0
         $(".flights").each((idx) => {
             const el = $(".flights")[idx].children
             if (el[0].checked) {

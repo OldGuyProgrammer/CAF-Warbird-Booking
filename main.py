@@ -68,7 +68,7 @@ config = configparser.ConfigParser()
 
 @login_manager.user_loader
 def load_user(user_id):
-    vol_obj = Volunteer(db, user_id=user_id)
+    vol_obj = Volunteer(db, user_id)
     return vol_obj
 
 
@@ -135,11 +135,11 @@ def sign_out():
 @login_required
 def add_volunteer():
 
-    add_volunteer_form = AddVolunteer(request.form)
-    if request.method == "POST" and add_volunteer_form.validate():
+    volunteer_form = AddVolunteer(request.form)
+    if request.method == "POST" and volunteer_form.validate():
 
-        new_volunteer = Volunteer(db, add_volunteer_form)
-        # res = volunteer.update_volunteer(app, new_volunteer)
+        volunteer = Volunteer(db, volunteer_form.colonel_number.data)
+        volunteer.update_volunteer(app, volunteer_form)
         res = 1
 
         if res == s.duplicate_volunteer_id:
@@ -148,9 +148,9 @@ def add_volunteer():
         else:
            return redirect(url_for('add_volunteer'))
     else:
-        DisplayFlask(add_volunteer_form)
+        DisplayFlask(volunteer_form)
 
-    return render_template('volunteer.html', form=add_volunteer_form), 200
+    return render_template('volunteer.html', form=volunteer_form), 200
 
 
 # Get all flights for the requested airport
@@ -212,16 +212,13 @@ def add_aircraft():
 @login_required
 def getvolunteer():
     user_id = request.args.get(gl.DB_RECORD_KEY, None)
-    vol = Volunteer(db, user_id=user_id)
+    vol = Volunteer(db, user_id)
     vol_data = vol.person_data
     scrubbed_vol = {
-        gl.DB_RECORD_KEY: vol_data[gl.DB_RECORD_KEY],
+        gl.DB_COLONEL_NUMBER: vol_data[gl.DB_COLONEL_NUMBER],
         gl.DB_FIRST_NAME: vol_data[gl.DB_FIRST_NAME],
-        gl.DB_LAST_NAME: vol_data[gl.DB_LAST_NAME]
-        # gl.DB_ADMIN: vol_data[gl.DB_ADMIN],
-        # gl.DB_PILOT: vol_data[gl.DB_PILOT],
-        # gl.DB_CREWCHIEF: vol_data[gl.DB_CREWCHIEF],
-        # gl.DB_LOAD_MASTER: vol_data[gl.DB_LOAD_MASTER]
+        gl.DB_LAST_NAME: vol_data[gl.DB_LAST_NAME],
+        gl.DB_VOLUNTEER_ON_FILE: vol_data[gl.DB_VOLUNTEER_ON_FILE]
     }
     return scrubbed_vol
 

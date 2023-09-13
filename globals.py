@@ -36,11 +36,12 @@ class globals:
     DB_LOAD_MASTER = "To be changed"
     DB_CITY = "city"
     DB_CREW = "crew"
-    DB_CREW_POSITION = "crew_position"
+    DB_CREW_POSITION = "crew_positions"
+    DB_COLONEL_NUMBER = "colonel_number"
     DB_MM_DD_YYYY = "%m-%d-%Y"
     DB_EMAIL = 'email_address'
     DB_END_FLIGHT_TIME = "end_flight_time"
-    DB_FIRST_NAME = 'f  irst_name'
+    DB_FIRST_NAME = 'first_name'
     DB_FLIGHT_ID = 'flight_id'  # Maps Fight ID to MongoDB _id
     DB_FLIGHT_TIME = "flight_time"
     DB_JOIN_MAILING_LIST = "mailing_list"
@@ -70,6 +71,7 @@ class globals:
     DB_TOTAL_PRICE = 'total_price'
     DB_VIP = 'VIP'
     DB_VIP_PRICE = "VIP_price"
+    DB_VOLUNTEER_ON_FILE = "volunteer_on_file"
 
 # Screen Prompts
     PR_ADDRESS = 'Address'
@@ -195,6 +197,7 @@ class globals:
 #URL parameters
     URL_DATE = "date"
 
+# Enumerated signals to send and receive messages between modules.
 class signals(Enum):
     success = 1
     failure = 2

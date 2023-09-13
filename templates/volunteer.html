@@ -20,15 +20,15 @@
                     {{ form.csrf_token }}
                     <div class="col">
                         <h2 class="card-title">CAF Volunteer</h2>
-                        <h4 class="card-title">Enter a User ID to see if the volunteer is already on file.</h4>
+                        <h4 class="card-title">Enter a Colonel Number to see if the volunteer is already on file.</h4>
                         <h4 class="card-title">If the volunteer is not on file, enter the information, then tap
                             Add Volunteer.</h4>
                         <h4 class="card-title">If the user is already on file, you can make changes then tap
                             Change Volunteer."</h4>
                         <h4 id="add_new_label" class="card-title" style="display:none">Volunteer not found, you can add
                             a new volunteer.</h4>
-                        <!-- User ID -->
-                        {{ form.record_id }}
+                        <!-- colonel_number -->
+                        {{ form.colonel_number }}
                         <div id="spinner" class="spinner-border" style="display:none"></div>
                         <span id="gettingInfo">Getting Volunteer info.</span>
                         <!-- First Name, Last Name -->
@@ -41,27 +41,16 @@
                         {{ form.password }} {{ form.new_password }}
                         <span id="pw_req_label" style="display:none">Password Required.</span>
                     </div>
-                    <div class="assignments container col-6">
+                    <div class="container col-6">
                         <div class="row">
                             <h2>Crew Positions</h2>
-                            <p>Enter as many crew positions as needed for this volunteer. To add more than four, click
+                            <p>Enter as many crew positions as needed for this volunteer. To add additional crew positions, click
                                 the button below.</p>
-                        </div>
-                        <ul>
-                            <li>
-                                {{ form.crew_position }}
-                            </li>
-                            <li>
-                                {{ form.crew_position }}
-                            </li>
-                            <li>
-                                {{ form.crew_position }}
-                            </li>
-                            <li>
-                                {{ form.crew_position }}
-                            </li>
+                            <p>Blank (empty) entries will be discarded.</p>
+                        <ul class="crew_positions">
                         </ul>
-
+                        <button id="btn_crew_position" type="submit" class="btn btn-outline-secondary" onclick="addCrewPosition()">Add Crew Position</button>
+                        </div>
                     </div>
                     <!--    Submit Button                        -->
                     <div class="row">
@@ -79,7 +68,7 @@
 <script>
     // See if the user id is already on file.
     // If so, fill in the data
-    $("#record_id").change(function (event) {
+    $("#colonel_number").change(function (event) {
 
         const userid = event.target.value;
         if (userid == "") {
@@ -91,13 +80,12 @@
         fetch(url)
             .then((response) => response.json())
             .then((person) => {
-                if (person["record_id"] != "") {
-                    $("#FirstName").val(person["FirstName"])
-                    $("#LastName").val(person["LastName"])
-                    $("#admin").prop("checked", person["admin"])
-                    $("#pilot").prop("checked", person["pilot"])
-                    $("#crew_chief").prop("checked", person["crew_chief"])
-                    $("#loadmaster").prop("checked", person["loadmaster"])
+                console.log(person)
+                $(".crew_positions").empty()
+                {#Check for new record or record to be updated.#}
+                if (person["volunteer_on_file"] == "UPDATE") {
+                    $("#first_name").val(person["first_name"])
+                    $("#last_name").val(person["last_name"])
                     $("#submit_button").text("Change Volunteer")
                     $("#submit_button").show()
                     $("#add_new_label").hide()
@@ -105,18 +93,18 @@
                     $("#change_pw_label").show()
                     $("#pw_req_label").hide()
                 } else {
-                    $("#FirstName").val("")
-                    $("#LastName").val("")
-                    $("#admin").prop("checked", false)
-                    $("#pilot").prop("checked", false)
-                    $("#crew_chief").prop("checked", false)
-                    $("#loadmaster").prop("checked", false)
+                    {# Set up for new volunteer. #}
+                    $("#first_name").val("")
+                    $("#last_name").val("")
                     $("#submit_button").text("Add Volunteer")
                     $("#submit_button").show()
                     $("#add_new_label").show()
                     $("#new_password").hide()
                     $("#change_pw_label").hide()
                     $("#pw_req_label").show()
+                    for ( let i = 0; i < 4; i++ ){
+                        $(".crew_positions").append("<li><input id='crew_position' name='crew_position' placeholder='Crew Position' type='text' value=''></li>")
+                    }
                 }
                 $("#spinner").hide()
                 $("#gettingInfo").hide()
@@ -135,5 +123,9 @@
             event.preventDefault();
         }
     });
+
+    function addCrewPosition() {
+        $(".crew_positions").append("<li><input id='crew_position' name='crew_position' placeholder='Crew Position' type='text' value=''></li>")
+    }
 </script>
 {% include "footer.html" %}

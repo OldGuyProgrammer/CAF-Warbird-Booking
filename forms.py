@@ -55,16 +55,16 @@ class CreateFlightForm(FlaskForm):
     crewPosition = StringField(gl.PR_CREW_POSITION, render_kw={'placeholder': gl.PR_CREW_POSITION, 'style': 'width: 30%'})
     add_a_flight = SubmitField(gl.PR_ADD_A_FLIGHT)
 
-
 class AddVolunteer(FlaskForm):
-    record_id = StringField(gl.PR_COLONEL_NUMBER, [validators.InputRequired("Enter Colonel Number")],
+    colonel_number = StringField(gl.PR_COLONEL_NUMBER, [validators.InputRequired("Enter Colonel Number")],
                          render_kw={'placeholder': gl.PR_COLONEL_NUMBER, 'style': 'width: 25%'})
     first_name = StringField(gl.PR_FIRST_NAME, [validators.InputRequired('Enter First Name')], render_kw={'placeholder': gl.PR_FIRST_NAME})
     last_name = StringField(gl.PR_LAST_NAME, [validators.InputRequired('Enter Last Name')], render_kw={'placeholder': gl.PR_LAST_NAME})
     password = PasswordField(gl.PR_PASSWORD, [validators.InputRequired('Password Required')], render_kw={'placeholder': gl.PR_PASSWORD})
     new_password = PasswordField(gl.PR_PASSWORD, render_kw={'placeholder': gl.PR_NEW_PASSWORD})
-    crew_position = StringField(gl.PR_CREW_POSITION, render_kw={'placeholder': gl.PR_CREW_POSITION})
+    # crew_position = StringField(gl.PR_CREW_POSITION, render_kw={'placeholder': gl.PR_CREW_POSITION})
     submit_button = SubmitField(gl.PR_PAY_FOR_FLIGHT)
+
 class PassengerContact(FlaskForm):
     first_name = StringField(gl.PR_FIRST_NAME, [validators.InputRequired(gl.MSG_ENTER_NAME)], render_kw={'placeholder': gl.PR_FIRST_NAME})
     card_title = StringField('Flight Title Goes Here')

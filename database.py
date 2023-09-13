@@ -37,15 +37,16 @@ class DatabaseManager:
         else:
             print("Database Initialization Successful")
 
-    def get_person(self, user_id, args):
+    def get_person(self, user_id, *args):
         # Only return the specified fields.
         # Functions should not ask for password unless necessary
-        db_args = {f for f in args}
+        if len(args) > 0:
+            db_args = {f for f in args}
+        else:
+            db_args = {}
         try:
             query = {"_id": user_id}
             vol = self.dbINDYCAF.db.volunteers.find_one(query, db_args)
-            if vol is not None:
-                vol[gl.DB_RECORD_KEY] = vol.pop("_id")
         except OperationFailure as e:
             print(f'Find person failure: {e}')
             return None
@@ -54,7 +55,7 @@ class DatabaseManager:
 
     def add_volunteer(self, volunteer_dict):
 
-        volunteer_dict["_id"] = volunteer_dict.pop(gl.DB_RECORD_KEY)
+        volunteer_dict["_id"] = volunteer_dict.pop(gl.DB_COLONEL_NUMBER)
         try:
             self.dbINDYCAF.db.volunteers.insert_one(volunteer_dict)
         except DuplicateKeyError:
