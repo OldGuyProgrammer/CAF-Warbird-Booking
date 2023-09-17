@@ -20,7 +20,7 @@ from flask_bootstrap import Bootstrap
 from forms import LoginForm, AddVolunteer, CreateFlightForm, PassengerContact, AddAircraft, Manifest, FindMyRide, Home, FlightReport
 from database import DatabaseManager
 from print_flight_report import PrintFlightReport
-from manifest import Manifests
+# from manifest import Manifests
 from flights import Flights
 from security import Security
 from globals import signals as s, globals as gl, NoFlights, DisplayFlask, StateList, scrub_phone
@@ -138,8 +138,10 @@ def add_volunteer():
     volunteer_form = AddVolunteer(request.form)
     if request.method == "POST" and volunteer_form.validate():
 
+        crew_positions = request.form.getlist("crew_position")
         volunteer = Volunteer(db, volunteer_form.colonel_number.data)
-        volunteer.update_volunteer(app, volunteer_form)
+
+        volunteer.update_volunteer(app, volunteer_form, crew_positions=crew_positions)
         res = 1
 
         if res == s.duplicate_volunteer_id:

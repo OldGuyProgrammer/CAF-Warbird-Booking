@@ -47,8 +47,7 @@
                             <p>Enter as many crew positions as needed for this volunteer. To add additional crew positions, click
                                 the button below.</p>
                             <p>Blank (empty) entries will be discarded.</p>
-                        <ul class="crew_positions">
-                        </ul>
+                            <ul class="crew_positions"></ul>
                         <button id="btn_crew_position" type="submit" class="btn btn-outline-secondary" onclick="addCrewPosition()">Add Crew Position</button>
                         </div>
                     </div>
@@ -80,7 +79,7 @@
         fetch(url)
             .then((response) => response.json())
             .then((person) => {
-                console.log(person)
+                // console.log(person)
                 $(".crew_positions").empty()
                 {#Check for new record or record to be updated.#}
                 if (person["volunteer_on_file"] == "UPDATE") {
@@ -103,7 +102,7 @@
                     $("#change_pw_label").hide()
                     $("#pw_req_label").show()
                     for ( let i = 0; i < 4; i++ ){
-                        $(".crew_positions").append("<li><input id='crew_position' name='crew_position' placeholder='Crew Position' type='text' value=''></li>")
+                        $(".crew_positions").append("<li><input class='crew_position' name='crew_position' placeholder='Crew Position' type='text' value=''></li>")
                     }
                 }
                 $("#spinner").hide()
@@ -116,12 +115,23 @@
     $("form").submit(function (event) {
 // See if new password requested
 // If so, verify old password
+        console.log("Why don't this print?")
         $("#spinner").show()
         $("#gettingInfo").show()
-        if ($('#password').first().val() == '') {
-            alert('Please your current password.')
-            event.preventDefault();
+        if ($('#colonel_number').first().val() == '') {
+            alert('Please enter Colonel Number.')
+            event.preventDefault()
         }
+        if ($('#first_name').first().val() == '' || $('#last_name').first().val() == '') {
+            alert("Please enter volunteer's first and last name.")
+            event.preventDefault()
+        }
+        if ($('#password').first().val() == '') {
+            alert('Please enter a password.')
+            event.preventDefault()
+        }
+        $("#spinner").hide()
+        $("#gettingInfo").hide()
     });
 
     function addCrewPosition() {

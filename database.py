@@ -55,7 +55,6 @@ class DatabaseManager:
 
     def add_volunteer(self, volunteer_dict):
 
-        volunteer_dict["_id"] = volunteer_dict.pop(gl.DB_COLONEL_NUMBER)
         try:
             self.dbINDYCAF.db.volunteers.insert_one(volunteer_dict)
         except DuplicateKeyError:

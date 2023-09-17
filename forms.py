@@ -1,4 +1,4 @@
-#
+
 # Indiana Wing Commemorative Air Force
 #     Warbird Rides Management System
 #         Server side
@@ -10,7 +10,7 @@
 from globals import globals as gl
 from wtforms import StringField, HiddenField, PasswordField,\
     BooleanField, IntegerField, DateTimeField, DateField, TelField, \
-    SelectField, EmailField, validators, SubmitField
+    SelectField, EmailField, validators, SubmitField, FieldList
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField
 
@@ -56,13 +56,11 @@ class CreateFlightForm(FlaskForm):
     add_a_flight = SubmitField(gl.PR_ADD_A_FLIGHT)
 
 class AddVolunteer(FlaskForm):
-    colonel_number = StringField(gl.PR_COLONEL_NUMBER, [validators.InputRequired("Enter Colonel Number")],
-                         render_kw={'placeholder': gl.PR_COLONEL_NUMBER, 'style': 'width: 25%'})
-    first_name = StringField(gl.PR_FIRST_NAME, [validators.InputRequired('Enter First Name')], render_kw={'placeholder': gl.PR_FIRST_NAME})
-    last_name = StringField(gl.PR_LAST_NAME, [validators.InputRequired('Enter Last Name')], render_kw={'placeholder': gl.PR_LAST_NAME})
-    password = PasswordField(gl.PR_PASSWORD, [validators.InputRequired('Password Required')], render_kw={'placeholder': gl.PR_PASSWORD})
+    colonel_number = StringField(gl.PR_COLONEL_NUMBER, render_kw={'placeholder': gl.PR_COLONEL_NUMBER, 'style': 'width: 25%'})
+    first_name = StringField(gl.PR_FIRST_NAME, render_kw={'placeholder': gl.PR_FIRST_NAME})
+    last_name = StringField(gl.PR_LAST_NAME, render_kw={'placeholder': gl.PR_LAST_NAME})
+    password = PasswordField(gl.PR_PASSWORD, render_kw={'placeholder': gl.PR_PASSWORD})
     new_password = PasswordField(gl.PR_PASSWORD, render_kw={'placeholder': gl.PR_NEW_PASSWORD})
-    # crew_position = StringField(gl.PR_CREW_POSITION, render_kw={'placeholder': gl.PR_CREW_POSITION})
     submit_button = SubmitField(gl.PR_PAY_FOR_FLIGHT)
 
 class PassengerContact(FlaskForm):

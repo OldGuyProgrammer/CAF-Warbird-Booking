@@ -59,22 +59,25 @@ class Volunteer(UserMixin):
     # If not, add a new volunteer to the database, encrypting the password
     # If update, hash the new password and update the fields sent
 
-    def update_volunteer(self, app, volunteer):
+    def update_volunteer(self, app, volunteer, **kwargs):
         if self.volunteer[gl.DB_COLONEL_NUMBER] == "":
             return sigs.userid_required
 
 # Filter out the blank crew positions.
-        crew_positions = [vol for vol in volunteer.crew_position.raw_data if "" != vol]
+        crew_positions = []
+        for key, value in kwargs.items():
+            if key == gl.DB_CREW_POSITIONS:
+                crew_positions = [vol for vol in value if "" != vol]
+
         self.volunteer = {key: value for key, value in volunteer.data.items() if key != gl.DB_RECORD_KEY}
         self.volunteer[gl.DB_ACTIVE] = True
-        self.volunteer[gl.DB_CREW_POSITION] = crew_positions
+        self.volunteer[gl.DB_CREW_POSITIONS] = crew_positions
         if "csrf_token" in self.volunteer:
             self.volunteer.pop("csrf_token")
         if "new_password" in self.volunteer:
             self.volunteer.pop("new_password")
 
-        self.volunteer["_id"] = self.volunteer.pop[gl.DB_COLONEL_NUMBER]
-        print(self.volunteer)
+        self.volunteer["_id"] = self.volunteer.pop(gl.DB_COLONEL_NUMBER)
         old_person = self.db.get_person(volunteer[gl.DB_COLONEL_NUMBER].data)
         # old_person = self.db.get_person(volunteer[gl.DB_COLONEL_NUMBER], fields)
         sec = Security(app)

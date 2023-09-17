@@ -36,7 +36,8 @@ class globals:
     DB_LOAD_MASTER = "To be changed"
     DB_CITY = "city"
     DB_CREW = "crew"
-    DB_CREW_POSITION = "crew_positions"
+    DB_CREW_POSITIONS = "crew_positions"
+    DB_CREW_POSITION = "crew_position"
     DB_COLONEL_NUMBER = "colonel_number"
     DB_MM_DD_YYYY = "%m-%d-%Y"
     DB_EMAIL = 'email_address'

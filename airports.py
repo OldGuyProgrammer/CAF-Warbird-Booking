@@ -7,7 +7,7 @@
 #   Jim Olivi 2022
 #
 
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from pathlib import Path
 import requests
 import os

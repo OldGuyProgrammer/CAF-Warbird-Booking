@@ -1,8 +1,9 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="INDYCAF (main.py)" type="Python.FlaskServer">
+    <option name="additionalOptions" value="--host=0.0.0.0" />
     <option name="flaskDebug" value="true" />
     <module name="CAF-Warbird-Booking" />
-    <option name="target" value="$PROJECT_DIR$/../CAF-Warbird-Booking" />
+    <option name="target" value="$PROJECT_DIR$" />
     <option name="targetType" value="PATH" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
@@ -20,7 +21,7 @@
       <env name="AIRPORT_CODE_URL" value="https://api.tequila.kiwi.com/locations/id?id=$AIRPORTCODE&amp;limit=1&amp;locale=en-US&amp;active_only=true" />
     </envs>
     <option name="SDK_HOME" value="" />
-    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../CAF-Warbird-Booking" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     <option name="IS_MODULE_SDK" value="true" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />

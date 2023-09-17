@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/INDY-CAF-Warbird-Booking.iml" filepath="$PROJECT_DIR$/.idea/INDY-CAF-Warbird-Booking.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/CAF-Warbird-Booking.iml" filepath="$PROJECT_DIR$/.idea/CAF-Warbird-Booking.iml" />
     </modules>
   </component>
 </project>
