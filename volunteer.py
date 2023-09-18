@@ -50,94 +50,70 @@ class Volunteer(UserMixin):
                     # Signal to the front end to update a record already on file..
                 self.volunteer[gl.DB_VOLUNTEER_ON_FILE] = "UPDATE"
 
-
-    @property
     def person_data(self):
-        return self.volunteer
+        scrubbed_vol = {
+            gl.DB_COLONEL_NUMBER: self.volunteer[gl.DB_COLONEL_NUMBER],
+            gl.DB_FIRST_NAME: self.volunteer[gl.DB_FIRST_NAME],
+            gl.DB_LAST_NAME: self.volunteer[gl.DB_LAST_NAME],
+            gl.DB_VOLUNTEER_ON_FILE: self.volunteer[gl.DB_VOLUNTEER_ON_FILE],
+            gl.DB_CREW_POSITIONS: self.volunteer[gl.DB_CREW_POSITIONS]
+        }
+        return scrubbed_vol
 
     # Check if the volunteer (user id or Colonel Number) is already on the database.
     # If not, add a new volunteer to the database, encrypting the password
     # If update, hash the new password and update the fields sent
 
-    def update_volunteer(self, app, volunteer, **kwargs):
-        if self.volunteer[gl.DB_COLONEL_NUMBER] == "":
-            return sigs.userid_required
-
+    def update_volunteer(self, app, volunteer_form, **kwargs):
 # Filter out the blank crew positions.
         crew_positions = []
         for key, value in kwargs.items():
             if key == gl.DB_CREW_POSITIONS:
                 crew_positions = [vol for vol in value if "" != vol]
-
-        self.volunteer = {key: value for key, value in volunteer.data.items() if key != gl.DB_RECORD_KEY}
-        self.volunteer[gl.DB_ACTIVE] = True
-        self.volunteer[gl.DB_CREW_POSITIONS] = crew_positions
-        if "csrf_token" in self.volunteer:
-            self.volunteer.pop("csrf_token")
-        if "new_password" in self.volunteer:
-            self.volunteer.pop("new_password")
-
-        self.volunteer["_id"] = self.volunteer.pop(gl.DB_COLONEL_NUMBER)
-        old_person = self.db.get_person(volunteer[gl.DB_COLONEL_NUMBER].data)
-        # old_person = self.db.get_person(volunteer[gl.DB_COLONEL_NUMBER], fields)
+# See if we create a new person record, or update an old one.
+        old_person = self.db.get_person(volunteer_form[gl.DB_COLONEL_NUMBER].data)
         sec = Security(app)
         if old_person is None:
-            # Add a new volunteer to the database
-            self.volunteer[gl.DB_PASSWORD] = sec.make_password(volunteer[gl.DB_PASSWORD].data)
-            # Save UserID because it's changed in the database routine.
-            user_id = volunteer[gl.DB_COLONEL_NUMBER].data
-            # Scrub unwanted fields...
+# Copy the fields we want to keep.
+            self.volunteer["_id"] = volunteer_form[gl.DB_COLONEL_NUMBER].data
+            self.volunteer[gl.DB_FIRST_NAME] = volunteer_form[gl.DB_FIRST_NAME].data
+            self.volunteer[gl.DB_LAST_NAME] = volunteer_form[gl.DB_LAST_NAME].data
+            self.volunteer[gl.DB_ACTIVE] = True
+            self.volunteer[gl.DB_AUTHENTICATED] = True
+            self.volunteer[gl.DB_CREW_POSITIONS] = crew_positions
 
+            # Add a new volunteer to the database
+            self.volunteer[gl.DB_PASSWORD] = sec.make_password(volunteer_form[gl.DB_PASSWORD].data)
 
             res = self.db.add_volunteer(self.volunteer)
             if res == sigs.database_op_success:
                 msg = "New Volunteer Added to Database.\n"
-                msg = msg + f"Name: {volunteer[gl.DB_FIRST_NAME]} {volunteer[gl.DB_LAST_NAME]}\n"
-                msg = msg + f"Col #: {user_id}"
-                fm = FlaskMail(app)
-                flash("Volunteer Added.", "message")
-                flash(f"{request.form[gl.DB_FIRST_NAME]} {request.form[gl.DB_LAST_NAME]} added.", 'message')
-                fm.send_message("New Volunteer added", "jimolivi@icloud.com", msg)
+                msg = msg + f"Name: {self.volunteer[gl.DB_FIRST_NAME]} {self.volunteer[gl.DB_LAST_NAME]}\n"
+                msg = msg + f"Col #: {self.volunteer[gl.DB_COLONEL_NUMBER]}"
+                # fm = FlaskMail(app)
+                # fm.send_message("New Volunteer added", "jimolivi@icloud.com", msg)
             return res
         else:
             # Update the volunteer record
-            # if sec.authenticate_user(old_person[gl.DB_PASSWORD], volunteer[gl.DB_PASSWORD]):
-            # if gl.DB_NEW_PASSWORD in volunteer and volunteer[gl.DB_NEW_PASSWORD] != "":
-            #     # Hash new password.
-            #     volunteer[gl.DB_PASSWORD] = sec.make_password(volunteer[gl.DB_NEW_PASSWORD])
-            #     volunteer.pop(gl.DB_NEW_PASSWORD)
-            # else:
-            #     volunteer.pop(gl.DB_NEW_PASSWORD)
-            #     volunteer.pop(gl.DB_PASSWORD)
+            if sec.authenticate_user(old_person[gl.DB_PASSWORD], volunteer_form[gl.DB_PASSWORD].data):
+                if gl.DB_NEW_PASSWORD in volunteer_form and volunteer_form[gl.DB_NEW_PASSWORD].data != "":
+                    # Hash new password.
+                    volunteer_form[gl.DB_PASSWORD] = sec.make_password(volunteer_form[gl.DB_NEW_PASSWORD])
+                    volunteer_form.pop(gl.DB_NEW_PASSWORD)
 
-            # user_id = volunteer[gl.DB_RECORD_KEY]
-            # volunteer.pop(gl.DB_RECORD_KEY)
-            self.db.update_volunteer(old_person["_id"], volunteer)
-            msg = "Volunteer Updated.\n"
-            msg = msg + f"Name: {volunteer[gl.DB_FIRST_NAME]} {volunteer[gl.DB_LAST_NAME]}\n"
-            msg = msg + f"Col #: {user_id}"
-            flash("Volunteer Updated.", "message")
-            flash(f"{request.form[gl.DB_FIRST_NAME]} {request.form[gl.DB_LAST_NAME]} updated.", 'message')
-            fm = FlaskMail(app)
-            fm.send_message("Volunteer Updated", "jimolivi@icloud.com", msg)
-            return sigs.success
-            # else:
-            #     flash(gl.MSG_LOGIN_FAILED, "error")
-            #     flash(gl.MSG_CONTACT_ADMIN, "error")
-            #     return sigs.failure
-
-            if gl.LBL_NEW_PASSWORD in volunteer:
-                self.volunteer.pop(gl.LBL_NEW_PASSWORD)
-            res = self.db.update_volunteer(self.volunteer[gl.DB_RECORD_KEY], volunteer)
-            if res == sigs.database_op_success:
-                msg = "Volunteer Record Updated.\n"
-                msg = msg + f"Name: {old_person[gl.DB_FIRST_NAME]} {old_person[gl.DB_LAST_NAME]}\n"
-                msg = msg + f"Col #: {volunteer[gl.DB_RECORD_KEY]}"
+                self.volunteer[gl.DB_FIRST_NAME] = volunteer_form[gl.DB_FIRST_NAME].data
+                self.volunteer[gl.DB_LAST_NAME] = volunteer_form[gl.DB_LAST_NAME].data
+                self.volunteer[gl.DB_CREW_POSITIONS] = crew_positions
+                self.db.update_volunteer(old_person["_id"], self.volunteer)
+                msg = "Volunteer Updated.\n"
+                msg = msg + f"Name: {self.volunteer[gl.DB_FIRST_NAME]} {self.volunteer[gl.DB_LAST_NAME]}\n"
+                msg = msg + f"Col #: {self.volunteer[gl.DB_COLONEL_NUMBER]}"
                 flash(msg, "message")
-                fm = FlaskMail(app)
-                fm.send_message("Volunteer record Updated", "jimolivi@icloud.com", msg)
+            else:
+                msg = "Volunteer Not Updated.\nTry Again..."
+                flash(msg, "message")
 
-        return res
+            return sigs.success
 
     @property
     def firstname(self):

@@ -149,6 +149,7 @@ def add_volunteer():
             return redirect(url_for('addvolunteer'))
         else:
            return redirect(url_for('add_volunteer'))
+
     else:
         DisplayFlask(volunteer_form)
 
@@ -215,14 +216,9 @@ def add_aircraft():
 def getvolunteer():
     user_id = request.args.get(gl.DB_RECORD_KEY, None)
     vol = Volunteer(db, user_id)
-    vol_data = vol.person_data
-    scrubbed_vol = {
-        gl.DB_COLONEL_NUMBER: vol_data[gl.DB_COLONEL_NUMBER],
-        gl.DB_FIRST_NAME: vol_data[gl.DB_FIRST_NAME],
-        gl.DB_LAST_NAME: vol_data[gl.DB_LAST_NAME],
-        gl.DB_VOLUNTEER_ON_FILE: vol_data[gl.DB_VOLUNTEER_ON_FILE]
-    }
-    return scrubbed_vol
+    person = vol.person_data()
+
+    return person
 
 # Create a new flight at an airport/airshow
 @app.route("/createflight", methods=['POST', 'GET'])

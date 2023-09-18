@@ -48,7 +48,7 @@
                                 the button below.</p>
                             <p>Blank (empty) entries will be discarded.</p>
                             <ul class="crew_positions"></ul>
-                        <button id="btn_crew_position" type="submit" class="btn btn-outline-secondary" onclick="addCrewPosition()">Add Crew Position</button>
+                            <button id="btn_add_crew_pos" type="button" class="btn btn-outline-secondary">Add Crew Position</button>
                         </div>
                     </div>
                     <!--    Submit Button                        -->
@@ -79,7 +79,7 @@
         fetch(url)
             .then((response) => response.json())
             .then((person) => {
-                // console.log(person)
+                console.log(person)
                 $(".crew_positions").empty()
                 {#Check for new record or record to be updated.#}
                 if (person["volunteer_on_file"] == "UPDATE") {
@@ -113,9 +113,6 @@
     })
     // Do the final checking before allowing the screen to submit
     $("form").submit(function (event) {
-// See if new password requested
-// If so, verify old password
-        console.log("Why don't this print?")
         $("#spinner").show()
         $("#gettingInfo").show()
         if ($('#colonel_number').first().val() == '') {
@@ -134,8 +131,8 @@
         $("#gettingInfo").hide()
     });
 
-    function addCrewPosition() {
+    $("#btn_add_crew_pos").click(() =>{
         $(".crew_positions").append("<li><input id='crew_position' name='crew_position' placeholder='Crew Position' type='text' value=''></li>")
-    }
+    })
 </script>
 {% include "footer.html" %}
