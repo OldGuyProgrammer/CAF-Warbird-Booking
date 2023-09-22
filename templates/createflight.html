@@ -11,11 +11,11 @@
 
     <div class="container-fluid p-1">
         {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="{{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="{{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
         {% endwith %}
 
         <div class="row align-items-start">
@@ -44,31 +44,15 @@
                         </div>
                     </div>
                 </div>
-                                <!-- Crew List -->
-                <div class="crew row row-cols-6 pb-2">
-                    <button type="button btn-secondary">Add Crew</button>
-                    <label for="crew">Crew: </label>
-                    {{ form.crew }}
-                    {{ form.crewPosition }}
-                </div>
+                <!-- Crew List -->
+                <li id="crew_list_template" hidden>
+                    {{ form.crew }}: {{ form.crewPosition }}
+                </li>
+                <ul class="crew-list">
+                    <!--Crew names and crew positions are added here.-->
+                </ul>
+                <button id="btn_add_crew" type="button" class="btn btn-outline-secondary">Add Crew</button>
 
-                <div class="row row-cols-6">
-                    <!--                     Seats and Price  -->
-                    <div class="col-lg-4 pb-2">
-                        <h5>Premium Seats</h5>
-                        {{ form.premium_price.label }} {{ form.premium_price }}
-                        <div class="col-md-auto">
-                            {{ form.number_prime_seats.label }} {{ form.number_prime_seats }}
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <h5>Passenger Seats</h5>
-                        {{ form.passenger_price.label }} {{ form.passenger_price }}
-                        <div class="col-md-auto">
-                            {{ form.number_pass_seats.label }} {{ form.number_pass_seats }}
-                        </div>
-                    </div>
-                </div>
                 <!--    Submit Button                        -->
                 <div class="col">
                     {{ form.add_a_flight }}
@@ -76,7 +60,7 @@
             </div>
             <div class="col-sm-6">
                 <!--    Aircraft Name and Photo                        -->
-                <div class="col col-sm-6">
+                <div class="col col-sm-6 col-lg-6">
                     <label for="aircraft_name">
                         <h3>Select an aircraft</h3>
                     </label>
@@ -85,30 +69,30 @@
                         <span id="gettingInfo">Getting airplane image.</span>
                     </div>
                     <div class="col-sm-6">
-{#                        {{ form.aircraft_name }}#}
+                        {# {{ form.aircraft_name }}#}
                         <select id="aircraft_name" name="aircraft_name" onchange="DisplayAircraft()">
                             {% for airplane in airplanes: %}
-                                <option value={{ airplane[0] }} data-image={{ airplane[2] }}
+                            <option value={{ airplane[0] }} data-image={{ airplane[2] }}
 
-                                >{{ airplane[1] }}</option>
+                            >{{ airplane[1] }}
+                            </option>
                             {% endfor %}
                         </select>
                         <img id="aircraftimage" src="" class="img-fluid" alt="Aircraft Image">
+                        <ul class="seat-list">
+                    <!--Seat detail are added here.-->
+                        </ul>
+                        <button id="btn_add_seat" type="button" class="btn btn-outline-secondary">Add Seat</button>
+
                     </div>
                     <!--Script to format the src="" attribute for the airplane photo. -->
                     <script>
                         function DisplayAircraft() {
                             $("#spinner-get-plane-image").show();
-                            {#console.log($("#aircraft_name option:selected"))#}
-                            {#console.log($("#aircraft_name option:selected").data("image"))#}
                             const file = $("#aircraft_name option:selected").data("image")
-                            {#console.log(file)#}
                             if (file != "Select" && !!file) {
-                                console.log("Get airplane.")
                                 const path = `static/images/${file}`
                                 $("#aircraftimage").attr("src", path)
-                            } else {
-                                console.log("Dont Go")
                             }
                             $("#spinner-get-plane-image").hide();
                         }
@@ -140,7 +124,6 @@
         fetch(user_url)
             .then((response) => response.json())
             .then((airport_obj) => {
-                // console.log(airport_obj)
                 $("#airport_name").val(airport_obj.name)
                 $("#airport_city").val(airport_obj.city)
             }).catch((error) => {
@@ -148,18 +131,28 @@
         })
         $("#spinner-get-airport").hide();
     })
-    {#Script to fill in ending flight time.#}
-    $("#total_flight_time").change(function() {
+    $("#total_flight_time").change(function () {
         const start_flight_time = $("#flight_time").val()
         const end_flight_time = $("#end_flight_time").val()
-        {#if (end_flight_time === "") {#}
-        {#    $("#end_flight_time").val(start_flight_time)#}
-        {#}#}
+
     })
 
     // Display the spinner indicating saving the flight
     $('#add_a_flight').on('click', () => {
         $("#spinner-saving").show();
+    })
+
+    $("#btn_add_crew").click(() => {
+        const el = $("#crew_list_template").clone()
+        el.addClass("crew-entry")
+        el.removeAttr("id")
+        el.removeAttr("hidden")
+        el.appendTo(".crew-list")
+    })
+
+    $("#btn_add_seat").click(() => {
+        console.log("Add a Seat")
+        $('.seat-list').append("<li><input type='text' name='seat_name' placeholder='Seat Name' value=''><input type='number' name='seat_price' placeholder='Seat Price' value=''></li>")
     })
 
 </script>

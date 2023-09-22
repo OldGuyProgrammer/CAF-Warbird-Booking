@@ -31,9 +31,7 @@ class globals:
     DB_AIRCRAFT_TYPE = "aircraft_type"
     DB_AUTHENTICATED = 'authenticated'
     DB_CAF_MEMBER = "CAFMember"
-    DB_PILOT = "To be changed"
-    DB_CREWCHIEF = "To be changed"
-    DB_LOAD_MASTER = "To be changed"
+    DB_CREW_LIST = "crew_list"
     DB_CITY = "city"
     DB_CREW = "crew"
     DB_CREW_POSITIONS = "crew_positions"
@@ -62,16 +60,12 @@ class globals:
     DB_PASSENGER_ID = "passenger_id"         # Maps passenger ID to MongoDB _id
     DB_PRIME_PASS_NAME = 'prime_pass_name'
     DB_PRIME_PRICE = "prime_price"
+    DB_RIDER = "Rider"
+    DB_SEAT_LIST = "seat_list"
     DB_TRANSACTIONS = 'transactions'
     DB_POSTAL_CODE = "postalCode"
     DB_RECORD_KEY = "record_id"
-    DB_SEAT = "seat"
-    DB_SEATS_LEFT= "seats_left"
-    DB_SEATS_SOLD = "seats_sold"
     DB_STATE = "state"
-    DB_TOTAL_PRICE = 'total_price'
-    DB_VIP = 'VIP'
-    DB_VIP_PRICE = "VIP_price"
     DB_VOLUNTEER_ON_FILE = "volunteer_on_file"
 
 # Screen Prompts

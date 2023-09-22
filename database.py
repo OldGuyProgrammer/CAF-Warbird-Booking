@@ -78,11 +78,10 @@ class DatabaseManager:
 
     # Retrieve all selected crew member from the database.
     # Convert to a python tuple and return
-    def getcrew(self, crew_select):
+    def getcrew(self):
         crew_array = []
         try:
-            for crew in self.dbINDYCAF.db.volunteers.find({crew_select: True},
-                                                          {'_id': 1, gl.DB_FIRST_NAME: 1, gl.DB_LAST_NAME: 1}):
+            for crew in self.dbINDYCAF.db.volunteers.find({}, {'_id': 1, gl.DB_FIRST_NAME: 1, gl.DB_LAST_NAME: 1}):
                 crew_array.append(crew)
         except Exception as e:
             print('getcrew: find op failed', e)

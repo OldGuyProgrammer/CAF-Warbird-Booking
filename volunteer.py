@@ -171,33 +171,34 @@ class Volunteer(UserMixin):
 # def get(self):
 #     return self.volunteer[gl.DB_RECORD_KEY]
 
-async def get_crew(db, crew_select):
-    crew_array_db = db.getcrew(crew_select)
+async def get_crew(db):
+    crew_array_db = db.getcrew()
     crew_model = []
     for crew in crew_array_db:
         id = crew['_id']
-        first_name = crew[gl.DB_FIRST_NAME]
-        last_name = crew[gl.DB_LAST_NAME]
-        crew_obj = (id, f'{first_name} {last_name}')
-        crew_model.append(crew_obj)
+        if gl.DB_FIRST_NAME in crew and gl.DB_LAST_NAME in crew:
+            first_name = crew[gl.DB_FIRST_NAME]
+            last_name = crew[gl.DB_LAST_NAME]
+            crew_obj = (id, f'{first_name} {last_name}')
+            crew_model.append(crew_obj)
 
     return crew_model
 
     # Retrieve requested lists from the database
 async def getLists(db) -> None:
 
-    task_pilots = asyncio.create_task(get_crew(db, gl.DB_PILOT))
-    task_crew_chiefs = asyncio.create_task(get_crew(db, gl.DB_CREWCHIEF))
-    task_loadmasters = asyncio.create_task(get_crew(db, gl.DB_LOAD_MASTER))
+    task_get_crew = asyncio.create_task(get_crew(db))
+    # task_crew_chiefs = asyncio.create_task(get_crew(db, gl.DB_CREWCHIEF))
+    # task_loadmasters = asyncio.create_task(get_crew(db, gl.DB_LOAD_MASTER))
 
     # ac = ap(db)
     # task_airplanes = asyncio.create_task(ac.get_air_planes())
 
-    pilots = await task_pilots
-    crew_chiefs = await task_crew_chiefs
-    loadmasters = await task_loadmasters
+    crew = await task_get_crew
+    # crew_chiefs = await task_crew_chiefs
+    # loadmasters = await task_loadmasters
     # airplanes = await task_airplanes
 
-    return [pilots, crew_chiefs, loadmasters]
+    return crew
 
 

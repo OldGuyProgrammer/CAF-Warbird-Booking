@@ -228,22 +228,26 @@ def createflight():
     fl = Flights(db)
     cff = CreateFlightForm(request.form)
     if request.method == "POST" and cff.validate():
-        airport_code = cff.airport_code.data
         n_number = request.form.get("aircraft_name")
-        flight_time = cff.flight_time.data
-        if fl.CreateFlight(cff, n_number):
+
+        crew = request.form.getlist("crew")
+        crew_positions = request.form.getlist("crewPosition")
+        seats = request.form.getlist("seat_name")
+        seat_prices = request.form.getlist("seat_price")
+
+        if fl.create_flight(cff, crew, crew_positions, seats, seat_prices, n_number):
             flash("Flight Added.", 'message')
-            flash(f'{airport_code}, {n_number}, {flight_time}', 'message')
+            flash(f'{cff.airport_code.data.upper()}, {n_number}, {cff.flight_time.data}', 'message')
 
         return redirect(url_for('createflight', method="GET"))
     elif request.method == "GET":
         DisplayFlask(cff)
 
-        lists = asyncio.run(getLists(db))
+        crew_list = asyncio.run(getLists(db))
         airplanes = asyncio.run(getAirPlanes(db))
 
-        pilot_list = lists[0].copy()
-        lists.insert(0, pilot_list)
+        # pilot_list = lists[0].copy()
+        # lists.insert(0, pilot_list)
         args = request.args.to_dict()  # Get the params
         if "flightkey" in args:
             flight = fl.get_one_flight(args['flightkey'])
@@ -275,14 +279,13 @@ def createflight():
                 lists[3].insert(0, ("Select", "Select"))
 
         else:
-            lists[0].insert(0, ("Select", "Select"))
-            lists[1].insert(0, ("Select", "Select"))
-            lists[2].insert(0, ("Select", "Select"))
-            lists[3].insert(0, ("Select", "Select"))
+            crew_list.insert(0, ("Select", "Select"))
+            # lists[1].insert(0, ("Select", "Select"))
+            # lists[2].insert(0, ("Select", "Select"))
+            # lists[3].insert(0, ("Select", "Select"))
             airplanes.insert(0, ("Select", "Select"))
 
-        cff.crew.choices = lists[0]
-
+        cff.crew.choices = crew_list
 
         cff.process()
     else:

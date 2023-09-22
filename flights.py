@@ -176,15 +176,30 @@ class Flights:
                 flight["loadmaster_name"] = f"{name[gl.DB_FIRST_NAME]} {name[gl.DB_LAST_NAME]}"
         return flight
 
-    def CreateFlight(self, form, n_number):
-        # airport_code = form.airport_code.data
+    def create_flight(self, form, crew, crew_positions, seats, seat_prices, n_number):
 
-        flight = {
+        crew.remove("Select")
+        crew_positions.remove("")
+        crew_list = list(zip(crew, crew_positions))
+
+        i = 0
+        seat_list = []
+        for seat in seats:
+            seat_entry = {seat: seat_prices[i], gl.DB_RIDER: None}
+            seat_list.append(seat_entry)
+            i = i + 1
+
+        new_flight = {
             gl.DB_AIRPORT_CODE: form.airport_code.data.upper(),
             gl.DB_AIRPORT_NAME: form.airport_name.data,
-            gl.DB_N_NUMBER: n_number}
-
-        res = self.db.saveFlight(flight)
+            gl.DB_N_NUMBER: n_number,
+            gl.DB_FLIGHT_TIME: form.flight_time.data,
+            gl.DB_END_FLIGHT_TIME: form.end_flight_time.data,
+            gl.DB_CREW_LIST: crew_list,
+            gl.DB_SEAT_LIST: seat_list
+        }
+        print(new_flight)
+        res = self.db.saveFlight(new_flight)
         return res
 
 # Save passenger info for a flight.

@@ -79,12 +79,16 @@
         fetch(url)
             .then((response) => response.json())
             .then((person) => {
-                console.log(person)
+                // console.log(person)
                 $(".crew_positions").empty()
                 {#Check for new record or record to be updated.#}
                 if (person["volunteer_on_file"] == "UPDATE") {
                     $("#first_name").val(person["first_name"])
                     $("#last_name").val(person["last_name"])
+                    const cps = person.crew_positions;
+                    cps.forEach((cp) => {
+                        $(".crew_positions").append(`<li><input class='crew_position' name='crew_position' placeholder='Crew Position' type='text' value=${cp}></li>`)
+                    })
                     $("#submit_button").text("Change Volunteer")
                     $("#submit_button").show()
                     $("#add_new_label").hide()
