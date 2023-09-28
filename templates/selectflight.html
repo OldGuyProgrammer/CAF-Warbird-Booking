@@ -30,7 +30,8 @@
                         <label for="date-start"><h3>Select the Starting Date.</h3></label>
                         <input type="text" name="date" id="date-start">
                         <div class="col">
-                            <a type="button" class="btn btn-primary"  onclick="ShowFlightSelected()">Get Flight Report</a>
+                            <a id="flight-show-flights" type="button" class="btn btn-primary"  onclick="ShowFlightSelected()" title="You can select several flights on which to report.">Get Flight Report</a>
+                            <a id="flight-edit-flight" type="button" class="btn btn-primary" title="Select one flight to edit.">Edit or Duplicate Flight</a>
                         </div>
                         <div class="row align-items-start">
                             <ul id="flightList" class="nav">
@@ -71,6 +72,28 @@
         $("#spinner").hide();
         $("#gettingInfo").hide();
     }
+
+    $("#flight-edit-flight").on("click", () => {
+        $("#spinner").show();
+        $("#gettingInfo").show();
+        let checkedCount = 0
+        $(".flights").each((idx) => {
+            const el = $(".flights")[idx].children
+            if (el[0].checked) {
+                checkedCount++
+                let url = "/createflight?flightkey="
+                const flightId = $(el).data("flightid")
+                url += flightId
+                window.location.href = url
+            }
+        });
+        if (checkedCount == 0){
+            alert("Please select a flight to edit.")
+        }
+        $("#spinner").hide();
+        $("#gettingInfo").hide();
+    })
+
     $(document).ready(() => {
         $("#date-start").datepicker({
             changeMonth: true,

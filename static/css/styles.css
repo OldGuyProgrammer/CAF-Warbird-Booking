@@ -2,10 +2,10 @@ h1, h2, h3, h4 {
 	font-family: 'Times New Roman';
 }
 
-p {
-	color: black;
-	text-justify: l;
-}
+/*p {*/
+/*	color: black;*/
+/*	text-justify: ;*/
+/*}*/
 
 label {
 	text-align:right;
@@ -33,6 +33,9 @@ img {
 	cursor: crosshair;
 }
 
+/*Button Controls*/
+
+
 .button-hidden{
 	visibility: hidden;
 }
@@ -41,7 +44,6 @@ img {
 	visibility: visible;
 }
 
-/*Menu Button Controls*/
  /* Dropdown Button */
 .dropbtn {
   background-color: #04AA6D;

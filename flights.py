@@ -19,19 +19,8 @@ class Flights:
 # See how many seats are left on a flight.
 # Returned is an array: [Prime Seats Sold, Passenger Seats Sold]
     def __seatsLeft(self, flight):
-        prime_seats_left = flight[gl.DB_NUM_PRIME_SEATS]
-        VIP_seats_left = flight[gl.DB_NUM_VIP_SEATS]
-        if gl.DB_TRANSACTIONS in flight:
-            for transaction in flight[gl.DB_TRANSACTIONS]:
-                for seat in transaction[gl.DB_SEATS_SOLD]:
-                    if seat[gl.DB_SEAT] == gl.DB_PRIME:
-                        prime_seats_left = prime_seats_left - 1
-                    else:
-                        VIP_seats_left = VIP_seats_left - 1
-
-        seats_left = {}
-        seats_left.update({gl.DB_PRIME: prime_seats_left})
-        seats_left.update({gl.DB_VIP: VIP_seats_left})
+# Must be re-written for new flights structure.
+        seats_left = 0
 
         return seats_left
 
@@ -153,27 +142,11 @@ class Flights:
         if flight is None:
             return flight
 
-        flight[gl.DB_FLIGHT_TIME] = str(flight[gl.DB_FLIGHT_TIME])
+        flight[gl.DB_FLIGHT_TIME] = flight[gl.DB_FLIGHT_TIME]
         if gl.DB_END_FLIGHT_TIME in flight:
             flight[gl.DB_END_FLIGHT_TIME] = flight[gl.DB_END_FLIGHT_TIME]
         else:
             flight[gl.DB_END_FLIGHT_TIME] = ""
-        if flight[gl.DB_PILOT] != "Select":
-            name = self.db.get_person(flight[gl.DB_PILOT], {gl.DB_FIRST_NAME, gl.DB_LAST_NAME})
-            if name is not None:
-                flight["pilot_name"] = f"{name[gl.DB_FIRST_NAME]} {name[gl.DB_LAST_NAME]}"
-        if flight[gl.DB_CO_PILOT] != "Select":
-            name = self.db.get_person(flight[gl.DB_CO_PILOT], {gl.DB_FIRST_NAME, gl.DB_LAST_NAME})
-            if name is not None:
-                flight["co_pilot_name"] = f"{name[gl.DB_FIRST_NAME]} {name[gl.DB_LAST_NAME]}"
-        if flight[gl.DB_CREWCHIEF] != "Select":
-            name = self.db.get_person(flight[gl.DB_CREWCHIEF], {gl.DB_FIRST_NAME, gl.DB_LAST_NAME})
-            if name is not None:
-                flight["crew_chief_name"] = f"{name[gl.DB_FIRST_NAME]} {name[gl.DB_LAST_NAME]}"
-        if flight[gl.DB_LOAD_MASTER] != "Select":
-            name = self.db.get_person(flight[gl.DB_LOAD_MASTER], {gl.DB_FIRST_NAME, gl.DB_LAST_NAME})
-            if name is not None:
-                flight["loadmaster_name"] = f"{name[gl.DB_FIRST_NAME]} {name[gl.DB_LAST_NAME]}"
         return flight
 
     def create_flight(self, form, crew, crew_positions, seats, seat_prices, n_number):
@@ -192,13 +165,13 @@ class Flights:
         new_flight = {
             gl.DB_AIRPORT_CODE: form.airport_code.data.upper(),
             gl.DB_AIRPORT_NAME: form.airport_name.data,
+            gl.DB_AIRPORT_CITY: form.airport_city.data,
             gl.DB_N_NUMBER: n_number,
             gl.DB_FLIGHT_TIME: form.flight_time.data,
             gl.DB_END_FLIGHT_TIME: form.end_flight_time.data,
             gl.DB_CREW_LIST: crew_list,
             gl.DB_SEAT_LIST: seat_list
         }
-        print(new_flight)
         res = self.db.saveFlight(new_flight)
         return res
 

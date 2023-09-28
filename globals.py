@@ -70,7 +70,7 @@ class globals:
 
 # Screen Prompts
     PR_ADDRESS = 'Address'
-    PR_ADD_A_FLIGHT = 'Add A Flight'
+    PR_ADD_A_FLIGHT = 'Add/Update This Flight'
     PR_ADD_AIRCRAFT = 'Add Aircraft'
     PR_ADMIN = "Admin"
     PR_AIRCRAFT_N_NUMBER = 'N Number'

@@ -222,11 +222,12 @@ def getvolunteer():
 
 # Create a new flight at an airport/airshow
 @app.route("/createflight", methods=['POST', 'GET'])
-@login_required
+# @login_required
 def createflight():
 
     fl = Flights(db)
     cff = CreateFlightForm(request.form)
+    crew_list = []
     if request.method == "POST" and cff.validate():
         n_number = request.form.get("aircraft_name")
 
@@ -243,11 +244,9 @@ def createflight():
     elif request.method == "GET":
         DisplayFlask(cff)
 
-        crew_list = asyncio.run(getLists(db))
+        crew_selection = asyncio.run(getLists(db))
         airplanes = asyncio.run(getAirPlanes(db))
 
-        # pilot_list = lists[0].copy()
-        # lists.insert(0, pilot_list)
         args = request.args.to_dict()  # Get the params
         if "flightkey" in args:
             flight = fl.get_one_flight(args['flightkey'])
@@ -257,41 +256,20 @@ def createflight():
             # Date time will format correctly if its in datetime format
             cff.flight_time.data = flight[gl.DB_FLIGHT_TIME]
             cff.end_flight_time.data = flight[gl.DB_END_FLIGHT_TIME]
-            cff.premium_price.data = flight[gl.DB_PRIME_PRICE]
-            cff.passenger_price.data = flight[gl.DB_VIP_PRICE]
-            cff.number_prime_seats.data = flight[gl.DB_NUM_PRIME_SEATS]
-            cff.number_pass_seats.data = flight[gl.DB_NUM_VIP_SEATS]
-            if "pilot" in flight:
-                cff.pilots.default = flight['pilot']
-            else:
-                lists[0].insert(0, ("Select", "Select"))
-            if "co_pilot_name" in flight:
-                cff.co_pilots.default = flight['co_pilot_name']
-            else:
-                lists[1].insert(0, ("Select", "Select"))
-            if "crew_chief_name" in flight:
-                cff.crew_chiefs.default = flight['crew_chief_name']
-            else:
-                lists[2].insert(0, ("Select", "Select"))
-            if "loadmaster_name" in flight:
-                cff.loadmasters.default = flight['loadmaster_name']
-            else:
-                lists[3].insert(0, ("Select", "Select"))
+            crew_list = flight[gl.DB_CREW_LIST]
 
-        else:
-            crew_list.insert(0, ("Select", "Select"))
-            # lists[1].insert(0, ("Select", "Select"))
-            # lists[2].insert(0, ("Select", "Select"))
-            # lists[3].insert(0, ("Select", "Select"))
-            airplanes.insert(0, ("Select", "Select"))
+        crew_selection.insert(0, ("Select", "Select"))
+        airplanes.insert(0, ("Select", "Select"))
 
-        cff.crew.choices = crew_list
+        cff.crew_selection.choices = crew_selection
 
-        cff.process()
+        # cff.process()
     else:
         DisplayFlask(cff)
 
-    return render_template('createflight.html', form=cff, airplanes=airplanes), 201
+    return render_template('createflight.html', form=cff,
+                           airplanes=airplanes,
+                        crew_selection=crew_selection, crew_list=crew_list), 201
 
 # Show all flights for selection to edit
 @app.route("/selectflight", methods=["GET"])

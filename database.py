@@ -122,17 +122,16 @@ class DatabaseManager:
         else:
             return plane
 
-# Retrieve all flights as requested.
-# Convert to a python array and return
-# Specify dates to search for using startdate and enddate keywords to bracket the dates to search for.
-# Both startdate and enddate must be strings in the format YYYY-mm-dd.
-# If enddate is not requested, the database will be searched for all dates in the future from
-#   the startdate. If no dates are specified, all flights in the future from the current date will be
-#   returned.
+    # Retrieve all flights as requested.
+    # Convert to a python array and return
+    # Specify dates to search for using startdate and enddate keywords to bracket the dates to search for.
+    # Both startdate and enddate must be strings in the format YYYY-mm-dd.
+    # If enddate is not requested, the database will be searched for all dates in the future from
+    #   the startdate. If no dates are specified, all flights in the future from the current date will be
+    #   returned.
     def get_flights(self, *fields, **kwfields):
 
         db_args = {f for f in fields}
-
 
         if "startdate" in kwfields and 'enddate' in kwfields:
             # Find the rides between the two dates
@@ -212,49 +211,34 @@ class DatabaseManager:
                     '_id': ObjectId(primary_key)
                 }
             }, {
-            '$lookup': {
-                'from': 'aircraft',
-                'localField': gl.DB_N_NUMBER,
-                'foreignField': '_id',
-                'as': gl.DB_AIRCRAFT_DETAILS
+                '$lookup': {
+                    'from': 'aircraft',
+                    'localField': gl.DB_N_NUMBER,
+                    'foreignField': '_id',
+                    'as': gl.DB_AIRCRAFT_DETAILS
+                }
             }
-        }, {
-            '$lookup': {
-                'from': 'volunteers',
-                'localField': gl.DB_PILOT,
-                'foreignField': '_id',
-                'as': gl.DB_PILOT_DETAILS
-            }
-        }, {
-            '$lookup': {
-                'from': 'volunteers',
-                'localField': gl.DB_CREWCHIEF,
-                'foreignField': '_id',
-                'as': gl.DB_CREWCHIEF_DETAILS
-            }
-        }, {
-            '$lookup': {
-                'from': 'volunteers',
-                'localField': gl.DB_CO_PILOT,
-                'foreignField': '_id',
-                'as': gl.DB_CO_PILOT_DETAILS
-            }
-        }, {
-            '$lookup': {
-                'from': 'volunteers',
-                'localField': gl.DB_LOAD_MASTER,
-                'foreignField': '_id',
-                'as': gl.DB_LOAD_MASTER_DETAILS
-            }
-        }
         ]
 
         try:
             flights = self.dbINDYCAF.db.flights.aggregate(query)
             for flight in flights:
+                new_crew_list = []
+                for crew in flight[gl.DB_CREW_LIST]:
+                    query = {"_id": crew[0]}
+                    volunteer = self.dbINDYCAF.db.volunteers.find_one(query, {})
+                    crew_entry = {
+                        gl.DB_COLONEL_NUMBER: crew[0],
+                        gl.DB_FIRST_NAME: volunteer[gl.DB_FIRST_NAME],
+                        gl.DB_LAST_NAME: volunteer[gl.DB_LAST_NAME],
+                        gl.DB_CREW_POSITION: crew[1],
+                        gl.DB_ACTIVE: volunteer[gl.DB_ACTIVE]
+                    }
+                    new_crew_list.append(crew_entry)
+                flight[gl.DB_CREW_LIST] = new_crew_list
                 return flight
         except Exception as e:
-            msg = 'getoneflight: ' + gl.MSG_FIND_OP_FAILED, " " + e
+            msg = 'Find One Flight: ' + gl.MSG_FIND_OP_FAILED, " " + e
             print(msg)
             raise Exception(msg)
 
@@ -283,7 +267,3 @@ class DatabaseManager:
             return s.database_op_failure
 
         return s.database_op_success
-
-
-
-

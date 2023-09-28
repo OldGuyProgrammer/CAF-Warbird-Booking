@@ -47,7 +47,7 @@ class CreateFlightForm(FlaskForm):
     airport_city = StringField(gl.PR_AIRPORT_CITY, render_kw={'placeholder': gl.PR_AIRPORT_CITY, 'style': 'width: 30%'})
     flight_time = DateTimeField(gl.PR_FLIGHT_TIME, [validators.InputRequired()], format='%Y-%m-%dT%H:%M', render_kw={'type': 'datetime-local'})
     end_flight_time = DateTimeField(gl.PR_END_FLIGHT_TIME, [validators.InputRequired()], format='%Y-%m-%dT%H:%M', render_kw={'type': 'datetime-local'})
-    crew = SelectField(label='crew', id='crew', choices=[], validate_choice=False)
+    crew_selection = SelectField(label='crew', id='crew', choices=[], validate_choice=False)
     crewPosition = StringField(gl.PR_CREW_POSITION, render_kw={'placeholder': gl.PR_CREW_POSITION, 'style': 'width: 30%'})
     add_a_flight = SubmitField(gl.PR_ADD_A_FLIGHT)
 

@@ -46,13 +46,27 @@
                 </div>
                 <!-- Crew List -->
                 <li id="crew_list_template" hidden>
-                    {{ form.crew }}: {{ form.crewPosition }}
+                    {{ form.crew_selection }}: {{ form.crewPosition }}
                 </li>
+                <h4>Below is the list of assigned crew.</h4>
+                <h4>To add crew, tap the "Add Crew" button.</h4>
                 <ul class="crew-list">
+                    {% for crew in crew_list: %}
                     <!--Crew names and crew positions are added here.-->
+                    <li class="crew-entry">
+                        <select id="crew" name="crew_selection">
+                            <option value={{ crew.colonel_number }}>{{ crew.first_name }} {{ crew.last_name }}</option>
+                            {% for selection in crew_selection %}
+                                {% if selection[0] != "Select" %}
+                                    <option value={{ selection[0] }}>{{ selection[1] }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <input id="crewPosition" placeholder="Crew Position" type="text" value={{crew.crew_position}}>
+                    </li>
+                    {% endfor %}
                 </ul>
                 <button id="btn_add_crew" type="button" class="btn btn-outline-secondary">Add Crew</button>
-
                 <!--    Submit Button                        -->
                 <div class="col">
                     {{ form.add_a_flight }}
@@ -80,10 +94,9 @@
                         </select>
                         <img id="aircraftimage" src="" class="img-fluid" alt="Aircraft Image">
                         <ul class="seat-list">
-                    <!--Seat detail are added here.-->
+                            <!--Seat detail are added here.-->
                         </ul>
                         <button id="btn_add_seat" type="button" class="btn btn-outline-secondary">Add Seat</button>
-
                     </div>
                     <!--Script to format the src="" attribute for the airplane photo. -->
                     <script>
@@ -142,7 +155,7 @@
         $("#spinner-saving").show();
     })
 
-    $("#btn_add_crew").click(() => {
+    $("#btn_add_crew").on('click', () => {
         const el = $("#crew_list_template").clone()
         el.addClass("crew-entry")
         el.removeAttr("id")
