@@ -30,6 +30,7 @@ class globals:
     DB_AIRCRAFT_OPERATIONAL = "operational"
     DB_AIRCRAFT_TYPE = "aircraft_type"
     DB_AUTHENTICATED = 'authenticated'
+    DB_BIRTHDATE = "birthdate"
     DB_CAF_MEMBER = "CAFMember"
     DB_CREW_LIST = "crew_list"
     DB_CITY = "city"
@@ -41,11 +42,11 @@ class globals:
     DB_EMAIL = 'email_address'
     DB_END_FLIGHT_TIME = "end_flight_time"
     DB_FIRST_NAME = 'first_name'
-    DB_FLIGHT_ID = 'flight_id'  # Maps Fight ID to MongoDB _id
     DB_FLIGHT_TIME = "flight_time"
     DB_JOIN_MAILING_LIST = "mailing_list"
     DB_LAST_NAME = 'last_name'
     DB_MANIFEST = 'manifest'
+    DB_NAME = "name"
     DB_N_NUMBER = "aircraft_n_number"
     DB_NEW_PASSWORD = 'new_password'
     DB_NUM_ENGINES = 'number_engines'
@@ -62,9 +63,13 @@ class globals:
     DB_PRIME_PRICE = "prime_price"
     DB_RIDER = "Rider"
     DB_SEAT_LIST = "seat_list"
+    DB_SEAT_NAME = "seat_name"
+    DB_SEAT_PRICE = "seat_price"
+    DB_TRANSACTION_ID = 'transaction_id'
     DB_TRANSACTIONS = 'transactions'
-    DB_POSTAL_CODE = "postalCode"
+    DB_POSTAL_CODE = "postal_code"
     DB_RECORD_KEY = "record_id"
+    DB_RIDER_OBJECT = "rider_object"
     DB_STATE = "state"
     DB_VOLUNTEER_ON_FILE = "volunteer_on_file"
 
@@ -86,14 +91,12 @@ class globals:
     PR_CREW_POSITION = "Crew Position"
     PR_CITY = 'City'
     PR_COLONEL_NUMBER = "Col #"
-    # PR_CREWCHIEF = "Crew Chief"
     PR_END_FLIGHT_TIME = 'Ending Flight Time: '
     PR_FIRST_NAME = 'First Name'
     PR_FLIGHT_TIME = 'Starting Flight Time: '
     PR_IATA_CODE = 'IATA'
     PR_JOIN_MAILING_LIST = "Join the mailing list."
     PR_LAST_NAME = 'Last Name'
-    # PR_LOADMASTER = "Load Master"
     PR_EMAIL = 'Email Address'
     PR_HOLD_HARMLESS = "Sign Form"
     PR_NEW_PASSWORD = "New Password"
@@ -101,7 +104,6 @@ class globals:
     PR_NUMBER_SEATS = 'Number: '
     PR_OK_TEXT = 'OK To Text'
     PR_PHONE = 'Mobile Phone'
-    # PR_PILOT = "Pilot"
     PR_POSTAL = 'Zip/Postal'
     PR_PASS_NAME = 'Enter Passenger Name'
     PR_PASSWORD = "Password"

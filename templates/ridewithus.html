@@ -91,12 +91,9 @@
 // This function expects the date and time to come in a string UTC format:
 // YYYY-mm-ddThh:mm:ss.ssss+utcoffset
                 flights.forEach((flight) => {
-                    const seatsLeft = flight["seats_left"]
-                    let seatsCount = 0;
-                    for (const seat in seatsLeft) {
-                        seatsCount += seatsLeft[seat]
-                    }
                     const id = flight['_id']
+                    const aircraft_name = flight["aircraftDetails"][0]['aircraft_name']
+                    console.log(aircraft_name)
                     const dt_from_database = flight['flight_time']
                     const datetime = dt_from_database.split(" ")
                     const date = datetime[0].split("-")
@@ -108,8 +105,7 @@
                     hour = (hour == 0) ? 12 : hour;
                     const fulldate = `${date[1]}/${date[2]}/${date[0]}, ${hour}:${time[1]}${ampm}`
                     $(`<li data-flightID=${id} class="nav-item">
-                        <a class="nav-link btn p-0" href="/passengercontact?flightkey=${id}" style="width: 50rem;text-align: left">${flight["aircraft_n_number"]}: ${fulldate}
-                        , Number of empty seats: ${seatsCount}</a>
+                        <a class="nav-link btn p-0" href="/passengercontact?flightkey=${id}" style="width: 50rem;text-align: left">${flight["aircraft_n_number"]}, ${aircraft_name}: ${fulldate}</a>
                     </li>`).appendTo("#flightList")
                 })
                 $("#spinner").hide();

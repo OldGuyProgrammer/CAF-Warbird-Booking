@@ -6,7 +6,7 @@
 #
 #   Jim Olivi 2002
 #
-
+import json
 import os
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
@@ -132,7 +132,6 @@ class DatabaseManager:
     def get_flights(self, *fields, **kwfields):
 
         db_args = {f for f in fields}
-
         if "startdate" in kwfields and 'enddate' in kwfields:
             # Find the rides between the two dates
 
@@ -141,14 +140,57 @@ class DatabaseManager:
             # print(f"enddate: {kwfields['enddate']}")
             enddate = datetime.strptime(str(kwfields['enddate']), '%Y-%m-%d')
             if "airportcode" in kwfields:
-                query = {'flight_time': {'$gte': startdate, "$lte": enddate},
-                         'airport_code': {'$eq': kwfields["airportcode"]}}
+                query = [
+                    {'$match': {
+                        'flight_time': {'$gte': startdate, "$lte": enddate},
+                        'airport_code': {'$eq': kwfields["airportcode"]}
+                    }
+                    },
+                    {'$lookup': {
+                        'from': 'aircraft',
+                        'localField': gl.DB_N_NUMBER,
+                        'foreignField': '_id',
+                        'as': gl.DB_AIRCRAFT_DETAILS
+                    }
+                    },
+                    {
+                        "$sort": {gl.DB_FLIGHT_TIME: 1}
+                    }
+                ]
             else:
-                query = {'flight_time': {'$gte': startdate, "$lte": enddate}}
+                query = [
+                    {
+                        '$match': {
+                            'flight_time': {'$gte': startdate, "$lte": enddate}
+                        }
+                    }, {
+                        '$lookup': {
+                            'from': 'aircraft',
+                            'localField': gl.DB_N_NUMBER,
+                            'foreignField': '_id',
+                            'as': gl.DB_AIRCRAFT_DETAILS
+                        }
+                    }
+                ]
         elif "startdate" in kwfields:
             # List all rides after the specified date
             start_date = datetime.strptime(kwfields['startdate'], '%Y-%m-%d')
-            query = {gl.DB_FLIGHT_TIME: {'$gte': start_date}}
+            query = [
+                {'$match': {
+                    gl.DB_FLIGHT_TIME: {"$gte": start_date}
+                }
+                },
+                {'$lookup': {
+                    'from': 'aircraft',
+                    'localField': gl.DB_N_NUMBER,
+                    'foreignField': '_id',
+                    'as': gl.DB_AIRCRAFT_DETAILS
+                }
+                },
+                {
+                    "$sort": {gl.DB_FLIGHT_TIME: 1}
+                }
+            ]
         else:
             # List all flights
             query = {}
@@ -158,11 +200,8 @@ class DatabaseManager:
             # Get all flights in the date range, maybe all in the future, sorted ascending
             # If there's a failure, Set up error recovery
             # If success, set error message to empty string.
-            for flight in self.dbINDYCAF.db.flights.find(query, db_args) \
-                    .sort('flight_time', 1):
-                if "_id" in flight:
-                    id = str(flight["_id"])
-                    flight["_id"] = id
+            flights = self.dbINDYCAF.db.flights.aggregate(query)
+            for flight in flights:
                 if gl.DB_FLIGHT_TIME in flight:
                     dt = str(flight[gl.DB_FLIGHT_TIME])
                     flight[gl.DB_FLIGHT_TIME] = dt
@@ -188,20 +227,20 @@ class DatabaseManager:
             return s.database_op_success
 
     # Get flight information from the screen.
-    def saveFlight(self, flightInfo):
+    def saveFlight(self, flight):
 
         try:
-            self.dbINDYCAF.db.flights.insert_one(flightInfo)
+            flight_id = self.dbINDYCAF.db.flights.insert_one(flight)
             msg = "Flight added to database.\n"
-            msg = msg + f"Airport: {flightInfo[gl.DB_AIRPORT_NAME]}\n"
-            msg = msg + f"Flight time: {flightInfo[gl.DB_FLIGHT_TIME]}"
+            msg = msg + f"Airport: {flight[gl.DB_AIRPORT_NAME]}\n"
+            msg = msg + f"Flight time: {flight[gl.DB_FLIGHT_TIME]}"
             fm = FlaskMail(self.app)
             # fm.send_message("Flight Added", "jimolivi@icloud.com", msg)
 
-            return s.database_op_success
+            return flight_id
         except Exception as e:
             print("Save Flight, insert_one failed: ", e)
-            return s.database_op_failure
+            return None
 
     # Get one flight record
     def get_one_flight(self, primary_key):
@@ -223,6 +262,7 @@ class DatabaseManager:
         try:
             flights = self.dbINDYCAF.db.flights.aggregate(query)
             for flight in flights:
+                flight[gl.DB_FLIGHT_ID] = str(flight["_id"])
                 new_crew_list = []
                 for crew in flight[gl.DB_CREW_LIST]:
                     query = {"_id": crew[0]}

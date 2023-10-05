@@ -1,11 +1,11 @@
-h1, h2, h3, h4 {
+h1, h2, h3, h4, p {
 	font-family: 'Times New Roman';
 }
 
-/*p {*/
-/*	color: black;*/
-/*	text-justify: ;*/
-/*}*/
+p.help-text{
+	color: darkblue;
+	font-size: 1em;
+}
 
 label {
 	text-align:right;

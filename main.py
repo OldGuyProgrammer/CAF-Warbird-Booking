@@ -21,7 +21,7 @@ from forms import LoginForm, AddVolunteer, CreateFlightForm, PassengerContact, A
 from database import DatabaseManager
 from print_flight_report import PrintFlightReport
 # from manifest import Manifests
-from flights import Flights
+from flight import Flight, getfutureflights, get_day_flights, get_one_flight
 from security import Security
 from globals import signals as s, globals as gl, NoFlights, DisplayFlask, StateList, scrub_phone
 from airports import airports
@@ -86,7 +86,7 @@ def home():
     home.LastName = vol.lastname
     return render_template('index.html', form=home), 200
 
-
+gl.DB_TRANSACTION_ID: ""
 # Login the volunteer. The UserId should be a colonel number
 # TODO find a way to retrieve Colonel numbers from HQ
 
@@ -225,7 +225,6 @@ def getvolunteer():
 # @login_required
 def createflight():
 
-    fl = Flights(db)
     cff = CreateFlightForm(request.form)
     crew_list = []
     if request.method == "POST" and cff.validate():
@@ -236,6 +235,7 @@ def createflight():
         seats = request.form.getlist("seat_name")
         seat_prices = request.form.getlist("seat_price")
 
+        fl = Flight(db)
         if fl.create_flight(cff, crew, crew_positions, seats, seat_prices, n_number):
             flash("Flight Added.", 'message')
             flash(f'{cff.airport_code.data.upper()}, {n_number}, {cff.flight_time.data}', 'message')
@@ -247,16 +247,19 @@ def createflight():
         crew_selection = asyncio.run(getLists(db))
         airplanes = asyncio.run(getAirPlanes(db))
 
+        seat_list = []
         args = request.args.to_dict()  # Get the params
         if "flightkey" in args:
-            flight = fl.get_one_flight(args['flightkey'])
-            cff.airport_code.data = flight[gl.DB_AIRPORT_CODE]
-            cff.airport_name.data = flight[gl.DB_AIRPORT_NAME]
-            cff.airport_city.data = flight[gl.DB_AIRPORT_CITY]
+            fl = Flight(db, flight_id=args['flightkey'])
+            cff.flight_id.data = fl.flight[gl.DB_FLIGHT_ID]
+            cff.airport_code.data = fl.flight[gl.DB_AIRPORT_CODE]
+            cff.airport_name.data = fl.flight[gl.DB_AIRPORT_NAME]
+            cff.airport_city.data = fl.flight[gl.DB_AIRPORT_CITY]
             # Date time will format correctly if its in datetime format
-            cff.flight_time.data = flight[gl.DB_FLIGHT_TIME]
-            cff.end_flight_time.data = flight[gl.DB_END_FLIGHT_TIME]
-            crew_list = flight[gl.DB_CREW_LIST]
+            cff.flight_time.data = fl.flight[gl.DB_FLIGHT_TIME]
+            cff.end_flight_time.data = fl.flight[gl.DB_END_FLIGHT_TIME]
+            crew_list = fl.flight[gl.DB_CREW_LIST]
+            seat_list = fl.flight[gl.DB_SEAT_LIST]
 
         crew_selection.insert(0, ("Select", "Select"))
         airplanes.insert(0, ("Select", "Select"))
@@ -269,6 +272,7 @@ def createflight():
 
     return render_template('createflight.html', form=cff,
                            airplanes=airplanes,
+                        seatList=seat_list,
                         crew_selection=crew_selection, crew_list=crew_list), 201
 
 # Show all flights for selection to edit
@@ -289,7 +293,7 @@ def select_flight():
     else:
         start_date = str(date.today())
 
-    fl = Flights(db)
+    fl = Flight(db)
     flight_list = fl.get_flights(startdate=str(start_date))
     if flight_list is None:
         flash(gl.MSG_NO_FLIGHTS, 'message')
@@ -376,7 +380,7 @@ def manifest():
         return json.dumps(manifest_scratch), 201
 
     manifest_form = Manifest()
-    fl = Flights(db)
+    fl = Flight(db)
     flights = fl.getfutureflights(startdate=str(date.today()))
 
     air_ports = [('Select','Select')]
@@ -415,9 +419,9 @@ def payment():
 # Ride With Us section
 @app.route("/ridewithus", methods=['GET'])
 def ridewithus():
-    fl = Flights(db)
+
     try:
-        day_flights = fl.getfutureflights(startdate=str(date.today()))
+        day_flights = getfutureflights(db, startdate=str(date.today()))
     except NoFlights:
         flash(gl.MSG_NO_FLIGHTS, 'message')
         # day_flights = s.no_flights
@@ -429,7 +433,7 @@ def ridewithus():
 @app.route("/passengercontact", methods=['GET', 'POST'])
 def passenger_contact():
 
-    fl = Flights(db)
+    fl = Flight(db)
     pass_form = PassengerContact()
 
     if request.method == 'POST':
@@ -463,12 +467,11 @@ def passenger_contact():
 @app.route("/getdayflights/<strdate>/<airportcode>", methods=['GET'])
 def getdayflights(strdate, airportcode):
     # Scrub the input date.
-    fl = Flights(db)
     try:
         today = datetime.strptime(strdate, '%m%d%Y')
         today = datetime.date(today)
         tomorrow = today + timedelta(days=1)
-        flightList = fl.get_day_flights(airportcode=airportcode, startdate=today, enddate=tomorrow)
+        flightList = get_day_flights(db, airportcode=airportcode, startdate=today, enddate=tomorrow)
     except ValueError:
         msg = f'{strdate} is invalid'
         flash(msg, 'error')
@@ -508,8 +511,7 @@ def findmyride():
 # Get one flight by primary key
 @app.route("/getoneflight/<primarykey>", methods=['GET'])
 def getoneflight(primarykey):
-    fl = fl(db)
-    flight = fl.get_one_flight(primarykey)
+    flight = get_one_flight(primarykey)
 
     return flight, 201
 

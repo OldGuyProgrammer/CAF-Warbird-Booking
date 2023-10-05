@@ -12,19 +12,172 @@ from flask import flash
 from aircraft_model import getOneAirplane
 from bson.json_util import dumps
 
-class Flights:
-    def __init__(self, data_base):
-        self.db = data_base
 
-# See how many seats are left on a flight.
-# Returned is an array: [Prime Seats Sold, Passenger Seats Sold]
-    def __seatsLeft(self, flight):
-# Must be re-written for new flights structure.
+# Get one flight by primary key
+def get_one_flight(db, primarykey):
+
+# Might have to format some fields for display
+    flight = db.get_one_flight(primarykey)
+    if flight is None:
+        return flight
+
+    flight[gl.DB_FLIGHT_TIME] = flight[gl.DB_FLIGHT_TIME]
+    if gl.DB_END_FLIGHT_TIME in flight:
+        flight[gl.DB_END_FLIGHT_TIME] = flight[gl.DB_END_FLIGHT_TIME]
+    else:
+        flight[gl.DB_END_FLIGHT_TIME] = ""
+    return flight
+
+
+def getfutureflights(db, **req):
+    flight_list = db.get_flights(gl.DB_AIRPORT_NAME,
+                                  gl.DB_AIRPORT_CITY,
+                                  gl.DB_AIRPORT_CODE,
+                                  gl.DB_FLIGHT_TIME,
+                                  gl.DB_SEAT_LIST,
+                                    startdate=req['startdate'])
+
+    # Keep only one per day, do not return other flights.
+    # Format the datetime to date only
+    if flight_list[0] is None:
+        flash(flight_list[1], 'error')
+        raise NoFlights
+
+    lastAirport = ""
+    dayFlights = []
+    for flight in flight_list[0]:
+        # seats = self.__seatsLeft(flight)
+
         seats_left = 0
+        if gl.DB_SEAT_LIST in flight:
+            seats_left = len(flight[gl.DB_SEAT_LIST])
 
-        return seats_left
+        if seats_left > 0:
+            for seat in flight[gl.DB_SEAT_LIST]:
+                if seat[gl.DB_TRANSACTION_ID] != "":
+                    seats_left = seats_left - 1
+        if seats_left > 0:
+            if lastAirport != flight[gl.DB_AIRPORT_CODE]:  # New airport, reset date.
+                lastDate = ""  # Initialize date to pick first entry
+                lastAirport = flight[gl.DB_AIRPORT_CODE]
 
-# Get all flights.
+            date_time = format_time(flight[gl.DB_FLIGHT_TIME])
+            date_parts = date_time.split(",")
+            flight[gl.DB_FLIGHT_TIME] = date_parts[0]
+            date = date_parts[0]
+
+            if lastDate != date:
+                lastDate = date
+                dayFlights.append(flight)
+
+    return dayFlights
+
+def get_day_flights(db, **req):
+    flight_list = db.get_flights(gl.DB_N_NUMBER,
+                                      gl.DB_AIRPORT_NAME,
+                                      gl.DB_AIRPORT_CITY,
+                                      gl.DB_AIRPORT_CODE,
+                                      gl.DB_FLIGHT_TIME,
+                                      startdate=req['startdate'],
+                                      enddate=req['enddate'],
+                                      airportcode=req['airportcode'])
+
+
+    if flight_list[1] != "":
+        print(gl.MSG_DATABASE_ERROR)
+        print(flight_list[1])
+        raise ValueError
+
+    flight_list_json = dumps(flight_list[0])
+    return flight_list_json
+
+
+class Flight:
+    def __init__(self, db, **kw_flight_id):
+        self.db = db
+
+        crew_obj = {
+                gl.DB_COLONEL_NUMBER: "",
+                gl.DB_CREW_POSITION: ""
+            }
+        rider_obj = {
+                    gl.DB_NAME: "",
+                    gl.DB_ADDRESS: "",
+                    gl.DB_CITY: "",
+                    gl.DB_STATE: "",
+                    gl.DB_POSTAL_CODE: "",
+                    gl.DB_BIRTHDATE: "",
+            }
+        seat_obj = {
+                gl.DB_SEAT_NAME: "",
+                gl.DB_SEAT_PRICE: "",
+                gl.DB_RIDER_OBJECT: {},
+                gl.DB_TRANSACTION_ID: ""
+            }
+
+        self.flight = {
+            "id" : "",
+            gl.DB_AIRPORT_CODE: "",
+            gl.DB_AIRPORT_NAME: "",
+            gl.DB_AIRPORT_CITY: "",
+            gl.DB_N_NUMBER: "",
+            gl.DB_FLIGHT_TIME: "",
+            gl.DB_END_FLIGHT_TIME: "",
+            gl.DB_CREW_LIST: [],
+            gl.DB_SEAT_LIST: []}
+
+        if "flight_id" in kw_flight_id:
+            flight = self.db.get_one_flight(kw_flight_id['flight_id'])
+            if flight:
+                self.flight = flight
+
+    def create_flight(self, form, colonels, jobs, seat_list, seat_prices, n_number):
+        if "Select" in colonels:
+            colonels.remove("Select")
+        if "" in jobs:
+            jobs.remove("")
+
+        crew = list(zip(jobs, colonels))
+        crew_list = []
+        for job in crew:
+            job_dict = {
+                job[0]: job[1]
+            }
+            crew_list.append(job_dict)
+
+        seats = list(zip(seat_list, seat_prices))
+        seat_list = []
+        for seat in seats:
+            seat_dict = {
+                gl.DB_TRANSACTION_ID: "",
+                seat[0]: seat[1],
+                gl.DB_RIDER: {
+                    gl.DB_NAME: "",
+                    gl.DB_ADDRESS: "",
+                    gl.DB_CITY: "",
+                    gl.DB_STATE: "",
+                    gl.DB_POSTAL_CODE: "",
+                    gl.DB_BIRTHDATE: "",
+
+                }
+            }
+            seat_list.append(seat_dict)
+
+        self.flight[gl.DB_AIRPORT_CODE] = form.airport_code.data.upper()
+        airport = form.airport_name.data
+        self.flight[gl.DB_AIRPORT_NAME] = airport
+        self.flight[gl.DB_AIRPORT_CITY] = form.airport_city.data
+        self.flight[gl.DB_N_NUMBER] = n_number
+        self.flight[gl.DB_FLIGHT_TIME] = form.flight_time.data
+        self.flight[gl.DB_END_FLIGHT_TIME] = form.end_flight_time.data
+
+        self.flight[gl.DB_CREW_LIST] = crew_list
+        self.flight[gl.DB_SEAT_LIST] = seat_list
+
+        self.flight_id = self.db.saveFlight(self.flight)
+        return self.flight_id
+
+    # Get all flights.
     def get_flights(self, **kwfields):
 
         if "startdate" in kwfields:
@@ -54,126 +207,6 @@ class Flights:
                 flight_list.append(flight)
 
         return flight_list
-
-# Returns a python dictionary, not JSON-able
-    def getfutureflights(self, **req):
-
-        flight_list = self.db.get_flights(gl.DB_AIRPORT_NAME,
-                                          gl.DB_AIRPORT_CITY,
-                                          gl.DB_AIRPORT_CODE,
-                                          gl.DB_FLIGHT_TIME,
-                                          gl.DB_NUM_PRIME_SEATS,
-                                          gl.DB_NUM_VIP_SEATS,
-                                          gl.DB_TRANSACTIONS,
-                                          startdate=req['startdate'])
-
-        # Keep only one per day, do not return other flights.
-        # Format the datetime to date only
-        if flight_list[0] is None:
-            flash(flight_list[1], 'error')
-            raise NoFlights
-
-        lastAirport = ""
-        dayFlights = []
-        for flight in flight_list[0]:
-            seats = self.__seatsLeft(flight)
-            if bool(seats):
-                seats_left = {
-                    gl.DB_SEATS_LEFT: seats
-                }
-                flight.update(seats_left)
-                if lastAirport != flight[gl.DB_AIRPORT_CODE]:   # New airport, reset date.
-                    lastDate = ""    # Initialize date to pick first entry
-                    lastAirport = flight[gl.DB_AIRPORT_CODE]
-
-                date_time = format_time(flight[gl.DB_FLIGHT_TIME])
-                date_parts = date_time.split(",")
-                flight[gl.DB_FLIGHT_TIME] = date_parts[0]
-                date = date_parts[0]
-
-                if lastDate != date:
-                    lastDate = date
-                    dayFlights.append(flight)
-
-        return dayFlights
-
-# Get all flights for one day
-    def get_day_flights(self, **req):
-        flight_list = self.db.get_flights(gl.DB_N_NUMBER,
-                                          gl.DB_AIRPORT_NAME,
-                                          gl.DB_AIRPORT_CITY,
-                                          gl.DB_AIRPORT_CODE,
-                                          gl.DB_FLIGHT_TIME,
-                                          gl.DB_FLIGHT_ID,
-                                          gl.DB_NUM_VIP_SEATS,
-                                          gl.DB_NUM_PRIME_SEATS,
-                                          gl.DB_TRANSACTIONS,
-                                          startdate=req['startdate'],
-                                          enddate=req['enddate'],
-                                          airportcode=req['airportcode'])
-
-
-# Get Aircraft Name
-        if flight_list[1] != "":
-            print(gl.MSG_DATABASE_ERROR)
-            print(flight_list[1])
-            raise ValueError
-
-        flight_list = flight_list[0]
-        for flight in flight_list:
-            airplane = self.db.get_one_airplane(flight[gl.DB_N_NUMBER], gl.DB_AIRCRAFT_NAME)
-            airplane_name = airplane[gl.DB_AIRCRAFT_NAME]
-            # Put the airplane name in the field to be displayed.
-            flight[gl.DB_N_NUMBER] = flight[gl.DB_N_NUMBER] + ': ' + airplane_name
-            seats = self.__seatsLeft(flight)
-            seats_left = {
-                gl.DB_SEATS_LEFT: seats
-            }
-            flight.update(seats_left)
-
-        flight_list_json = dumps(flight_list)
-        return flight_list_json
-
-# Get one flight by primary key
-    def get_one_flight(self, primarykey):
-
-# Might have to format some fields for display
-        flight = self.db.get_one_flight(primarykey)
-        if flight is None:
-            return flight
-
-        flight[gl.DB_FLIGHT_TIME] = flight[gl.DB_FLIGHT_TIME]
-        if gl.DB_END_FLIGHT_TIME in flight:
-            flight[gl.DB_END_FLIGHT_TIME] = flight[gl.DB_END_FLIGHT_TIME]
-        else:
-            flight[gl.DB_END_FLIGHT_TIME] = ""
-        return flight
-
-    def create_flight(self, form, crew, crew_positions, seats, seat_prices, n_number):
-
-        crew.remove("Select")
-        crew_positions.remove("")
-        crew_list = list(zip(crew, crew_positions))
-
-        i = 0
-        seat_list = []
-        for seat in seats:
-            seat_entry = {seat: seat_prices[i], gl.DB_RIDER: None}
-            seat_list.append(seat_entry)
-            i = i + 1
-
-        new_flight = {
-            gl.DB_AIRPORT_CODE: form.airport_code.data.upper(),
-            gl.DB_AIRPORT_NAME: form.airport_name.data,
-            gl.DB_AIRPORT_CITY: form.airport_city.data,
-            gl.DB_N_NUMBER: n_number,
-            gl.DB_FLIGHT_TIME: form.flight_time.data,
-            gl.DB_END_FLIGHT_TIME: form.end_flight_time.data,
-            gl.DB_CREW_LIST: crew_list,
-            gl.DB_SEAT_LIST: seat_list
-        }
-        res = self.db.saveFlight(new_flight)
-        return res
 
 # Save passenger info for a flight.
     def passenger(self, passenger_contact_form):

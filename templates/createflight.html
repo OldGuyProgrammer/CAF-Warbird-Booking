@@ -8,6 +8,7 @@
 
 <form method="POST" action="{{ url_for('createflight') }}">
     {{ form.csrf_token }}
+    {{ form.flight_id }}
 
     <div class="container-fluid p-1">
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -49,78 +50,67 @@
                     {{ form.crew_selection }}: {{ form.crewPosition }}
                 </li>
                 <h4>Below is the list of assigned crew.</h4>
-                <h4>To add crew, tap the "Add Crew" button.</h4>
+                <p class="help-text">To add crew, tap the "Add Crew" button. To remove crew, blank out the crew position.</p>
                 <ul class="crew-list">
                     {% for crew in crew_list: %}
                     <!--Crew names and crew positions are added here.-->
                     <li class="crew-entry">
-                        <select id="crew" name="crew_selection">
+                        <select name="crew">
                             <option value={{ crew.colonel_number }}>{{ crew.first_name }} {{ crew.last_name }}</option>
                             {% for selection in crew_selection %}
-                                {% if selection[0] != "Select" %}
-                                    <option value={{ selection[0] }}>{{ selection[1] }}</option>
-                                {% endif %}
+                            {% if selection[0] != "Select" %}
+                            <option value={{ selection[0] }}>{{ selection[1] }}</option>
+                            {% endif %}
                             {% endfor %}
                         </select>
-                        <input id="crewPosition" placeholder="Crew Position" type="text" value={{crew.crew_position}}>
+                        <input name="crewPosition" placeholder="Crew Position" type="text" value={{crew.crew_position}}>
                     </li>
                     {% endfor %}
                 </ul>
                 <button id="btn_add_crew" type="button" class="btn btn-outline-secondary">Add Crew</button>
                 <!--    Submit Button                        -->
                 <div class="col">
-                    {{ form.add_a_flight }}
+                    <p class="help-text">If you are duplicating a flight, don't forget to change the flight time, if you have not already.</p>
+                    <button id="btn_add_flight" type="submit" class="btn btn-primary">Add/Duplicate Flight</button>
+                    <button id="btn_update_flight" type="submit" class="btn btn-warning">Update Flight</button>
                 </div>
             </div>
             <div class="col-sm-6">
                 <!--    Aircraft Name and Photo                        -->
-                <div class="col col-sm-6 col-lg-6">
-                    <label for="aircraft_name">
-                        <h3>Select an aircraft</h3>
-                    </label>
-                    <div id="spinner-get-plane-image" style="display:none">
-                        <div class="spinner-border text-success"></div>
-                        <span id="gettingInfo">Getting airplane image.</span>
-                    </div>
-                    <div class="col-sm-6">
-                        {# {{ form.aircraft_name }}#}
-                        <select id="aircraft_name" name="aircraft_name" onchange="DisplayAircraft()">
-                            {% for airplane in airplanes: %}
-                            <option value={{ airplane[0] }} data-image={{ airplane[2] }}
 
-                            >{{ airplane[1] }}
-                            </option>
-                            {% endfor %}
-                        </select>
-                        <img id="aircraftimage" src="" class="img-fluid" alt="Aircraft Image">
-                        <ul class="seat-list">
-                            <!--Seat detail are added here.-->
-                        </ul>
-                        <button id="btn_add_seat" type="button" class="btn btn-outline-secondary">Add Seat</button>
-                    </div>
-                    <!--Script to format the src="" attribute for the airplane photo. -->
-                    <script>
-                        function DisplayAircraft() {
-                            $("#spinner-get-plane-image").show();
-                            const file = $("#aircraft_name option:selected").data("image")
-                            if (file != "Select" && !!file) {
-                                const path = `static/images/${file}`
-                                $("#aircraftimage").attr("src", path)
-                            }
-                            $("#spinner-get-plane-image").hide();
-                        }
-
-                        // See if we can display an aircraft photo on startup.
-                        $(window).on('load', function () {
-                            DisplayAircraft()
-                        })
-                        // Listen to the airplane selector, matches the Flask form SelectField object.
-                        // Putting the image file name in the .img object triggers a get to the server.
-                        $('#aircraft_name').change(function () {
-                            DisplayAircraft()
-                        })
-                    </script>
+                <label for="aircraft_name">
+                    <h3>Select an aircraft</h3>
+                </label>
+                <div id="spinner-get-plane-image" style="display:none">
+                    <div class="spinner-border text-success"></div>
+                    <span id="gettingInfo">Getting airplane image.</span>
                 </div>
+                {# {{ form.aircraft_name }}#}
+                <select id="aircraft_name" name="aircraft_name" onchange="DisplayAircraft()">
+                    {% for airplane in airplanes: %}
+                    <option value={{ airplane[0] }} data-image={{ airplane[2] }}
+
+                    >{{ airplane[1] }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <img id="aircraftimage" src="" class="img-fluid" alt="Aircraft Image">
+                <p class="help-text">To add a seat, tap the "Add Seat" button.</p>
+                <p class="help-text">To remove a seat, blank out the seat name. If you remove a seat that has a
+                    passenger assignment, contact the passenger for re-assignment or refund.</p>
+                <ul class="seat-list">
+                    <!--Seat detail are added here.-->
+                    {% for seat in seatList: %}
+                    <!--Crew names and crew positions are added here.-->
+                    <li class="seat-entry">
+                        {% for key in seat: %}
+                        <input type='text' name='seat_name' placeholder='Seat Name' value={{ key }}><input
+                            type='number' name='seat_price' placeholder='Seat Price' value={{ seat[key] }}>
+                        {% endfor %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                <button id="btn_add_seat" type="button" class="btn btn-outline-secondary">Add Seat</button>
             </div>
         </div>
     </div>
@@ -130,6 +120,36 @@
 {% include "footer.html" %}
 <!--Script to fetch and display airport name and city-->
 <script>
+    function DisplayAircraft() {
+        $("#spinner-get-plane-image").show();
+        const file = $("#aircraft_name option:selected").data("image")
+        if (file != "Select" && !!file) {
+            const path = `static/images/${file}`
+            $("#aircraftimage").attr("src", path)
+        }
+        $("#spinner-get-plane-image").hide();
+    }
+
+    // See if we can display an aircraft photo on startup.
+    $(document).ready(() => {
+        console.log("Window Loaded")
+        DisplayAircraft()
+
+        if ($("#flight_id").val() == "") {
+            $("#btn_update_flight").prop("disabled", true)
+            console.log("Disable Update")
+        } else {
+            $("#btn_update_flight").prop("disabled", false)
+            console.log("Ensable Update")
+        }
+    })
+
+    // Listen to the airplane selector, matches the Flask form SelectField object.
+    // Putting the image file name in the .img object triggers a get to the server.
+    $('#aircraft_name').change(function () {
+        DisplayAircraft()
+    })
+
     $("#airport_code").change(function () {
         $("#spinner-get-airport").show();
         const airportCode = $("#airport_code").val()
@@ -157,14 +177,14 @@
 
     $("#btn_add_crew").on('click', () => {
         const el = $("#crew_list_template").clone()
-        el.addClass("crew-entry")
+        el.addClass("crew")
+        el.attr("name", "crew")
         el.removeAttr("id")
         el.removeAttr("hidden")
         el.appendTo(".crew-list")
     })
 
     $("#btn_add_seat").click(() => {
-        console.log("Add a Seat")
         $('.seat-list').append("<li><input type='text' name='seat_name' placeholder='Seat Name' value=''><input type='number' name='seat_price' placeholder='Seat Price' value=''></li>")
     })
 

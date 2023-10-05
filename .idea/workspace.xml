@@ -4,16 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b18bc70-081e-4f18-8168-75519ad77965" name="Changes" comment="v0.2.3 Create flight records with unlimited crew and unlimited seats.">
+    <list default="true" id="5b18bc70-081e-4f18-8168-75519ad77965" name="Changes" comment="v0.2.4 Display crew and crew position in flight to edit.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flights.py" beforeDir="false" afterPath="$PROJECT_DIR$/flights.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flights.py" beforeDir="false" afterPath="$PROJECT_DIR$/flight.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/globals.py" beforeDir="false" afterPath="$PROJECT_DIR$/globals.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/createflight.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/createflight.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/selectflight.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/selectflight.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/ridewithus.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/ridewithus.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,6 +98,23 @@
       <workItem from="1695902155078" duration="282000" />
       <workItem from="1695912242327" duration="5747000" />
       <workItem from="1695925557696" duration="1975000" />
+      <workItem from="1695932215529" duration="1952000" />
+      <workItem from="1695988027479" duration="2385000" />
+      <workItem from="1696022380751" duration="1269000" />
+      <workItem from="1696083024198" duration="4072000" />
+      <workItem from="1696102710729" duration="2597000" />
+      <workItem from="1696172703646" duration="2865000" />
+      <workItem from="1696190935101" duration="283000" />
+      <workItem from="1696248214282" duration="955000" />
+      <workItem from="1696255702799" duration="5489000" />
+      <workItem from="1696335590009" duration="1545000" />
+      <workItem from="1696346722247" duration="866000" />
+      <workItem from="1696361551723" duration="315000" />
+      <workItem from="1696362374535" duration="2231000" />
+      <workItem from="1696427772118" duration="3301000" />
+      <workItem from="1696438570518" duration="1210000" />
+      <workItem from="1696449938294" duration="4026000" />
+      <workItem from="1696506298326" duration="7971000" />
     </task>
     <task id="LOCAL-00001" summary="v0.2.1 Able to add unlimited list of crew positions for a vlunteer.">
       <option name="closed" value="true" />
@@ -123,7 +140,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695413370184</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="v0.2.4 Display crew and crew position in flight to edit.">
+      <option name="closed" value="true" />
+      <created>1695934157622</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1695934157622</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -133,9 +158,10 @@
     <MESSAGE value="v0.2.1 Able to add unlimited list of crew positions for a vlunteer." />
     <MESSAGE value="v0.2.2 Able to update volunteer records" />
     <MESSAGE value="v0.2.3 Create flight records with unlimited crew and unlimited seats." />
-    <option name="LAST_COMMIT_MESSAGE" value="v0.2.3 Create flight records with unlimited crew and unlimited seats." />
+    <MESSAGE value="v0.2.4 Display crew and crew position in flight to edit." />
+    <option name="LAST_COMMIT_MESSAGE" value="v0.2.4 Display crew and crew position in flight to edit." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/CAF_Warbird_Booking$INDYCAF__main_py_.coverage" NAME="INDYCAF (main.py) Coverage Results" MODIFIED="1695927496274" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/CAF_Warbird_Booking$INDYCAF__main_py_.coverage" NAME="INDYCAF (main.py) Coverage Results" MODIFIED="1696520153791" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
