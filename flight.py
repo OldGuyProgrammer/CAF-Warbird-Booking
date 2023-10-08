@@ -93,13 +93,13 @@ def get_day_flights(db, **req):
 
 
 class Flight:
-    def __init__(self, db, **kw_flight_id):
+    def __init__(self, db, **kwargs):
         self.db = db
 
-        crew_obj = {
-                gl.DB_COLONEL_NUMBER: "",
-                gl.DB_CREW_POSITION: ""
-            }
+        flight_key = None
+        if "flight_key" in kwargs:
+            flight_key = kwargs[gl.FLIGHT_KEY]
+
         rider_obj = {
                     gl.DB_NAME: "",
                     gl.DB_ADDRESS: "",
@@ -108,28 +108,54 @@ class Flight:
                     gl.DB_POSTAL_CODE: "",
                     gl.DB_BIRTHDATE: "",
             }
-        seat_obj = {
-                gl.DB_SEAT_NAME: "",
-                gl.DB_SEAT_PRICE: "",
-                gl.DB_RIDER_OBJECT: {},
-                gl.DB_TRANSACTION_ID: ""
-            }
 
         self.flight = {
-            "id" : "",
             gl.DB_AIRPORT_CODE: "",
             gl.DB_AIRPORT_NAME: "",
             gl.DB_AIRPORT_CITY: "",
             gl.DB_N_NUMBER: "",
+            gl.DB_AIRCRAFT_NAME: "",
+            gl.DB_AIRCRAFT_TYPE: "",
             gl.DB_FLIGHT_TIME: "",
             gl.DB_END_FLIGHT_TIME: "",
             gl.DB_CREW_LIST: [],
-            gl.DB_SEAT_LIST: []}
+            gl.DB_SEAT_LIST: []
+        }
 
-        if "flight_id" in kw_flight_id:
-            flight = self.db.get_one_flight(kw_flight_id['flight_id'])
+        if flight_key:
+            flight = self.db.get_one_flight(flight_key)
             if flight:
-                self.flight = flight
+    # Scrub the data
+                self.flight["_id"] = flight["_id"]
+                self.flight[gl.DB_AIRPORT_CODE] = flight[gl.DB_AIRPORT_CODE]
+                self.flight[gl.DB_AIRPORT_NAME] = flight[gl.DB_AIRPORT_NAME]
+                self.flight[gl.DB_AIRPORT_CITY] = flight[gl.DB_AIRPORT_CITY]
+                self.flight[gl.DB_N_NUMBER] = flight[gl.DB_N_NUMBER]
+                aircraft_details = flight[gl.DB_AIRCRAFT_DETAILS][0]
+                self.flight[gl.DB_AIRCRAFT_NAME] = aircraft_details[gl.DB_AIRCRAFT_NAME]
+                self.flight[gl.DB_AIRCRAFT_TYPE] = aircraft_details[gl.DB_AIRCRAFT_TYPE]
+                self.flight[gl.DB_AIRCRAFT_IMAGE] = aircraft_details[gl.DB_AIRCRAFT_IMAGE]
+                self.flight[gl.DB_FLIGHT_TIME] = flight[gl.DB_FLIGHT_TIME]
+                self.flight[gl.DB_END_FLIGHT_TIME] = flight[gl.DB_END_FLIGHT_TIME]
+                crew_list = flight[gl.DB_CREW_LIST]
+                for crew in crew_list:
+                    crew_obj = {
+                        gl.DB_COLONEL_NUMBER: crew[gl.DB_COLONEL_NUMBER],
+                        gl.DB_FIRST_NAME: crew[gl.DB_FIRST_NAME],
+                        gl.DB_LAST_NAME: crew[gl.DB_LAST_NAME],
+                        gl.DB_CREW_POSITION: crew[gl.DB_CREW_POSITION]
+                    }
+                    self.flight[gl.DB_CREW_LIST].append(crew_obj)
+                seat_list = flight[gl.DB_SEAT_LIST]
+                for seat in seat_list:
+                    seat_obj = {
+                        gl.DB_SEAT_NAME: seat[gl.DB_SEAT_NAME],
+                        gl.DB_SEAT_PRICE: seat[gl.DB_SEAT_PRICE],
+                        gl.DB_RIDER_OBJECT: {},
+                        gl.DB_TRANSACTION_ID: ""
+                    }
+                    self.flight[gl.DB_SEAT_LIST].append(seat_obj)
+
 
     def create_flight(self, form, colonels, jobs, seat_list, seat_prices, n_number):
         if "Select" in colonels:
@@ -141,7 +167,8 @@ class Flight:
         crew_list = []
         for job in crew:
             job_dict = {
-                job[0]: job[1]
+                gl.DB_CREW_POSITION_NAME : job[0],
+                gl.DB_COLONEL_NUMBER: job[1]
             }
             crew_list.append(job_dict)
 
@@ -150,7 +177,8 @@ class Flight:
         for seat in seats:
             seat_dict = {
                 gl.DB_TRANSACTION_ID: "",
-                seat[0]: seat[1],
+                gl.DB_SEAT_NAME: seat[0],
+                gl.DB_SEAT_PRICE: seat[1],
                 gl.DB_RIDER: {
                     gl.DB_NAME: "",
                     gl.DB_ADDRESS: "",

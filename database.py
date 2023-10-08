@@ -202,6 +202,7 @@ class DatabaseManager:
             # If success, set error message to empty string.
             flights = self.dbINDYCAF.db.flights.aggregate(query)
             for flight in flights:
+                flight["_id"] = str(flight["_id"])
                 if gl.DB_FLIGHT_TIME in flight:
                     dt = str(flight[gl.DB_FLIGHT_TIME])
                     flight[gl.DB_FLIGHT_TIME] = dt
@@ -262,23 +263,25 @@ class DatabaseManager:
         try:
             flights = self.dbINDYCAF.db.flights.aggregate(query)
             for flight in flights:
-                flight[gl.DB_FLIGHT_ID] = str(flight["_id"])
+                flight["_id"] = str(flight["_id"])
+                flight[gl.DB_FLIGHT_TIME] = flight[gl.DB_FLIGHT_TIME]
+                flight[gl.DB_END_FLIGHT_TIME] = flight[gl.DB_END_FLIGHT_TIME]
                 new_crew_list = []
                 for crew in flight[gl.DB_CREW_LIST]:
-                    query = {"_id": crew[0]}
+                    query = {"_id": crew[gl.DB_COLONEL_NUMBER],}
                     volunteer = self.dbINDYCAF.db.volunteers.find_one(query, {})
                     crew_entry = {
-                        gl.DB_COLONEL_NUMBER: crew[0],
+                        gl.DB_COLONEL_NUMBER: crew[gl.DB_COLONEL_NUMBER],
                         gl.DB_FIRST_NAME: volunteer[gl.DB_FIRST_NAME],
                         gl.DB_LAST_NAME: volunteer[gl.DB_LAST_NAME],
-                        gl.DB_CREW_POSITION: crew[1],
+                        gl.DB_CREW_POSITION: crew[gl.DB_CREW_POSITION_NAME],
                         gl.DB_ACTIVE: volunteer[gl.DB_ACTIVE]
                     }
                     new_crew_list.append(crew_entry)
                 flight[gl.DB_CREW_LIST] = new_crew_list
                 return flight
         except Exception as e:
-            msg = 'Find One Flight: ' + gl.MSG_FIND_OP_FAILED, " " + e
+            msg = 'Find One Flight: ' + gl.MSG_FIND_OP_FAILED
             print(msg)
             raise Exception(msg)
 

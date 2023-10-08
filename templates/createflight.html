@@ -85,11 +85,9 @@
                     <div class="spinner-border text-success"></div>
                     <span id="gettingInfo">Getting airplane image.</span>
                 </div>
-                {# {{ form.aircraft_name }}#}
                 <select id="aircraft_name" name="aircraft_name" onchange="DisplayAircraft()">
                     {% for airplane in airplanes: %}
                     <option value={{ airplane[0] }} data-image={{ airplane[2] }}
-
                     >{{ airplane[1] }}
                     </option>
                     {% endfor %}
@@ -101,12 +99,9 @@
                 <ul class="seat-list">
                     <!--Seat detail are added here.-->
                     {% for seat in seatList: %}
-                    <!--Crew names and crew positions are added here.-->
                     <li class="seat-entry">
-                        {% for key in seat: %}
-                        <input type='text' name='seat_name' placeholder='Seat Name' value={{ key }}><input
-                            type='number' name='seat_price' placeholder='Seat Price' value={{ seat[key] }}>
-                        {% endfor %}
+                        <input type='text' name='seat_name' placeholder='Seat Name' value={{ seat['seat_name'] }}>
+                        <input type='number' name='seat_price' placeholder='Seat Price' value={{ seat['seat_price'] }}>
                     </li>
                     {% endfor %}
                 </ul>

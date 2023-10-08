@@ -250,8 +250,8 @@ def createflight():
         seat_list = []
         args = request.args.to_dict()  # Get the params
         if "flightkey" in args:
-            fl = Flight(db, flight_id=args['flightkey'])
-            cff.flight_id.data = fl.flight[gl.DB_FLIGHT_ID]
+            fl = Flight(db, flight_key=args['flightkey'])
+            cff.flight_id.data = fl.flight["_id"]
             cff.airport_code.data = fl.flight[gl.DB_AIRPORT_CODE]
             cff.airport_name.data = fl.flight[gl.DB_AIRPORT_NAME]
             cff.airport_city.data = fl.flight[gl.DB_AIRPORT_CITY]
@@ -260,9 +260,11 @@ def createflight():
             cff.end_flight_time.data = fl.flight[gl.DB_END_FLIGHT_TIME]
             crew_list = fl.flight[gl.DB_CREW_LIST]
             seat_list = fl.flight[gl.DB_SEAT_LIST]
+            airplane_name = fl.flight[gl.DB_N_NUMBER] + " " + fl.flight[gl.DB_AIRCRAFT_NAME]
+            airplanes.insert(0, (fl.flight[gl.DB_N_NUMBER], airplane_name, fl.flight[gl.DB_AIRCRAFT_IMAGE]))
 
         crew_selection.insert(0, ("Select", "Select"))
-        airplanes.insert(0, ("Select", "Select"))
+        # airplanes.insert(0, ("Select", "Select"))
 
         cff.crew_selection.choices = crew_selection
 
@@ -433,7 +435,6 @@ def ridewithus():
 @app.route("/passengercontact", methods=['GET', 'POST'])
 def passenger_contact():
 
-    fl = Flight(db)
     pass_form = PassengerContact()
 
     if request.method == 'POST':
@@ -444,15 +445,16 @@ def passenger_contact():
             return render_template('seriouserror.html'), 500
 
     elif request.method == "GET":
-        flight_key = request.args.get('flightkey', None)
+        flight_key = request.args.get(gl.FLIGHT_KEY, None)
         if flight_key is None:
             flash(gl.MSG_FLIGHT_ID_REQ, 'error')
             return render_template('seriouserror.html'), 406
 
+        flight = Flight(db, flight_key=flight_key)
+
 # TODO Find My Flight can no longer get the transaction separately
         sl = StateList(app)
         pass_form.state_province.choices = sl.getstatelist()
-        flight = fl.get_one_flight(flight_key)
         if flight is None:
             flash(gl.MSG_FLIGHT_ID_REQ, 'error')
             return render_template('seriouserror.html'), 406

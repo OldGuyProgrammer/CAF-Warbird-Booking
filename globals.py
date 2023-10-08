@@ -37,6 +37,7 @@ class globals:
     DB_CREW = "crew"
     DB_CREW_POSITIONS = "crew_positions"
     DB_CREW_POSITION = "crew_position"
+    DB_CREW_POSITION_NAME = "crew_position_name"
     DB_COLONEL_NUMBER = "colonel_number"
     DB_MM_DD_YYYY = "%m-%d-%Y"
     DB_EMAIL = 'email_address'
@@ -73,6 +74,8 @@ class globals:
     DB_STATE = "state"
     DB_VOLUNTEER_ON_FILE = "volunteer_on_file"
 
+# Cnnstants
+    FLIGHT_KEY = "flight_key"
 # Screen Prompts
     PR_ADDRESS = 'Address'
     PR_ADD_A_FLIGHT = 'Add/Update This Flight'

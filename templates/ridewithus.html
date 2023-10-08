@@ -93,7 +93,6 @@
                 flights.forEach((flight) => {
                     const id = flight['_id']
                     const aircraft_name = flight["aircraftDetails"][0]['aircraft_name']
-                    console.log(aircraft_name)
                     const dt_from_database = flight['flight_time']
                     const datetime = dt_from_database.split(" ")
                     const date = datetime[0].split("-")
@@ -105,7 +104,7 @@
                     hour = (hour == 0) ? 12 : hour;
                     const fulldate = `${date[1]}/${date[2]}/${date[0]}, ${hour}:${time[1]}${ampm}`
                     $(`<li data-flightID=${id} class="nav-item">
-                        <a class="nav-link btn p-0" href="/passengercontact?flightkey=${id}" style="width: 50rem;text-align: left">${flight["aircraft_n_number"]}, ${aircraft_name}: ${fulldate}</a>
+                        <a class="nav-link btn p-0" href="/passengercontact?flight_key=${id}" style="width: 50rem;text-align: left">${flight["aircraft_n_number"]}, ${aircraft_name}: ${fulldate}</a>
                     </li>`).appendTo("#flightList")
                 })
                 $("#spinner").hide();
