@@ -21,7 +21,7 @@ from forms import LoginForm, AddVolunteer, CreateFlightForm, PassengerContact, A
 from database import DatabaseManager
 from print_flight_report import PrintFlightReport
 # from manifest import Manifests
-from flight import Flight, getfutureflights, get_day_flights, get_one_flight
+from flight import Flight, getfutureflights, get_day_flights, get_one_flight, get_flights
 from security import Security
 from globals import signals as s, globals as gl, NoFlights, DisplayFlask, StateList, scrub_phone
 from airports import airports
@@ -228,17 +228,24 @@ def createflight():
     cff = CreateFlightForm(request.form)
     crew_list = []
     if request.method == "POST" and cff.validate():
-        n_number = request.form.get("aircraft_name")
+        n_number = request.form.get(gl.DB_AIRCRAFT_NAME)
+        flight_key = request.args.get("flightkey")
 
         crew = request.form.getlist("crew")
         crew_positions = request.form.getlist("crewPosition")
         seats = request.form.getlist("seat_name")
         seat_prices = request.form.getlist("seat_price")
 
-        fl = Flight(db)
-        if fl.create_flight(cff, crew, crew_positions, seats, seat_prices, n_number):
-            flash("Flight Added.", 'message')
+        if flight_key:
+            fl = Flight(db, flight_key=flight_key)
+            fl.update_flight(cff, crew, crew_positions, seats, seat_prices, n_number)
+            flash("Flight Updated/.", 'message')
             flash(f'{cff.airport_code.data.upper()}, {n_number}, {cff.flight_time.data}', 'message')
+        else:
+            fl = Flight(db)
+            if fl.create_flight(cff, crew, crew_positions, seats, seat_prices, n_number):
+                flash("Flight Added/.", 'message')
+                flash(f'{cff.airport_code.data.upper()}, {n_number}, {cff.flight_time.data}', 'message')
 
         return redirect(url_for('createflight', method="GET"))
     elif request.method == "GET":
@@ -295,8 +302,7 @@ def select_flight():
     else:
         start_date = str(date.today())
 
-    fl = Flight(db)
-    flight_list = fl.get_flights(startdate=str(start_date))
+    flight_list = get_flights(db, startdate=str(start_date))
     if flight_list is None:
         flash(gl.MSG_NO_FLIGHTS, 'message')
         flight_list = {}
@@ -438,11 +444,14 @@ def passenger_contact():
     pass_form = PassengerContact()
 
     if request.method == 'POST':
-        res = fl.passenger(pass_form)
-        if res == s.database_op_success:
-            return redirect(url_for('ridewithus'))
-        else:
+        flight_key = pass_form.flight_id.data
+        if flight_key is None:
+            flash(gl.MSG_FLIGHT_ID_REQ, 'error')
             return render_template('seriouserror.html'), 500
+
+        flight =  Flight(db, flight_key=flight_key)
+        flight.passenger(pass_form)
+        return redirect(url_for('ridewithus'))
 
     elif request.method == "GET":
         flight_key = request.args.get(gl.FLIGHT_KEY, None)
@@ -451,17 +460,16 @@ def passenger_contact():
             return render_template('seriouserror.html'), 406
 
         flight = Flight(db, flight_key=flight_key)
-
-# TODO Find My Flight can no longer get the transaction separately
-        sl = StateList(app)
-        pass_form.state_province.choices = sl.getstatelist()
         if flight is None:
             flash(gl.MSG_FLIGHT_ID_REQ, 'error')
             return render_template('seriouserror.html'), 406
 
-        passengers = fl.getFlightInfo(flight, pass_form, flight_key)
+        pass_form.flight_id.data = flight_key
+        sl = StateList(app)
+        pass_form.state_province.choices = sl.getstatelist()
 
-    return render_template('passengercontact.html', form=pass_form, passengers=passengers[0], primes=passengers[1]), 200
+    return render_template('passengercontact.html', form=pass_form, seat_list=flight.flight[gl.DB_SEAT_LIST]), 200
+    # return render_template('passengercontact.html', form=pass_form, passengers=passengers[0], primes=passengers[1]), 200
 
 
 # Get all flights for one day

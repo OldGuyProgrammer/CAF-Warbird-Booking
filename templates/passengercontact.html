@@ -14,11 +14,11 @@
 
     <div class="container-fluid">
         {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="{{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="{{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
         {% endwith %}
 
         <div class="row">
@@ -55,7 +55,7 @@
                 </div>
                 <!--    Pay For Flight Button                        -->
                 <div class="col">
-{#                    <a class="nav-link btn p-0" href="{{ url_for('creditcard') }}">Pay For Flight</a>#}
+                    {# <a class="nav-link btn p-0" href="{{ url_for('creditcard') }}">Pay For Flight</a>#}
                     {{ form.pay_for_flight }}
                 </div>
             </div>
@@ -64,47 +64,32 @@
                     <span hidden>{{ form.flight_id }}</span>
                     <h4 class="card-title">{{ form.card_title.label }}</h4>
                     <div id="seat_list" class="row">
-                        <!--   Display Premium Seats.-->
-                        <div class="col-lg-6 col-sm-6">
-                            <h5 style="display: inline-block">Premium Seats: $</h5>
-                            <h5 id="prime_price" style="display: inline-block">{{ form.prime_seat_price }}</h5>
-                            <div>Enter passenger name and birthdate.</div>
-                            <div id="premium_seats">
-                                {% for prime in primes %}
-                                    <input class='prime-name' name='prime_name' placeholder="Enter Passenger Name"
-                                           type="text"
-                                           value="{{ prime }}">
-                                    {{ form.primeBirthDate }}
-                                {% endfor %}
-                            </div>
-                            <div>
-                                {{ form.total_prime_seats.label }}: {{ form.total_prime_seats }}
-                            </div>
-                        </div>
-                        <!--                        Display Passenger Seats-->
-                        <div class="col-lg-6 col-sm-6">
-                            <h5 style="display: inline-block">Passenger Seats: $</h5>
-                            <h5 id="passenger_price" style="display: inline-block">{{ form.pass_seat_price }}</h5>
-                            <div>Enter passenger name and birthdate.</div>
-                            {% for passenger in passengers %}
-                                <input class='passenger-name' name='passenger_name' placeholder="Enter Passenger Name"
-                                       type="text"
-                                       value="{{ passenger }}">
-                                {{ form.passengerBirthDate }}
+                        <p class="help-text">Pick the seat you want, then fill in the passenger information.</p>
+                        <h5 id="prime_price" style="display: inline-block">{{ form.prime_seat_price }}</h5>
+                        <div id="seats">
+                            {% for seat in seat_list %}
+                            <!--                            <input class='seat-name' name='seat_name' placeholder="Enter Passenger Name"-->
+                            <!--                                   type="text"-->
+                            <!--                                   value="{{ seat }}">-->
+                            <input class='seat-price' name='seat_price' placeholder="Seat Price"
+                                   type="number"
+                                   value=seat['seat_price']>
+                            <input class='seat-name' name='seat_name' placeholder="Enter Passenger Name"
+                                   type="text"
+                                   value=seat['seat_name']>
+                            {{ form.passenger_name }}
                             {% endfor %}
-                            <div>
-                                {{ form.total_passenger_seats.label }}: {{ form.total_passenger_seats }}
-                            </div>
                         </div>
-                    </div>
-                    <div class="col-sm-6">
-                        {{ form.paid_amount }}
-                        {{ form.total_price.label }}: {{ form.total_price }}
+                        <div>
+                        </div>
+                        <div class="col-sm-6">
+                            {{ form.paid_amount }}
+                            {{ form.total_price }}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </form>
 </body>
 <script>
@@ -119,23 +104,15 @@
     });
 
     function CalcSeats() {
-        let total_prime_price = 0
+        return
+        let total_price = 0
         const prime_price = Number($("#prime_price").text())
-        $(".prime-name").each((idx, seat) => {
+        $(".seat-name").each((idx, seat) => {
             if (seat.value != "") {
-                total_prime_price += prime_price
+                total_price += prime_price
             }
         })
 
-        let total_pass_price = 0
-        const passenger_price = Number($("#passenger_price").text())
-        $(".passenger-name").each((idx, seat) => {
-            if (seat.value != "") {
-                total_pass_price += passenger_price
-            }
-        })
-
-        const total_price = total_prime_price + total_pass_price
         let text = `$${total_prime_price}`
         $("#total_prime_seats").val(text)
         text = `$${total_pass_price}`
@@ -158,11 +135,11 @@
         CalcSeats();
     })
 
-    $(".prime-name").change((event)=> {
+    $(".prime-name").change((event) => {
         event.preventDefault();
     })
 
-    $(".passenger-name").change((event)=> {
+    $(".passenger-name").change((event) => {
         event.preventDefault();
     })
 </script>

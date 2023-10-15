@@ -4,13 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b18bc70-081e-4f18-8168-75519ad77965" name="Changes" comment="v0.2.5 Ride With Us converted to All CAF format.">
+    <list default="true" id="5b18bc70-081e-4f18-8168-75519ad77965" name="Changes" comment="v0.2.6 Create Flight displays flight data currently on file.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flight.py" beforeDir="false" afterPath="$PROJECT_DIR$/flight.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/globals.py" beforeDir="false" afterPath="$PROJECT_DIR$/globals.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/createflight.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/createflight.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/passengercontact.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/passengercontact.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/ridewithus.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/ridewithus.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -118,7 +119,17 @@
       <workItem from="1696625173542" duration="2946000" />
       <workItem from="1696689355624" duration="6090000" />
       <workItem from="1696709038726" duration="2521000" />
-      <workItem from="1696767731678" duration="2892000" />
+      <workItem from="1696767731678" duration="4762000" />
+      <workItem from="1696797602986" duration="2238000" />
+      <workItem from="1696860681202" duration="3358000" />
+      <workItem from="1696864290723" duration="812000" />
+      <workItem from="1696882557005" duration="4588000" />
+      <workItem from="1696960779247" duration="4675000" />
+      <workItem from="1697126777291" duration="4074000" />
+      <workItem from="1697211532826" duration="3470000" />
+      <workItem from="1697229801045" duration="1866000" />
+      <workItem from="1697233115642" duration="301000" />
+      <workItem from="1697295980179" duration="2297000" />
     </task>
     <task id="LOCAL-00001" summary="v0.2.1 Able to add unlimited list of crew positions for a vlunteer.">
       <option name="closed" value="true" />
@@ -160,7 +171,15 @@
       <option name="project" value="LOCAL" />
       <updated>1696524991564</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="v0.2.6 Create Flight displays flight data currently on file.">
+      <option name="closed" value="true" />
+      <created>1696775418807</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1696775418807</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -172,15 +191,46 @@
     <MESSAGE value="v0.2.3 Create flight records with unlimited crew and unlimited seats." />
     <MESSAGE value="v0.2.4 Display crew and crew position in flight to edit." />
     <MESSAGE value="v0.2.5 Ride With Us converted to All CAF format." />
-    <option name="LAST_COMMIT_MESSAGE" value="v0.2.5 Ride With Us converted to All CAF format." />
+    <MESSAGE value="v0.2.6 Create Flight displays flight data currently on file." />
+    <option name="LAST_COMMIT_MESSAGE" value="v0.2.6 Create Flight displays flight data currently on file." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>435</line>
-          <option name="timeStamp" value="49" />
+          <line>443</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/flight.py</url>
+          <line>311</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>430</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>227</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/flight.py</url>
+          <line>265</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/database.py</url>
+          <line>301</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/database.py</url>
+          <line>232</line>
+          <option name="timeStamp" value="26" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -191,6 +241,6 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/CAF_Warbird_Booking$INDYCAF__main_py_.coverage" NAME="INDYCAF (main.py) Coverage Results" MODIFIED="1696769828355" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/CAF_Warbird_Booking$INDYCAF__main_py_.coverage" NAME="INDYCAF (main.py) Coverage Results" MODIFIED="1697296964246" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

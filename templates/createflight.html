@@ -72,7 +72,7 @@
                 <div class="col">
                     <p class="help-text">If you are duplicating a flight, don't forget to change the flight time, if you have not already.</p>
                     <button id="btn_add_flight" type="submit" class="btn btn-primary">Add/Duplicate Flight</button>
-                    <button id="btn_update_flight" type="submit" class="btn btn-warning">Update Flight</button>
+                    <button id="btn_update_flight" type="button" class="btn btn-warning">Update Flight</button>
                 </div>
             </div>
             <div class="col-sm-6">
@@ -159,6 +159,7 @@
         })
         $("#spinner-get-airport").hide();
     })
+
     $("#total_flight_time").change(function () {
         const start_flight_time = $("#flight_time").val()
         const end_flight_time = $("#end_flight_time").val()
@@ -183,4 +184,10 @@
         $('.seat-list').append("<li><input type='text' name='seat_name' placeholder='Seat Name' value=''><input type='number' name='seat_price' placeholder='Seat Price' value=''></li>")
     })
 
+    $("#btn_update_flight").click(() => {
+        console.log("Update Flight button.")
+        const flightkey = $('#flight_id').val()
+        const url ='/createflight?flightkey=' + flightkey
+        $('form').attr('action', url).submit()
+    })
 </script>

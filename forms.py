@@ -10,7 +10,7 @@
 from globals import globals as gl
 from wtforms import StringField, HiddenField, PasswordField,\
     BooleanField, IntegerField, DateTimeField, DateField, TelField, \
-    SelectField, EmailField, validators, SubmitField, FieldList
+    SelectField, EmailField, validators, SubmitField, DecimalField
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField
 
@@ -72,17 +72,16 @@ class PassengerContact(FlaskForm):
     pass_city = StringField(gl.PR_CITY, [validators.InputRequired(gl.MSG_COMPLETE_ADDRESS)], render_kw={'placeholder': gl.PR_CITY})
     state_province = SelectField('State/Province',  [validators.InputRequired(gl.MSG_COMPLETE_ADDRESS)], choices=[], validate_choice=False)
     pass_postal = StringField(gl.PR_POSTAL, [validators.InputRequired(gl.MSG_ENTER_POSTAL_CODE)], render_kw={'placeholder': gl.PR_POSTAL})
-    prime_seat_price = StringField()
-    pass_seat_price = StringField()
-    prime_name = StringField(gl.PR_PASS_NAME, render_kw={'placeholder': gl.PR_PASS_NAME, 'class': "prime_name"})
+    # seat_price = DecimalField()
+    # prime_name = StringField(gl.PR_PASS_NAME, render_kw={'placeholder': gl.PR_PASS_NAME, 'class': "prime_name"})
     passenger_name = StringField(gl.PR_PASS_NAME, render_kw={'placeholder': gl.PR_PASS_NAME, 'class': "passenger_name"})
-    primeBirthDate = DateField(gl.PR_BIRTH_DAY, format='%m/%d/%y', render_kw={'type': 'date', 'class': "prime_birthdate"})
+    # primeBirthDate = DateField(gl.PR_BIRTH_DAY, format='%m/%d/%y', render_kw={'type': 'date', 'class': "prime_birthdate"})
     passengerBirthDate = DateField(gl.PR_BIRTH_DAY, format='%m/%d/%Y', render_kw={'type': 'date', 'class': "passenger_birthdate"})
-    prime_available_seats = IntegerField()
-    pass_available_seats = IntegerField()
+    # prime_available_seats = IntegerField()
+    available_seats = IntegerField()
     flight_id = StringField()
-    total_prime_seats = StringField(gl.LBL_TOTAL, render_kw={'readonly': True, "tabindex": -1, 'style': 'width: 25%'})
-    total_passenger_seats = StringField(gl.LBL_TOTAL, render_kw={'readonly': True, "tabindex": -1, 'style': 'width: 25%'})
+    total_seats = StringField(gl.LBL_TOTAL, render_kw={'readonly': True, "tabindex": -1, 'style': 'width: 25%'})
+    # total_passenger_seats = StringField(gl.LBL_TOTAL, render_kw={'readonly': True, "tabindex": -1, 'style': 'width: 25%'})
     total_price = StringField(gl.LBL_TOTAL, render_kw={'style': 'width: 25%'})
     pay_for_flight = SubmitField(gl.PR_PAY_FOR_FLIGHT)
     paid_amount = HiddenField()

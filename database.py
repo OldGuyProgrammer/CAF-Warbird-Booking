@@ -227,20 +227,28 @@ class DatabaseManager:
         else:
             return s.database_op_success
 
-    # Get flight information from the screen.
     def saveFlight(self, flight):
 
         try:
-            flight_id = self.dbINDYCAF.db.flights.insert_one(flight)
-            msg = "Flight added to database.\n"
+            if "_id" in flight:
+                query = {
+                    "_id": ObjectId(flight["_id"])
+                }
+                new_stuff = {'$set': flight}
+                flight.pop("_id")
+                flight_key = self.dbINDYCAF.db.flights.update_one(query, new_stuff)
+            else:
+                flight_key = self.dbINDYCAF.db.flights.insert_one(flight)
+
+            msg = "Flight added/updates to database.\n"
             msg = msg + f"Airport: {flight[gl.DB_AIRPORT_NAME]}\n"
             msg = msg + f"Flight time: {flight[gl.DB_FLIGHT_TIME]}"
-            fm = FlaskMail(self.app)
+            # fm = FlaskMail(self.app)
             # fm.send_message("Flight Added", "jimolivi@icloud.com", msg)
 
-            return flight_id
+            return flight_key
         except Exception as e:
-            print("Save Flight, insert_one failed: ", e)
+            print("Save Flight failure: ", e)
             return None
 
     # Get one flight record
@@ -290,9 +298,9 @@ class DatabaseManager:
     # Update Flight Record
     def update_flight(self, flight_id, updates):
 
-        flight_id = ObjectId(flight_id)
+        key = {"_id": flight_id}
         try:
-            self.dbINDYCAF.db.flights.update_one({"_id": flight_id}, {'$set': updates})
+            self.dbINDYCAF.db.flights.update_one(key, {'$set': updates})
         except Exception as e:
             print(gl.MSG_UPDATE_FLIGHT_FAILED, e)
             return s.database_op_failure
