@@ -50,6 +50,8 @@ class DatabaseManager:
         except OperationFailure as e:
             print(f'Find person failure: {e}')
             return None
+        except:
+            print("Unexpected error occurred.")
         else:
             return vol
 

@@ -148,7 +148,8 @@
     $("#airport_code").change(function () {
         $("#spinner-get-airport").show();
         const airportCode = $("#airport_code").val()
-        const user_url = "/getairport/" + airportCode
+        const user_url = "/v1/getairport/" + airportCode
+        console.log(user_url)
         fetch(user_url)
             .then((response) => response.json())
             .then((airport_obj) => {

@@ -157,7 +157,7 @@ def add_volunteer():
 
 
 # Get all flights for the requested airport
-@app.route("/getairport/<airportCode>", methods=['GET'])
+@app.route("/v1/getairport/<airportCode>", methods=['GET'])
 def getairport(airportCode):
     return airports.get_airport_info(airportCode), 201
 
