@@ -61,7 +61,7 @@ class AddVolunteer(FlaskForm):
 
 class PassengerContact(FlaskForm):
     first_name = StringField(gl.PR_FIRST_NAME, [validators.InputRequired(gl.MSG_ENTER_NAME)], render_kw={'placeholder': gl.PR_FIRST_NAME})
-    card_title = StringField('Flight Title Goes Here')
+    card_title = StringField()
     last_name = StringField(gl.PR_FIRST_NAME, [validators.InputRequired(gl.MSG_ENTER_NAME)], render_kw={'placeholder': gl.PR_LAST_NAME})
     pass_email = EmailField(gl.PR_EMAIL, render_kw={'placeholder': gl.PR_EMAIL})
     CAFMember = BooleanField(gl.PR_CAF_MEMBER)
@@ -74,7 +74,7 @@ class PassengerContact(FlaskForm):
     pass_postal = StringField(gl.PR_POSTAL, [validators.InputRequired(gl.MSG_ENTER_POSTAL_CODE)], render_kw={'placeholder': gl.PR_POSTAL})
     # seat_price = DecimalField()
     # prime_name = StringField(gl.PR_PASS_NAME, render_kw={'placeholder': gl.PR_PASS_NAME, 'class': "prime_name"})
-    passenger_name = StringField(gl.PR_PASS_NAME, render_kw={'placeholder': gl.PR_PASS_NAME, 'class': "passenger_name"})
+    # passenger_name = StringField(gl.PR_PASS_NAME, render_kw={'placeholder': gl.PR_PASS_NAME, 'class': "passenger_name"})
     # primeBirthDate = DateField(gl.PR_BIRTH_DAY, format='%m/%d/%y', render_kw={'type': 'date', 'class': "prime_birthdate"})
     passengerBirthDate = DateField(gl.PR_BIRTH_DAY, format='%m/%d/%Y', render_kw={'type': 'date', 'class': "passenger_birthdate"})
     # prime_available_seats = IntegerField()

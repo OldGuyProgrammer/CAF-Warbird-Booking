@@ -64,23 +64,15 @@
                     <span hidden>{{ form.flight_id }}</span>
                     <h4 class="card-title">{{ form.card_title.label }}</h4>
                     <div id="seat_list" class="row">
-                        <p class="help-text">Pick the seat you want, then fill in the passenger information.</p>
+                        <p class="help-text">Pick the seat you want by filling in passenger information.</p>
                         <h5 id="prime_price" style="display: inline-block">{{ form.prime_seat_price }}</h5>
-                        <div id="seats">
+                        <div id="seats" class="passenger-contact-seats">
                             {% for seat in seat_list %}
-                            <!--                            <input class='seat-name' name='seat_name' placeholder="Enter Passenger Name"-->
-                            <!--                                   type="text"-->
-                            <!--                                   value="{{ seat }}">-->
-                            <input class='seat-price' name='seat_price' placeholder="Seat Price"
-                                   type="number"
-                                   value=seat['seat_price']>
-                            <input class='seat-name' name='seat_name' placeholder="Enter Passenger Name"
-                                   type="text"
-                                   value=seat['seat_name']>
-                            {{ form.passenger_name }}
+<!--                            <p>{{ seat }}</p>-->
+                                <span style='width: 100px'>{{ seat['seat_name'] }}</span>
+                                <span style='width: 70px'>${{ seat['seat_price'] }}</span>
+                                <input style='width: 300px' type='text' name='passenger_name' placeholder='Passenger Name'}>
                             {% endfor %}
-                        </div>
-                        <div>
                         </div>
                         <div class="col-sm-6">
                             {{ form.paid_amount }}

@@ -92,12 +92,6 @@ img {
 	line-height: 1.5;
 }
 
-/* Containers */
-
-/*.container-fluid {*/
-/*	padding: 5% 5% 5%;*/
-/*}*/
-
 .nav-bar-container {
 	display:grid;
 	grid-template-columns: .5fr 2fr 2fr;
@@ -192,4 +186,10 @@ img {
 }
 .rpt-seats {
 	padding-left: 3%;
+}
+
+.passenger-contact-seats {
+	display: grid;
+	grid-template-columns: 100px 50px auto;
+	grid-column-start: 1;
 }

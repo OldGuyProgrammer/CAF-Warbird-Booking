@@ -8,6 +8,8 @@
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
+      <env name="AIRPORT_CODE_APIKEY" value="fefa11b44cccdb08c7d39bf2de098e14dce6adeff001f23df963f8cf02c9b9e55e7f926ed7d89a3eb93125c2910c530f" />
+      <env name="AIRPORT_CODE_URL" value="https://airportdb.io/api/v1/airport/$AIRPORTCODE?apiToken=$APIKEY" />
       <env name="COOKIE_DURATION" value="hours=24" />
       <env name="DB_CONNECT_PATH" value="mongodb+srv://$USERID:$PASSWORD@cluster0.wfdvqcp.mongodb.net/$DBNAME?retryWrites=true&amp;w=majority" />
       <env name="DB_DATABASE_NAME" value="INDYCAF" />
@@ -17,8 +19,6 @@
       <env name="FLASK_SECRET_KEY" value="gnf-yvt5cyp8pce1CBU" />
       <env name="PORT" value="3000" />
       <env name="SALT_ROUNDS" value="12" />
-      <env name="AIRPORT_CODE_APIKEY" value="R4x2uJMt4oB6TmvDHhPbiqzAMKA3lRFi" />
-      <env name="AIRPORT_CODE_URL" value="https://api.tequila.kiwi.com/locations/id?id=$AIRPORTCODE&amp;limit=1&amp;locale=en-US&amp;active_only=true" />
     </envs>
     <option name="SDK_HOME" value="" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />

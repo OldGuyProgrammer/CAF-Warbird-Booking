@@ -465,6 +465,9 @@ def passenger_contact():
             return render_template('seriouserror.html'), 406
 
         pass_form.flight_id.data = flight_key
+        print(flight.flight)
+        flight_time = str(flight.flight[gl.DB_FLIGHT_TIME])
+        pass_form.card_title.label = flight.flight[gl.DB_AIRPORT_NAME] + ': ' + flight_time + ', ' + flight.flight[gl.DB_AIRCRAFT_NAME]
         sl = StateList(app)
         pass_form.state_province.choices = sl.getstatelist()
 
