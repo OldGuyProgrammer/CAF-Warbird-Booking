@@ -4,12 +4,11 @@
 #         Server side
 #         Manage Flight Information
 #
-#   Jim Olivi 2022
+#   Jim Olivi 2024
 #
 from datetime import datetime
-from globals import globals as gl, NoFlights, signals as s, format_time, scrub_phone
+from globals import globals as gl, NoFlights, signals as s, format_time
 from flask import flash
-from aircraft_model import getOneAirplane
 from bson.json_util import dumps
 
 
@@ -71,6 +70,19 @@ def getfutureflights(db, **req):
                 dayFlights.append(flight)
 
     return dayFlights
+# Build rider objects
+def build_seat_list(transaction, name_list, phone_list, email_list):
+    rider_list = []
+    i = 0
+    for rider_first_name in name_list:
+        rider_obj = {
+            gl.DB_TRANSACTION_ID: transaction,
+            gl.DB_FIRST_NAME: rider_first_name,
+            gl.DB_LAST_NAME: last_name_list[i]
+        }
+        rider_list.append(rider_obj)
+        i = i + 1
+    return(rider_list)
 
 def get_day_flights(db, **req):
     flight_list = db.get_flights(gl.DB_N_NUMBER,
@@ -117,15 +129,6 @@ class Flight:
         if "flight_key" in kwargs:
             flight_key = kwargs[gl.FLIGHT_KEY]
 
-        rider_obj = {
-                    gl.DB_NAME: "",
-                    gl.DB_ADDRESS: "",
-                    gl.DB_CITY: "",
-                    gl.DB_STATE: "",
-                    gl.DB_POSTAL_CODE: "",
-                    gl.DB_BIRTHDATE: "",
-            }
-
         self.flight = {
             gl.DB_AIRPORT_CODE: "",
             gl.DB_AIRPORT_NAME: "",
@@ -170,15 +173,18 @@ class Flight:
                         gl.DB_CREW_POSITION: crew[gl.DB_CREW_POSITION]
                     }
                     self.flight[gl.DB_CREW_LIST].append(crew_obj)
-                seat_list = flight[gl.DB_SEAT_LIST]
-                for seat in seat_list:
-                    seat_obj = {
-                        gl.DB_SEAT_NAME: seat[gl.DB_SEAT_NAME],
-                        gl.DB_SEAT_PRICE: seat[gl.DB_SEAT_PRICE],
-                        gl.DB_RIDER_OBJECT: {},
-                        gl.DB_TRANSACTION_ID: ""
-                    }
-                    self.flight[gl.DB_SEAT_LIST].append(seat_obj)
+                if gl.DB_SEAT_LIST in flight:
+                    seat_list = flight[gl.DB_SEAT_LIST]
+                    for seat in seat_list:
+                        seat_obj = {
+                            gl.DB_SEAT_NAME: seat[gl.DB_SEAT_NAME],
+                            gl.DB_SEAT_PRICE: seat[gl.DB_SEAT_PRICE],
+                            gl.DB_RIDER_NAME: '',
+                            gl.DB_RIDER_PHONE: '',
+                            gl.DB_RIDER_EMAIL: '',
+                            gl.DB_TRANSACTION_ID: ""
+                        }
+                        self.flight[gl.DB_SEAT_LIST].append(seat_obj)
 
 
     def create_flight(self, form, colonels, jobs, seat_list, seat_prices, n_number):
@@ -204,7 +210,8 @@ class Flight:
                 gl.DB_SEAT_NAME: seat[0],
                 gl.DB_SEAT_PRICE: seat[1],
                 gl.DB_RIDER: {
-                    gl.DB_NAME: "",
+                    gl.DB_FIRST_NAME: "",
+                    gl.DB_LAST_NAME: "",
                     gl.DB_ADDRESS: "",
                     gl.DB_CITY: "",
                     gl.DB_STATE: "",
@@ -229,6 +236,12 @@ class Flight:
         self.flight_id = self.db.saveFlight(self.flight)
         return self.flight_id
 
+
+    def add_riders(self, flight_id, seats):
+        seat_list = {}
+        seat_list[gl.DB_SEAT_LIST] = seats
+        self.db.update_flight_array(flight_id, seat_list)
+        return
     def update_flight(self, form, colonels, jobs, seat_list, seat_prices, n_number):
         if "Select" in colonels:
             colonels.remove("Select")
@@ -252,7 +265,8 @@ class Flight:
                 gl.DB_SEAT_NAME: seat[0],
                 gl.DB_SEAT_PRICE: seat[1],
                 gl.DB_RIDER: {
-                    gl.DB_NAME: "",
+                    gl.DB_FIRST_NAME: "",
+                    gl.DB_LAST_NAME_NAME: "",
                     gl.DB_ADDRESS: "",
                     gl.DB_CITY: "",
                     gl.DB_STATE: "",
@@ -284,71 +298,6 @@ class Flight:
 
         self.flight_id = self.db.saveFlight(self.flight)
         return self.flight_id
-
-
-# Save passenger info for a flight.
-    def passenger(self, passenger_contact_form):
-
-    # Create the new transaction record
-    #     transaction_record = {gl.DB_FIRST_NAME: passenger_contact_form.first_name.data,
-    #                     gl.DB_LAST_NAME: passenger_contact_form.last_name.data,
-    #                     gl.DB_ADDRESS: passenger_contact_form.pass_addr.data,
-    #                     gl.DB_CITY: passenger_contact_form.pass_city.data,
-    #                     gl.DB_STATE: passenger_contact_form.state_province.data,
-    #                     gl.DB_POSTAL_CODE: passenger_contact_form.pass_postal.data,
-    #                     gl.DB_EMAIL: passenger_contact_form.pass_email.data,
-    #                     gl.DB_PHONE_NUMBER: scrub_phone(passenger_contact_form.pass_phone.data),
-    #                     gl.DB_OK_TO_TEXT: passenger_contact_form.OKtoText.data,
-    #                     gl.DB_JOIN_MAILING_LIST: passenger_contact_form.joinMailingList.data,
-    #                     gl.DB_CAF_MEMBER: passenger_contact_form.CAFMember.data,
-    #                     gl.DB_TOTAL_PRICE: passenger_contact_form.total_price.data
-    #                     }
-
-#
-# The riders data structure is designed this way in anticipation of various wings
-# using this API. The class of seats can be dynamically set up.
-#
-
-        i = 0
-        seats = []
-        seats_sold = 0
-        for passenger in passenger_contact_form.passenger_name.raw_data:
-            if passenger != '':
-                seat = {
-                    "seat": "VIP",
-                    "name": passenger,
-                    # "birthDate": passenger_contact_form.passengerBirthDate.raw_data[i]
-                }
-                i += 1
-                seats.append(seat)
-                seats_sold += 1
-
-        seats_dict = self.__seatsLeft(flight)
-        if gl.DB_TRANSACTIONS in flight:
-            for transaction in flight[gl.DB_TRANSACTIONS]:
-                if gl.DB_PRIME in transaction:
-                    primeSeatsSold += len(transaction[gl.DB_PRIME_SEATS])
-                if gl.DB_VIP in transaction:
-                    passengerSeatsSold += len(transaction[gl.DB_VIP])
-
-        if not bool(seats_dict):
-            flash(gl.MSG_NO_SEATS_LEFT, 'message')
-            return s.failure
-
-        for passenger in passenger_contact_form.prime_name.raw_data:
-            if passenger != '':
-                flash(f'{passenger}, {gl.MSG_BOOKED}', 'message')
-        for passenger in passenger_contact_form.passenger_name.raw_data:
-            if passenger != '':
-                flash(f'{passenger}, {gl.MSG_BOOKED}', 'message')
-
-        if len(allSeats) > 0:
-            transaction_record[gl.DB_SEATS_SOLD] = allSeats
-
-        transaction = {gl.DB_TRANSACTIONS: transaction_record}
-        res = self.db.updateFlightArray(flight_id, transaction)
-
-        return res
 
     def getFlightInfo(self, pass_form):
         # plane = getOneAirplane(self.db, flight[gl.DB_N_NUMBER])

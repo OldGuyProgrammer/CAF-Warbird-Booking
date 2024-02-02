@@ -97,18 +97,9 @@ class PrintFlightReport:
                 flight[gl.DB_FLIGHT_TIME] = str(flight[gl.DB_FLIGHT_TIME])
                 if gl.DB_END_FLIGHT_TIME in flight:
                     flight[gl.DB_END_FLIGHT_TIME] = str(flight[gl.DB_END_FLIGHT_TIME])
-                if gl.DB_PILOT_DETAILS in flight:
-                    if len(flight[gl.DB_PILOT_DETAILS]) == 0:
-                        flight.pop(gl.DB_PILOT_DETAILS)
-                if gl.DB_CO_PILOT_DETAILS in flight:
-                    if len(flight[gl.DB_CO_PILOT_DETAILS]) == 0:
-                        flight.pop(gl.DB_CO_PILOT_DETAILS)
-                if gl.DB_CREWCHIEF_DETAILS in flight:
-                    if len(flight[gl.DB_CREWCHIEF_DETAILS]) == 0:
-                        flight.pop(gl.DB_CREWCHIEF_DETAILS)
-                if gl.DB_LOAD_MASTER_DETAILS in flight:
-                    if len(flight[gl.DB_LOAD_MASTER_DETAILS]) == 0:
-                        flight.pop(gl.DB_LOAD_MASTER_DETAILS)
+                if gl.DB_CREW_LIST in flight:
+                    for crew in flight[gl.DB_CREW_LIST]:
+                        crew_details = f"Colonel #: {crew[gl.DB_COLONEL_NUMBER]}, name: {crew[gl.DB_FIRST_NAME]} {crew[gl.DB_LAST_NAME]}, position: {crew[gl.DB_CREW_POSITION]}"
                 if gl.DB_AIRCRAFT_DETAILS in flight:
                     if len(flight[gl.DB_AIRCRAFT_DETAILS]) == 0:
                         flight.pop(gl.DB_AIRCRAFT_DETAILS)

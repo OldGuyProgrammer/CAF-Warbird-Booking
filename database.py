@@ -4,7 +4,7 @@
 #         Server side
 #         Database Manager
 #
-#   Jim Olivi 2002
+#   Jim Olivi 2024
 #
 import json
 import os
@@ -64,6 +64,17 @@ class DatabaseManager:
         except Exception as e:
             print(gl.MSG_ADD_NEW_FAILED, e)
         return s.database_op_success
+
+    def add_transaction(self, purchaser_obj):
+        try:
+            id = self.dbINDYCAF.db.transactions.insert_one(purchaser_obj)
+        except DuplicateKeyError:
+            print(gl.MSG_ADD_NEW_TRANSACTION_FAILED, e)
+            return s.failure
+        except Exception as e:
+            print(gl.MSG_ADD_NEW_TRANSACTION_FAILED, e)
+            return s.failure
+        return id
 
     # Update Volunteer record according to data passed
     def update_volunteer(self, userid, updates):
@@ -310,7 +321,7 @@ class DatabaseManager:
         return s.database_op_success
 
     # Update Flight Record, add array elements.
-    def updateFlightArray(self, flight_id, updates):
+    def update_flight_array(self, flight_id, updates):
 
         flight_id = ObjectId(flight_id)
         try:

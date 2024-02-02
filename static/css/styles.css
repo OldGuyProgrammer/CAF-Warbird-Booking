@@ -188,8 +188,8 @@ img {
 	padding-left: 3%;
 }
 
-.passenger-contact-seats {
+.rider-seats {
 	display: grid;
-	grid-template-columns: 100px 50px auto;
+	grid-template-columns: 100px 50px 150px 150px auto;
 	grid-column-start: 1;
 }

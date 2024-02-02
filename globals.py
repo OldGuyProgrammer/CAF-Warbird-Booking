@@ -29,6 +29,7 @@ class globals:
     DB_AIRCRAFT_IMAGE = 'aircraft_image_file_name'
     DB_AIRCRAFT_OPERATIONAL = "operational"
     DB_AIRCRAFT_TYPE = "aircraft_type"
+    DB_AMOUNT = 'amount'
     DB_AUTHENTICATED = 'authenticated'
     DB_BIRTHDATE = "birthdate"
     DB_CAF_MEMBER = "CAFMember"
@@ -53,25 +54,26 @@ class globals:
     DB_NUM_ENGINES = 'number_engines'
     DB_NUM_PRIME_SEATS = 'num_prime_seats'
     DB_NUM_VIP_SEATS = 'num_VIP_seats'
-    DB_PHONE_NUMBER = 'pass_phone'
+    DB_PHONE_NUMBER = 'phone_number'
     DB_OK_TO_TEXT = 'ok_to_text'
     DB_PASSWORD = 'password'
-    DB_PASS_NAME = 'passenger_name'
-    DB_PASSENGERS = 'passengers'
-    DB_PRIME = "Prime"
-    DB_PASSENGER_ID = "passenger_id"         # Maps passenger ID to MongoDB _id
-    DB_PRIME_PASS_NAME = 'prime_pass_name'
-    DB_PRIME_PRICE = "prime_price"
+    DB_RIDER_EMAIL = 'rider_email'
+    DB_RIDER_NAME = 'rider_name'
+    DB_RIDER_PHONE = 'rider_phone'
+    DB_RIDERS = 'riders'
+    # DB_PRIME = "Prime"
+    DB_RIDER_ID = "rider_id"         # Maps passenger ID to MongoDB _id
+    # DB_PRIME_PRICE = "prime_price"
     DB_RIDER = "Rider"
     DB_SEAT_LIST = "seat_list"
     DB_SEAT_NAME = "seat_name"
     DB_SEAT_PRICE = "seat_price"
+    DB_STATE = "state"
     DB_TRANSACTION_ID = 'transaction_id'
     DB_TRANSACTIONS = 'transactions'
     DB_POSTAL_CODE = "postal_code"
     DB_RECORD_KEY = "record_id"
-    DB_RIDER_OBJECT = "rider_object"
-    DB_STATE = "state"
+    # DB_RIDER_OBJECT = "rider_object"
     DB_VOLUNTEER_ON_FILE = "volunteer_on_file"
 
 # Cnnstants
@@ -158,6 +160,7 @@ class globals:
     MSG_AIRPLANE_UNABLE_TO_SAVE = 'Unable to save airplane photo.'
     MSG_AIRPLANE_NOT_ON_DATABASE = 'not found on database.'
     MSG_ADD_NEW_FAILED = "Add New Volunteer Failed: "
+    MSG_ADD_NEW_TRANSACTION_FAILED = "Add New Transaction Failed: "
     MSG_BOOKED = 'booked on flight'
     MSG_COMPLETE_ADDRESS = "Complete Address"
     MSG_DATABASE_ERROR = "Database error. Processing stopped. See messages..."
@@ -182,11 +185,14 @@ class globals:
     MSG_NOT_ASSIGNED = "Position not assigned."
     MSG_RESERVATION_MISSING = "Reservation information missing."
     MSG_PASSWORD_CHANGE_SUCCESS = "Your password was changed."
+    MSG_PURCHASE = 'purchase'
     MSG_UPDATE_FLIGHT_FAILED = "Update Flight Failed: "
     MSG_UPDATE_VOL_FAILED = "Update Volunteer Failed: "
     MSG_SAVE_PASSENGERS_FAILED = "Save passenger failed: "
     MSG_SAVE_TRANSACTION_FAILED = "Save transaction failed: "
     MSG_START_DATE = "Start date: "
+    MSG_THANK_YOU = 'thank you'
+    MSG_TRANSACTION_ADDED = 'Flight transaction added'
     MSG_FIND_OP_FAILED = 'find op failed'
     MSG_N_NUMBER = 'Aircraft N Numbers: capital letters and numbers only'
     MSG_MESSAGE_SENT = "Message Sent"
@@ -208,8 +214,9 @@ class signals(Enum):
     database_op_failure = 7
     duplicate_volunteer_id = 8
     duplicate_aircraft_id = 9
-    no_flights = 10
-    userid_required = 11
+    duplicate_transaction_id = 10
+    no_flights = 11
+    userid_required = 12
 
 
 class NoFlights(Exception):

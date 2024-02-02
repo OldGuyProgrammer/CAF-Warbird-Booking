@@ -21,7 +21,7 @@ from forms import LoginForm, AddVolunteer, CreateFlightForm, PassengerContact, A
 from database import DatabaseManager
 from print_flight_report import PrintFlightReport
 # from manifest import Manifests
-from flight import Flight, getfutureflights, get_day_flights, get_one_flight, get_flights
+from flight import Flight, getfutureflights, get_day_flights, get_one_flight, get_flights, build_seat_list
 from security import Security
 from globals import signals as s, globals as gl, NoFlights, DisplayFlask, StateList, scrub_phone
 from airports import airports
@@ -29,6 +29,7 @@ from volunteer import Volunteer, getLists
 from customer_manager import Customer
 from aircraft_model import getAirPlanes
 from aircraft_model import Aircraft
+from transaction import Transaction
 # from square import SquareServices as Square
 
 print("Commemorative Air Force")
@@ -297,7 +298,7 @@ def select_flight():
             flash(msg, 'message')
         except ValueError:
             flash(gl.MSG_DATE_ERROR, 'message')
-            flash(gl.MSG_DATE_ENTERED + " " + date_requested)
+            flash(gl.MSG_DATE_ENTERED + " " + date_requested, 'message')
             return render_template("selectflight.html", flights=[]), 422
     else:
         start_date = str(date.today())
@@ -379,8 +380,8 @@ def manifest():
                     gl.DB_CO_PILOT: crew[gl.MN_SIC],
                     gl.DB_CREWCHIEF: crew[gl.MN_CREW_CHIEF_NAME],
                     gl.DB_LOAD_MASTER: crew[gl.MN_LOAD_MASTER_NAME]},
-                gl.DB_PASSENGERS: {
-                    gl.DB_PASSENGERS: passenger_list
+                gl.DB_RIDERS: {
+                    gl.DB_RIDERS: passenger_list
                 }
             }
         }
@@ -449,8 +450,18 @@ def passenger_contact():
             flash(gl.MSG_FLIGHT_ID_REQ, 'error')
             return render_template('seriouserror.html'), 500
 
+        transaction = Transaction(db, first_name=pass_form.first_name.data, last_name=pass_form.last_name.data, email_address=pass_form.email_address.data, phone_number=pass_form.phone_number.data, address=pass_form.address.data, city=pass_form.city.data, state=pass_form.state.data, postal_code=pass_form.postal_code.data, amount=100)
+        transaction_id = transaction.add_transaction()
+        rider_name_list = request.form.getlist("rider_name")
+        rider_phone_list = request.form.getlist("rider_phone")
+        rider_email_list = request.form.getlist("rider_email")
+        seat_list = build_seat_list(transaction_id, rider_name_list, rider_phone_list, rider_email_list)
+
         flight =  Flight(db, flight_key=flight_key)
-        flight.passenger(pass_form)
+        flight.add_riders(flight_key, seat_list)
+
+        flash(gl.MSG_TRANSACTION_ADDED, 'message')
+        flash(pass_form.first_name.data + " " + pass_form.last_name.data + ', ' + gl.MSG_THANK_YOU, 'message')
         return redirect(url_for('ridewithus'))
 
     elif request.method == "GET":
@@ -465,11 +476,10 @@ def passenger_contact():
             return render_template('seriouserror.html'), 406
 
         pass_form.flight_id.data = flight_key
-        print(flight.flight)
         flight_time = str(flight.flight[gl.DB_FLIGHT_TIME])
         pass_form.card_title.label = flight.flight[gl.DB_AIRPORT_NAME] + ': ' + flight_time + ', ' + flight.flight[gl.DB_AIRCRAFT_NAME]
         sl = StateList(app)
-        pass_form.state_province.choices = sl.getstatelist()
+        pass_form.state.choices = sl.getstatelist()
 
     return render_template('passengercontact.html', form=pass_form, seat_list=flight.flight[gl.DB_SEAT_LIST]), 200
     # return render_template('passengercontact.html', form=pass_form, passengers=passengers[0], primes=passengers[1]), 200
