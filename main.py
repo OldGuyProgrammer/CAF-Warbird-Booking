@@ -324,7 +324,7 @@ def print_flight_report():
     else:
         print(gl.MSG_FLIGHT_ID_REQUIRED)
         flash(gl.MSG_FLIGHT_ID_REQUIRED)
-
+    print(flights)
     return render_template("flightreport.html", flights=flights), 201
 
 # Print the manifest

@@ -9,7 +9,7 @@
 {% include "header.html" %}
 <body xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 
-<form method="post" action="{{ url_for('passenger_contact') }}">
+<form method="POST" action="{{ url_for('passenger_contact') }}">
     {{ form.csrf_token }}
 
     <div class="container-fluid">
@@ -37,16 +37,16 @@
                 {{ form.CAFMember }}
                 {{ form.CAFMember.label }}
                 <br>
-                {{ form.pass_email }}
-                {{ form.pass_phone }}
+                {{ form.email_address }}
+                {{ form.phone_number }}
                 <span class="btn-group-toggle" data-toggle="buttons">
                     {{ form.OKtoText }}
                     {{ form.OKtoText.label }}
                 </span>
-                <br>{{ form.pass_addr }}<br>
-                {{ form.pass_city }}
-                {{ form.state_province }}
-                {{ form.pass_postal }}
+                <br>{{ form.address }}<br>
+                {{ form.city }}
+                {{ form.state }}
+                {{ form.postal_code }}
                 <br>
                 {{ form.joinMailingList }}
                 {{ form.joinMailingList.label }}
@@ -63,15 +63,17 @@
                 <div class="card border border-primary">
                     <span hidden>{{ form.flight_id }}</span>
                     <h4 class="card-title">{{ form.card_title.label }}</h4>
-                    <div id="seat_list" class="row">
+                    <div class="row">
                         <p class="help-text">Pick the seat you want by filling in passenger information.</p>
                         <h5 id="prime_price" style="display: inline-block">{{ form.prime_seat_price }}</h5>
-                        <div id="seats" class="passenger-contact-seats">
+                        <div id="seats" class="rider-seats">
                             {% for seat in seat_list %}
 <!--                            <p>{{ seat }}</p>-->
                                 <span style='width: 100px'>{{ seat['seat_name'] }}</span>
                                 <span style='width: 70px'>${{ seat['seat_price'] }}</span>
-                                <input style='width: 300px' type='text' name='passenger_name' placeholder='Passenger Name'}>
+                                <input style='width: 150px' type='text' name='rider_name' placeholder='Rider'}>
+                                <input style='width: 150px' type='text' name='rider_phone' placeholder='Phone'}>
+                                <input style='width: 150px' type='text' name='rider_email' placeholder='Email Address'}>
                             {% endfor %}
                         </div>
                         <div class="col-sm-6">

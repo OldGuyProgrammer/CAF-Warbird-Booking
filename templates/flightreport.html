@@ -6,48 +6,41 @@
 <body>
 <h1>Commemorative Air Force</h1>
 <h2>Indiana Wing</h2>
-<h3>Flight List Produced On:</h3>
+<h3 id="datetime"></h3>
 {% for flight in flights %}
-    <hr>
-    <h4>Airport: {{ flight.airport_name }}</h4>
-    <h3>Flight Time: {{ flight.flight_time }} Aircraft: {{ flight.aircraftDetails[0].aircraft_type }}</h3>
-    {% if "pilotDetails" in flight: %}
-        <p>Pilot: {{ flight.pilotDetails[0]._id }} {{ flight.pilotDetails[0].FirstName }} {{ flight.pilotDetails[0].LastName }}</p>
-    {% else: %}
-        <p>Pilot not Assigned</p>
-    {%  endif %}
-    {% if "coPilotDetails" in flight: %}
-        <p>Co-Pilot: {{ flight.coPilotDetails[0]._id }} {{ flight.coPilotDetails[0].FirstName }} {{ flight.coPilotDetails[0].LastName }}</p>
-    {% else: %}
-        <p>Co-Pilot not Assigned</p>
-    {%  endif %}
-    {% if "crewChiefDetails" in flight: %}
-        <p>Crew Chief: {{ flight.crewChiefDetails[0]._id }} {{ flight.crewChiefDetails[0].FirstName }} {{ flight.crewChiefDetails[0].LastName }}</p>
-    {% else: %}
-        <p>Crew Chief not Assigned</p>
-    {%  endif %}
-    {% if "loadMasterDetails" in flight: %}
-        <p>Load Master: {{ flight.loadMasterDetails[0]._id }} {{ flight.loadMasterDetails[0].FirstName }} {{ flight.loadMasterDetails[0].LastName }}</p>
-    {% else: %}
-        <p>Load Master not Assigned</p>
-    {%  endif %}
-    <div class="rpt-container">
-        <h4>Transactions</h4>
-        <div class="rpt-detail">
-            {% for transaction in flight.transactions %}
-                <span>Purchaser: {{ transaction.FirstName }} {{ transaction.LastName }}, Phone: {{ transaction.pass_phone }}</span>
-                {% if transaction.ok_to_text %}
-                    <span>OK To Text</span>
-                {% endif %}
-                <div class="rpt-seats">
-                    {%  for seat in transaction.seats_sold %}
-                        <span>{{ seat.seat }} Seat, {{ seat.name }}</span><br>
-                    {% endfor %}
-                </div>
+<hr>
+<h4>Airport: {{ flight.airport_name }}</h4>
+<h3>Flight Time: {{ flight.flight_time }} Aircraft: {{ flight.aircraftDetails[0].aircraft_type }}</h3>
+<div class="rpt-container">
+    {% if "crew_list" in flight: %}
+    <h4>Crew</h4>
+    {% for crew in flight.crew_list %}
+    <p> {{ crew.crew_position }}: {{ crew.first_name }} {{ crew.last_name }}</p>
+    {% endfor %}
+    {% endif %}
+    {% if "seat_list" in flight %}
+    <h4>Seats</h4>
+    <div class="rpt-detail">
+        {% for transaction in flight.transactions %}
+        <span>Purchaser: {{ transaction.FirstName }} {{ transaction.LastName }}, Phone: {{ transaction.pass_phone }}</span>
+        {% if transaction.ok_to_text %}
+        <span>OK To Text</span>
+        {% endif %}
+        <div class="rpt-seats">
+            {% for seat in transaction.seats_sold %}
+            <span>{{ seat.seat }} Seat, {{ seat.name }}</span><br>
             {% endfor %}
         </div>
+        {% endfor %}
     </div>
+    {% endif %}
+</div>
 {% endfor %}
 <hr>
 </body>
 {% include "footer.html" %}
+<script>
+    window.onload = function () {
+        $("#datetime").html(`Flight List Produced On: ${new Date().toLocaleDateString()}`)
+    }
+</script>

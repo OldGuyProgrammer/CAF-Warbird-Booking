@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b18bc70-081e-4f18-8168-75519ad77965" name="Changes" comment="v0.2.7 Able to update flights. Update flights now does not duplicate a flight.">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/INDYCAF__main_py_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/INDYCAF__main_py_.xml" afterDir="false" />
+    <list default="true" id="5b18bc70-081e-4f18-8168-75519ad77965" name="Changes" comment="Variable crew list extract from database for flight report.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/flightreport.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/flightreport.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/passengercontact.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/passengercontact.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,7 +138,18 @@
       <workItem from="1700343159291" duration="66000" />
       <workItem from="1702679477988" duration="799000" />
       <workItem from="1702764369618" duration="1780000" />
-      <workItem from="1702823834170" duration="308000" />
+      <workItem from="1702823834170" duration="5647000" />
+      <workItem from="1702848560288" duration="1001000" />
+      <workItem from="1702913280175" duration="9620000" />
+      <workItem from="1702928238938" duration="20000" />
+      <workItem from="1703093862900" duration="6752000" />
+      <workItem from="1703175089772" duration="3644000" />
+      <workItem from="1703281055901" duration="1364000" />
+      <workItem from="1703869504063" duration="114000" />
+      <workItem from="1703871619164" duration="140000" />
+      <workItem from="1705091453374" duration="65000" />
+      <workItem from="1706906350964" duration="3132000" />
+      <workItem from="1706991023031" duration="338000" />
     </task>
     <task id="LOCAL-00001" summary="v0.2.1 Able to add unlimited list of crew positions for a vlunteer.">
       <option name="closed" value="true" />
@@ -194,7 +207,23 @@
       <option name="project" value="LOCAL" />
       <updated>1697380209640</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="v0.2.8 Passenger Contact screen cleaned up.">
+      <option name="closed" value="true" />
+      <created>1702829472592</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1702829472592</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Variable crew list extract from database for flight report.">
+      <option name="closed" value="true" />
+      <created>1706909477127</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1706909477127</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -208,20 +237,17 @@
     <MESSAGE value="v0.2.5 Ride With Us converted to All CAF format." />
     <MESSAGE value="v0.2.6 Create Flight displays flight data currently on file." />
     <MESSAGE value="v0.2.7 Able to update flights. Update flights now does not duplicate a flight." />
-    <option name="LAST_COMMIT_MESSAGE" value="v0.2.7 Able to update flights. Update flights now does not duplicate a flight." />
+    <MESSAGE value="v0.2.8 Passenger Contact screen cleaned up." />
+    <MESSAGE value="Variable crew list extract from database for flight report." />
+    <option name="LAST_COMMIT_MESSAGE" value="Variable crew list extract from database for flight report." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/flight.py</url>
-          <line>311</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/database.py</url>
-          <line>302</line>
-          <option name="timeStamp" value="25" />
+          <url>file://$PROJECT_DIR$/print_flight_report.py</url>
+          <line>109</line>
+          <option name="timeStamp" value="32" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -232,6 +258,6 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/CAF_Warbird_Booking$INDYCAF__main_py_.coverage" NAME="INDYCAF (main.py) Coverage Results" MODIFIED="1702824094344" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/CAF_Warbird_Booking$INDYCAF__main_py_.coverage" NAME="INDYCAF (main.py) Coverage Results" MODIFIED="1706991064199" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
