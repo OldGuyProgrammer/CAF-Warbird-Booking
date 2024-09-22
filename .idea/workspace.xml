@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b18bc70-081e-4f18-8168-75519ad77965" name="Changes" comment="Variable crew list extract from database for flight report.">
+    <list default="true" id="5b18bc70-081e-4f18-8168-75519ad77965" name="Changes" comment="Crew List displayed on Flight Report">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/flightreport.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/flightreport.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/passengercontact.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/passengercontact.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -149,7 +148,11 @@
       <workItem from="1703871619164" duration="140000" />
       <workItem from="1705091453374" duration="65000" />
       <workItem from="1706906350964" duration="3132000" />
-      <workItem from="1706991023031" duration="338000" />
+      <workItem from="1706991023031" duration="3303000" />
+      <workItem from="1707086771113" duration="1114000" />
+      <workItem from="1707506604786" duration="6000" />
+      <workItem from="1708464077414" duration="55000" />
+      <workItem from="1711641012557" duration="426000" />
     </task>
     <task id="LOCAL-00001" summary="v0.2.1 Able to add unlimited list of crew positions for a vlunteer.">
       <option name="closed" value="true" />
@@ -223,7 +226,15 @@
       <option name="project" value="LOCAL" />
       <updated>1706909477127</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Crew List displayed on Flight Report">
+      <option name="closed" value="true" />
+      <created>1706993855073</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1706993855073</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -239,7 +250,8 @@
     <MESSAGE value="v0.2.7 Able to update flights. Update flights now does not duplicate a flight." />
     <MESSAGE value="v0.2.8 Passenger Contact screen cleaned up." />
     <MESSAGE value="Variable crew list extract from database for flight report." />
-    <option name="LAST_COMMIT_MESSAGE" value="Variable crew list extract from database for flight report." />
+    <MESSAGE value="Crew List displayed on Flight Report" />
+    <option name="LAST_COMMIT_MESSAGE" value="Crew List displayed on Flight Report" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -258,6 +270,6 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/CAF_Warbird_Booking$INDYCAF__main_py_.coverage" NAME="INDYCAF (main.py) Coverage Results" MODIFIED="1706991064199" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/CAF_Warbird_Booking$INDYCAF__main_py_.coverage" NAME="INDYCAF (main.py) Coverage Results" MODIFIED="1707087831939" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
